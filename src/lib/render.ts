@@ -2,6 +2,8 @@ import { fabric } from 'fabric';
 import { initInputBullshit, popKeyPresses } from './input';
 import type { KeyPress } from './input';
 
+let time = 0;
+
 class ActionVisual extends fabric.Group {
 	hitTime: number | null = null;
 	hitTimeOffset: number | null = null;
@@ -25,6 +27,14 @@ class ActionVisual extends fabric.Group {
 		top: 40
 	});
 
+	objOutlineFrame = new fabric.Rect({
+		fill: null,
+		stroke: '#f0f',
+		strokeWidth: 5,
+		width: 80,
+		height: 80
+	});
+
 	constructor(public action: GameAction) {
 		super();
 
@@ -32,13 +42,37 @@ class ActionVisual extends fabric.Group {
 
 		this.addWithUpdate(this.objFrame);
 		this.addWithUpdate(this.objText);
+		this.addWithUpdate(this.objOutlineFrame);
 
 		this.left = action.x;
 		this.top = action.y;
 	}
 
+	guideScaleStart = 2;
+	guideStartTime = 750;
+
 	update(time: number) {
-		this.objFrame.set('fill', time > this.action.time ? '#f00' : '#fff');
+		let timeUntilHit = this.action.time - time;
+
+		if (this.hitTime !== null) {
+			this.objText.set('text', `${this.hitTimeOffset.toFixed(1)}`);
+			this.objFrame.set('opacity', 0);
+		}
+		if (this.hitTime !== null || timeUntilHit >= this.guideStartTime || timeUntilHit < 0) {
+			this.objOutlineFrame.set('opacity', 0);
+		} else {
+			this.objOutlineFrame.set('opacity', 1);
+
+			const scaleEndValue = 1.05;
+			let scale =
+				scaleEndValue +
+				(this.guideScaleStart - scaleEndValue) * (timeUntilHit / this.guideStartTime);
+
+			this.objOutlineFrame.set('left', -scale * 40);
+			this.objOutlineFrame.set('top', -scale * 40);
+			this.objOutlineFrame.set('width', scale * 80);
+			this.objOutlineFrame.set('height', scale * 80);
+		}
 	}
 }
 
@@ -90,7 +124,7 @@ export function init(elem: HTMLCanvasElement) {
 	canvas.add(timeText);
 
 	function frame() {
-		const time = performance.now() - startTime;
+		time = performance.now() - startTime;
 
 		timeText.text = `${time}ms`;
 
