@@ -21,6 +21,54 @@
 
 	let textRoot: HTMLDivElement;
 
+	function updateFrame() {
+		videoTime = videoElem.currentTime;
+
+		const currentWord = gentleData.words
+			.filter((word) => {
+				if (word.case !== 'success') return false;
+				return word.start <= videoTime;
+			})
+			.pop();
+
+		if (!currentWord) return;
+
+		const currentWordIndex = gentleData.words.indexOf(currentWord);
+
+		const previousWords = gentleData.words
+			.slice(0, currentWordIndex + 1)
+			.filter((x) => x.case === 'success')
+			.map((x) => x.word);
+
+		let i = 0;
+		while (previousWords.length) {
+			const index = allMapWords
+				.slice(i)
+				.findIndex((x) => filterWord(x.text) === filterWord(previousWords[0]));
+			if (index === -1) {
+				throw new Error('cannot find ' + previousWords[0]);
+			}
+			i = i + index;
+			previousWords.shift();
+		}
+
+		const section = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i]));
+		const sectionWord = mapData.sections[section].words.indexOf(allMapWords[i]);
+		const wordDom = textRoot.children[section].children[sectionWord] as HTMLElement;
+		let offsetLeft = wordDom.offsetLeft;
+
+		const nextWord = gentleData.words.find((x, i) => x.case === 'success' && i > currentWordIndex);
+
+		const nextSection = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i + 1]));
+		const nextSectionWord = mapData.sections[nextSection].words.indexOf(allMapWords[i + 1]);
+		const nextWordDom = textRoot.children[nextSection].children[nextSectionWord] as HTMLElement;
+		const nextOffsetLeft = nextWordDom.offsetLeft;
+
+		const percent = (videoTime - currentWord.start) / (nextWord.start - currentWord.start);
+
+		xOffset = offsetLeft + (nextOffsetLeft - offsetLeft) * percent;
+	}
+
 	function filterWord(word: string) {
 		return word.toLowerCase().replace(/[^a-z]/g, '');
 	}
@@ -36,43 +84,7 @@
 		requestAnimationFrame(function loop() {
 			if (!running) return;
 			requestAnimationFrame(loop);
-			videoTime = videoElem.currentTime;
-
-			const currentWordIndex =
-				gentleData.words.findIndex((word) => {
-					if (word.case !== 'success') return;
-					if (word.start > videoTime) return false;
-					if (word.end < videoTime) return false;
-					return true;
-				}) + 1;
-
-			if (currentWordIndex === 0) return;
-
-			const previousWords = gentleData.words
-				.slice(0, currentWordIndex)
-				.filter((x) => x.case === 'success')
-				.map((x) => x.word);
-			const currentWord = gentleData.words[currentWordIndex]?.word;
-
-			let i = 0;
-
-			while (previousWords.length) {
-				const index = allMapWords
-					.slice(i)
-					.findIndex((x) => filterWord(x.text) === filterWord(previousWords[0]));
-				if (index === -1) {
-					throw new Error('cannot find ' + previousWords[0]);
-				}
-				i = i + index;
-				previousWords.shift();
-			}
-
-			const section = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i]));
-			const sectionWord = mapData.sections[section].words.indexOf(allMapWords[i]);
-
-			const wordDom = textRoot.children[section].children[sectionWord];
-
-			xOffset = wordDom.offsetLeft;
+			updateFrame();
 		});
 	}
 </script>
