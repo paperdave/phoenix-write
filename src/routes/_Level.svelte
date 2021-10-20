@@ -1,4 +1,6 @@
 <script lang="ts">
+import { initInputBullshit, popKeyPresses } from '$lib/input';
+
 	import { parseMap } from '$lib/map-parser';
 	import type { LoadedMap } from '$lib/types';
 	import { onDestroy } from 'svelte';
@@ -18,14 +20,40 @@
 	let videoElem: HTMLVideoElement;
 	let videoTime = 0;
 	let xOffset = 0;
+	let videoHasStarted = false;
 
 	let textRoot: HTMLDivElement;
+
+	initInputBullshit();
+
+	//Apparently there's a smarter thing you can do with promises and shit, but...that's too advanced for me.
+	function startVideo()
+	{
+		videoHasStarted = true;
+		var promise = videoElem.play();
+	}
+
+	//This is just gonna wait until a key's pressed, then start.
+	//Uh, I'll make it wait for 1/10th of a second. I don't want it to overheat or something.
+	function waitForGameToBegin()
+	{
+		if(popKeyPresses().length)
+		{
+			startVideo();
+			start();
+		}
+		else
+		{
+			setTimeout(waitForGameToBegin, 10);
+		}
+	}
 
 	function filterWord(word: string) {
 		return word.toLowerCase().replace(/[^a-z]/g, '');
 	}
 	function start() {
 		let running = true;
+
 		function stop() {
 			running = false;
 			videoElem.removeEventListener('pause', stop);
@@ -75,6 +103,8 @@
 			xOffset = wordDom.offsetLeft;
 		});
 	}
+
+	waitForGameToBegin();
 </script>
 
 <main>
@@ -102,7 +132,7 @@
 		</div>
 	</div>
 	<div class="video">
-		<video src={videoUrl} bind:this={videoElem} on:play={start} controls />
+		<video src={videoUrl} bind:this={videoElem} />
 	</div>
 </main>
 
