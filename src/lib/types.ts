@@ -1,4 +1,4 @@
-import type { Gentle } from './gentle';
+import type { ParsedMap } from './map-parser';
 
 export interface MapMeta {
 	name: string;
@@ -9,8 +9,7 @@ export interface MapMeta {
 export interface LoadedMap {
 	key: string;
 	meta: MapMeta;
-	alignment: Gentle;
-	transcript: string;
+	words: ParsedMap['words'];
 	video: Blob;
 }
 

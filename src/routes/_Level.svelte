@@ -1,19 +1,16 @@
 <script lang="ts">
-	import { parseMap } from '$lib/map-parser';
 	import type { LoadedMap } from '$lib/types';
 	import { onDestroy } from 'svelte';
 
 	export let map: LoadedMap;
 
-	const gentleData = map.alignment;
-	const mapData = parseMap(map.transcript);
 	const videoUrl = URL.createObjectURL(map.video);
 
-	onDestroy(() => {
-		URL.revokeObjectURL(videoUrl);
-	});
+	// onDestroy(() => {
+	// 	URL.revokeObjectURL(videoUrl);
+	// });
 
-	const allMapWords = mapData.sections.flatMap((x) => x.words);
+	// const allMapWords = mapData.sections.flatMap((x) => x.words);
 
 	let videoElem: HTMLVideoElement;
 	let videoTime = 0;
@@ -24,54 +21,28 @@
 	function updateFrame() {
 		videoTime = videoElem.currentTime;
 
-		const currentWord = gentleData.words
-			.filter((word) => {
-				if (word.case !== 'success') return false;
-				return word.start <= videoTime;
-			})
-			.pop();
+		const currentWord = map.words.filter((word) => word.start <= videoTime).pop();
 
-		if (!currentWord) return;
-
-		const currentWordIndex = gentleData.words.indexOf(currentWord);
-
-		const previousWords = gentleData.words
-			.slice(0, currentWordIndex + 1)
-			.filter((x) => x.case === 'success')
-			.map((x) => x.word);
-
-		let i = 0;
-		while (previousWords.length) {
-			const index = allMapWords
-				.slice(i)
-				.findIndex((x) => filterWord(x.text) === filterWord(previousWords[0]));
-			if (index === -1) {
-				throw new Error('cannot find ' + previousWords[0]);
-			}
-			i = i + index;
-			previousWords.shift();
+		if (!currentWord) {
+			xOffset = 0;
+			return;
 		}
 
-		const section = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i]));
-		const sectionWord = mapData.sections[section].words.indexOf(allMapWords[i]);
-		const wordDom = textRoot.children[section].children[sectionWord] as HTMLElement;
+		const currentWordIndex = map.words.indexOf(currentWord);
+		const nextWord = map.words[currentWordIndex + 1];
+		const wordDom = textRoot.querySelector(`[data-word="${currentWordIndex}"]`) as HTMLElement;
+		const nextDom = textRoot.querySelector(`[data-word="${currentWordIndex + 1}"]`) as HTMLElement;
+
 		let offsetLeft = wordDom.offsetLeft;
+		let offsetRight = nextDom?.offsetLeft ?? wordDom.offsetLeft + wordDom.offsetWidth;
 
-		const nextWord = gentleData.words.find((x, i) => x.case === 'success' && i > currentWordIndex);
+		const percent =
+			(videoTime - currentWord.start) /
+			((nextWord?.start || videoElem.duration) - currentWord.start);
 
-		const nextSection = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i + 1]));
-		const nextSectionWord = mapData.sections[nextSection].words.indexOf(allMapWords[i + 1]);
-		const nextWordDom = textRoot.children[nextSection].children[nextSectionWord] as HTMLElement;
-		const nextOffsetLeft = nextWordDom.offsetLeft;
-
-		const percent = (videoTime - currentWord.start) / (nextWord.start - currentWord.start);
-
-		xOffset = offsetLeft + (nextOffsetLeft - offsetLeft) * percent;
+		xOffset = offsetLeft + (offsetRight - offsetLeft) * percent;
 	}
 
-	function filterWord(word: string) {
-		return word.toLowerCase().replace(/[^a-z]/g, '');
-	}
 	function start() {
 		let running = true;
 		function stop() {
@@ -94,22 +65,19 @@
 		<div class="bit" />
 		<div class="bit top" />
 		<div class="text" style="--x:{-xOffset}px" bind:this={textRoot}>
-			{#each mapData.sections as section}
-				<span class="section">
-					{#each section.words as word}
-						<span>
-							{#each word.text as letter, i}
-								{#if word.missingLetters.includes(i)}
-									<span class="underline">{letter}</span>
-								{:else}
-									<span>{letter}</span>
-								{/if}
-							{/each}
-						</span>
-						&nbsp;
+			{#each map.words as word, i}
+				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
+					{#if i !== 0 && !word.isWordJoiner}
+						<span class="space">&nbsp;</span>
+					{/if}
+					{#each word.text as letter, j}
+						{#if word.missingLetters.includes(j)}
+							<span class="underline">{letter}</span>
+						{:else}
+							<span>{letter}</span>
+						{/if}
 					{/each}
 				</span>
-				&nbsp; &nbsp;
 			{/each}
 		</div>
 	</div>
@@ -151,6 +119,9 @@
 		white-space: nowrap;
 		transform: translateX(50vw) translateX(var(--x));
 	}
+	.word {
+		display: inline-flex;
+	}
 	.underline {
 		position: relative;
 		color: rgba(0, 0, 0, 0.25);
@@ -174,5 +145,11 @@
 	}
 	.bit.top {
 		top: 0;
+	}
+	.section-start {
+		margin-left: 50px;
+	}
+	.space {
+		margin-right: 2px;
 	}
 </style>

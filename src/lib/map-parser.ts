@@ -1,41 +1,59 @@
 export interface ParsedMap {
-	sections: MapSection[];
-}
-export interface MapSection {
 	words: MapWord[];
 }
 export interface MapWord {
 	text: string;
 	missingLetters: number[];
+	start: number;
+	isSectionStart: boolean;
+	isWordJoiner: boolean;
 }
 
 export function parseMap(map: string): ParsedMap {
 	return {
-		sections: map.split(/\s*\n\n\s*/).map(parseSection)
+		words: map
+			.replace(/\r/g, '')
+			// remove lines that start with #
+			.split('\n')
+			.filter((line) => !line.trim().startsWith('#'))
+			.join('\n')
+			.trim()
+			.split(/\s*\n\n\s*/)
+			.map(parseSection)
+			.flat()
 	};
 }
 
-function parseSection(section: string): MapSection {
-	return {
-		words: section.split(/\s+/).map(parseWord)
-	};
+function parseSection(section: string): MapWord[] {
+	const words = section.split('\n').map(parseWord);
+	words[0].isSectionStart = true;
+	return words;
 }
 
 function parseWord(word: string): MapWord {
+	let [text, start] = word.split(':');
+	const startTime = parseFloat(start);
 	const missingLetters = [];
+	const isWordJoiner = text.startsWith('-');
+	if (isWordJoiner) {
+		text = text.slice(1);
+	}
+	let actualIndex = 0;
 	let isMissing = false;
-	let offset = 0;
-	for (let i = 0; i < word.length; i++) {
-		const char = word[i];
-		if (char === '[' || char === ']') {
+	for (let i = 0; i < text.length; i++) {
+		if (text[i] === '[' || text[i] === ']') {
 			isMissing = !isMissing;
-			offset++;
+			continue;
 		} else if (isMissing) {
-			missingLetters.push(i - offset);
+			missingLetters.push(actualIndex);
 		}
+		actualIndex++;
 	}
 	return {
-		text: word.replace(/[\[\]]/g, ''),
-		missingLetters
+		text: text.replace(/\[|\]/g, ''),
+		missingLetters,
+		start: startTime,
+		isSectionStart: false,
+		isWordJoiner
 	};
 }

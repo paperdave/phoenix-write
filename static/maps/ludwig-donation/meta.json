@@ -1,4 +1,5 @@
 {
   "name": "ludwig dontation",
-  "type": "map"
+  "type": "map",
+  "disabled": true
 }
