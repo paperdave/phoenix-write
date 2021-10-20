@@ -6,7 +6,7 @@
 
 	const gentleData = gentleLudwig1;
 	const mapData = parseMap(bbmap);
-	const videoUrl = '/test-video.mp4';
+	const videoUrl = '/ludwig-donation/video.mp4';
 
 	const allMapWords = mapData.sections.flatMap((x) => x.words);
 
