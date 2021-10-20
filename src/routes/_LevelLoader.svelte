@@ -10,18 +10,22 @@
 	export let meta: MapMeta;
 
 	const loadingPromise: Promise<LoadedMap> = (async () => {
-		const results = await Promise.all([
-			fetch(`/maps/${key}/alignment.json`).then((x) => x.json()),
-			fetch(`/maps/${key}/map.txt`).then((x) => x.text()),
-			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
-		]);
-		return {
-			key,
-			meta,
-			alignment: results[0],
-			transcript: results[1],
-			video: results[2]
-		};
+		if (meta.type === 'map') {
+			const results = await Promise.all([
+				fetch(`/maps/${key}/alignment.json`).then((x) => x.json()),
+				fetch(`/maps/${key}/map.txt`).then((x) => x.text()),
+				fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
+			]);
+			return {
+				key,
+				meta,
+				alignment: results[0],
+				transcript: results[1],
+				video: results[2]
+			};
+		} else {
+			throw new Error('Unknown map type');
+		}
 	})();
 </script>
 
