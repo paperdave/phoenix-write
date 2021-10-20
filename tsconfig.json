@@ -1,5 +1,9 @@
 {
 	"compilerOptions": {
+		//Next two lines added for JSON import support as per https://stackoverflow.com/a/50674344
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+
 		"moduleResolution": "node",
 		"module": "es2020",
 		"lib": ["es2020", "DOM"],
