@@ -33,20 +33,21 @@
 			requestAnimationFrame(loop);
 			videoTime = videoElem.currentTime;
 
-			const currentWordIndex = gentleData.words.findIndex((word) => {
-				if (word.case !== 'success') return;
-				if (word.start > videoTime) return false;
-				if (word.end < videoTime) return false;
-				return true;
-			});
+			const currentWordIndex =
+				gentleData.words.findIndex((word) => {
+					if (word.case !== 'success') return;
+					if (word.start > videoTime) return false;
+					if (word.end < videoTime) return false;
+					return true;
+				}) + 1;
+
+			if (currentWordIndex === 0) return;
 
 			const previousWords = gentleData.words
 				.slice(0, currentWordIndex)
 				.filter((x) => x.case === 'success')
 				.map((x) => x.word);
 			const currentWord = gentleData.words[currentWordIndex]?.word;
-
-			if (!currentWord) return;
 
 			let i = 0;
 
