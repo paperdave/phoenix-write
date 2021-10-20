@@ -6,7 +6,7 @@ export const get: RequestHandler = async ({}) => {
 
 	const allData = await Promise.all(
 		maps.map(async (mapName) => {
-			const meta = await readJson('static/maps/' + mapName + '/map.json');
+			const meta = await readJson('static/maps/' + mapName + '/meta.json');
 			return [mapName, meta];
 		})
 	);
