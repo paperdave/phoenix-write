@@ -1,0 +1,181 @@
+{
+  "transcript": "It's time for the \r\n\r\nReddit Recap \r\n\r\nRed \r\ndit \r\nRe \r\ncap \r\n \r\nSo go and join \r\nr/LudwigAhahahgrennnnnnnnnnnnn \r\n",
+  "words": [
+    {
+      "alignedWord": "its",
+      "case": "success",
+      "end": 0.506,
+      "phones": [],
+      "start": 0.250,
+      "word": "It's"
+    },
+    {
+      "alignedWord": "time",
+      "case": "success",
+      "end": 0.753,
+      "phones": [],
+      "start": 0.506,
+      "word": "time"
+    },
+    {
+      "alignedWord": "for",
+      "case": "success",
+      "end": 0.942,
+      "phones": [],
+      "start": 0.753,
+      "word": "for"
+    },
+    {
+      "alignedWord": "the",
+      "case": "success",
+      "end": 1.127,
+      "phones": [],
+      "start": 0.942,
+      "word": "the"
+    },
+    {
+      "alignedWord": "red",
+      "case": "success",
+      "end": 1.614,
+      "phones": [],
+      "start": 1.262,
+      "word": "Red"
+    },
+    {
+      "alignedWord": "dit",
+      "case": "success",
+      "end": 2.567,
+      "phones": [],
+      "start": 1.957,
+      "word": "dit"
+    },
+    {
+      "alignedWord": "re",
+      "case": "success",
+      "end": 2.899,
+      "phones": [],
+      "start": 2.567,
+      "word": "Re"
+    },
+    {
+      "alignedWord": "cap",
+      "case": "success",
+      "end": 3.795,
+      "phones": [],
+      "start": 3.231,
+      "word": "cap"
+    },
+    {
+      "alignedWord": "red",
+      "case": "success",
+      "end": 4.270,
+      "phones": [],
+      "start": 3.919,
+      "word": "Red"
+    },
+    {
+      "alignedWord": "dit",
+      "case": "success",
+      "end": 4.610,
+      "phones": [],
+      "start": 4.270,
+      "word": "dit"
+    },
+    {
+      "alignedWord": "re",
+      "case": "success",
+      "end": 4.984,
+      "phones": [],
+      "start": 4.610,
+      "word": "Re"
+    },
+    {
+      "alignedWord": "cap",
+      "case": "success",
+      "end": 5.494,
+      "phones": [],
+      "start": 4.984,
+      "word": "cap"
+    },
+    {
+      "alignedWord": "So",
+      "case": "success",
+      "end": 5.868,
+      "phones": [],
+      "start": 5.494,
+      "word": "so"
+    },
+    {
+      "alignedWord": "go",
+      "case": "success",
+      "end": 6.177,
+      "phones": [],
+      "start": 5.868,
+      "word": "go"
+    },
+    {
+      "alignedWord": "and",
+      "case": "success",
+      "end": 6.308,
+      "phones": [],
+      "start": 6.177,
+      "word": "and"
+    },
+    {
+      "alignedWord": "join",
+      "case": "success",
+      "end": 6.633,
+      "phones": [],
+      "start": 6.308,
+      "word": "join"
+    },
+    {
+      "alignedWord": "r",
+      "case": "success",
+      "end": 6.961,
+      "phones": [],
+      "start": 6.633,
+      "word": "r"
+    },
+    {
+      "alignedWord": "\/",
+      "case": "success",
+      "end": 7.949,
+      "phones": [],
+      "start": 7.285,
+      "word": "\/"
+    },
+    {
+      "alignedWord": "lud",
+      "case": "success",
+      "end": 8.250,
+      "phones": [],
+      "start": 7.949,
+      "word": "Lud"
+    },
+    {
+      "alignedWord": "wig",
+      "case": "success",
+      "end": 9.250,
+      "phones": [],
+      "start": 8.563,
+      "word": "wig"
+    },
+    {
+      "alignedWord": "ah",
+      "case": "success",
+      "end": 10.265,
+      "phones": [],
+      "start": 9.250,
+      "word": "Ahahah"
+    },
+    {
+      "alignedWord": "gren",
+      "case": "success",
+      "end": 12.041,
+      "phones": [],
+      "start": 10.625,
+      "word": "grennnnnnnnnnnnn"
+    }
+   	]
+}

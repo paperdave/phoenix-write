@@ -1,20 +1,13 @@
-import type { ParsedMap } from './map-parser';
+import type { Gentle } from './gentle';
 
 export interface MapMeta {
 	name: string;
-	type: 'map' | 'cutscene';
-	difficulty: number;
 }
 
 export interface LoadedMap {
 	key: string;
 	meta: MapMeta;
-	words: ParsedMap['words'];
-	video: Blob;
-}
-
-export interface LoadedCutscene {
-	key: string;
-	meta: MapMeta;
+	alignment: Gentle;
+	transcript: string;
 	video: Blob;
 }

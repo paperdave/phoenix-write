@@ -3,8 +3,6 @@
 	it displays <Level/> once the level is loaded.
 -->
 <script lang="ts">
-	import { parseMap } from '$lib/map-parser';
-
 	import type { LoadedMap, MapMeta } from '$lib/types';
 	import Level from './_Level.svelte';
 
@@ -12,21 +10,18 @@
 	export let meta: MapMeta;
 
 	const loadingPromise: Promise<LoadedMap> = (async () => {
-		if (meta.type === 'map') {
-			const results = await Promise.all([
-				fetch(`/maps/${key}/map.txt`).then((x) => x.text()),
-				fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
-			]);
-			console.log(parseMap(results[0]));
-			return {
-				key,
-				meta,
-				words: parseMap(results[0]).words,
-				video: results[1]
-			};
-		} else {
-			throw new Error('Unknown map type');
-		}
+		const results = await Promise.all([
+			fetch(`/maps/${key}/alignment.json`).then((x) => x.json()),
+			fetch(`/maps/${key}/map.txt`).then((x) => x.text()),
+			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
+		]);
+		return {
+			key,
+			meta,
+			alignment: results[0],
+			transcript: results[1],
+			video: results[2]
+		};
 	})();
 </script>
 
