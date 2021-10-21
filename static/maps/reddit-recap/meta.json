@@ -1,3 +1,5 @@
 {
-  "name": "reddit recap"
+  "name": "reddit recap",
+  "type": "map",
+  "disabled": false
 }

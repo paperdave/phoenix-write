@@ -1,59 +1,50 @@
 <script lang="ts">
-import { initInputBullshit, popKeyPresses } from '$lib/input';
-
-	import { parseMap } from '$lib/map-parser';
 	import type { LoadedMap } from '$lib/types';
 	import { onDestroy } from 'svelte';
 
 	export let map: LoadedMap;
 
-	const gentleData = map.alignment;
-	const mapData = parseMap(map.transcript);
 	const videoUrl = URL.createObjectURL(map.video);
 
-	onDestroy(() => {
-		URL.revokeObjectURL(videoUrl);
-	});
+	// onDestroy(() => {
+	// 	URL.revokeObjectURL(videoUrl);
+	// });
 
-	const allMapWords = mapData.sections.flatMap((x) => x.words);
+	// const allMapWords = mapData.sections.flatMap((x) => x.words);
 
 	let videoElem: HTMLVideoElement;
 	let videoTime = 0;
 	let xOffset = 0;
-	let videoHasStarted = false;
 
 	let textRoot: HTMLDivElement;
 
-	initInputBullshit();
+	function updateFrame() {
+		videoTime = videoElem.currentTime;
 
-	//Apparently there's a smarter thing you can do with promises and shit, but...that's too advanced for me.
-	function startVideo()
-	{
-		videoHasStarted = true;
-		var promise = videoElem.play();
-	}
+		const currentWord = map.words.filter((word) => word.start <= videoTime).pop();
 
-	//This is just gonna wait until a key's pressed, then start.
-	//Uh, I'll make it wait for 1/10th of a second. I don't want it to overheat or something.
-	function waitForGameToBegin()
-	{
-		if(popKeyPresses().length)
-		{
-			startVideo();
-			start();
+		if (!currentWord) {
+			xOffset = 0;
+			return;
 		}
-		else
-		{
-			setTimeout(waitForGameToBegin, 10);
-		}
+
+		const currentWordIndex = map.words.indexOf(currentWord);
+		const nextWord = map.words[currentWordIndex + 1];
+		const wordDom = textRoot.querySelector(`[data-word="${currentWordIndex}"]`) as HTMLElement;
+		const nextDom = textRoot.querySelector(`[data-word="${currentWordIndex + 1}"]`) as HTMLElement;
+
+		let offsetLeft = wordDom.offsetLeft;
+		let offsetRight = nextDom?.offsetLeft ?? wordDom.offsetLeft + wordDom.offsetWidth;
+
+		const percent =
+			(videoTime - currentWord.start) /
+			((nextWord?.start || videoElem.duration) - currentWord.start);
+
+		xOffset = offsetLeft + (offsetRight - offsetLeft) * percent;
 	}
 
-	function filterWord(word: string) {
-		return word.toLowerCase().replace(/[^a-z]/g, '');
-	}
 	function start() {
 		let running = true;
-
 		function stop() {
 			running = false;
 			videoElem.removeEventListener('pause', stop);
@@ -64,47 +55,9 @@ import { initInputBullshit, popKeyPresses } from '$lib/input';
 		requestAnimationFrame(function loop() {
 			if (!running) return;
 			requestAnimationFrame(loop);
-			videoTime = videoElem.currentTime;
-
-			const currentWordIndex =
-				gentleData.words.findIndex((word) => {
-					if (word.case !== 'success') return;
-					if (word.start > videoTime) return false;
-					if (word.end < videoTime) return false;
-					return true;
-				}) + 1;
-
-			if (currentWordIndex === 0) return;
-
-			const previousWords = gentleData.words
-				.slice(0, currentWordIndex)
-				.filter((x) => x.case === 'success')
-				.map((x) => x.word);
-			const currentWord = gentleData.words[currentWordIndex]?.word;
-
-			let i = 0;
-
-			while (previousWords.length) {
-				const index = allMapWords
-					.slice(i)
-					.findIndex((x) => filterWord(x.text) === filterWord(previousWords[0]));
-				if (index === -1) {
-					throw new Error('cannot find ' + previousWords[0]);
-				}
-				i = i + index;
-				previousWords.shift();
-			}
-
-			const section = mapData.sections.findIndex((x) => x.words.includes(allMapWords[i]));
-			const sectionWord = mapData.sections[section].words.indexOf(allMapWords[i]);
-
-			const wordDom = textRoot.children[section].children[sectionWord];
-
-			xOffset = wordDom.offsetLeft;
+			updateFrame();
 		});
 	}
-
-	waitForGameToBegin();
 </script>
 
 <main>
@@ -112,27 +65,24 @@ import { initInputBullshit, popKeyPresses } from '$lib/input';
 		<div class="bit" />
 		<div class="bit top" />
 		<div class="text" style="--x:{-xOffset}px" bind:this={textRoot}>
-			{#each mapData.sections as section}
-				<span class="section">
-					{#each section.words as word}
-						<span>
-							{#each word.text as letter, i}
-								{#if word.missingLetters.includes(i)}
-									<span class="underline">{letter}</span>
-								{:else}
-									<span>{letter}</span>
-								{/if}
-							{/each}
-						</span>
-						&nbsp;
+			{#each map.words as word, i}
+				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
+					{#if i !== 0 && !word.isWordJoiner}
+						<span class="space">&nbsp;</span>
+					{/if}
+					{#each word.text as letter, j}
+						{#if word.missingLetters.includes(j)}
+							<span class="underline">{letter}</span>
+						{:else}
+							<span>{letter}</span>
+						{/if}
 					{/each}
 				</span>
-				&nbsp; &nbsp;
 			{/each}
 		</div>
 	</div>
 	<div class="video">
-		<video src={videoUrl} bind:this={videoElem} />
+		<video src={videoUrl} bind:this={videoElem} on:play={start} controls />
 	</div>
 </main>
 
@@ -169,6 +119,9 @@ import { initInputBullshit, popKeyPresses } from '$lib/input';
 		white-space: nowrap;
 		transform: translateX(50vw) translateX(var(--x));
 	}
+	.word {
+		display: inline-flex;
+	}
 	.underline {
 		position: relative;
 		color: rgba(0, 0, 0, 0.25);
@@ -192,5 +145,11 @@ import { initInputBullshit, popKeyPresses } from '$lib/input';
 	}
 	.bit.top {
 		top: 0;
+	}
+	.section-start {
+		margin-left: 50px;
+	}
+	.space {
+		margin-right: 2px;
 	}
 </style>
