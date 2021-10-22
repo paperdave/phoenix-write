@@ -2,7 +2,7 @@ import { browser } from '$app/env';
 import EventEmitter from 'eventemitter3';
 import type { LoadedLevel } from './types';
 
-const PRESS_MARGIN_START = 0.2;
+const PRESS_MARGIN_START = 0.3;
 const PRESS_MARGIN_END = 0.65;
 const LETTER_EXTRA_TIME = 0.1;
 

@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@sveltejs/kit": "next",
 		"@types/fs-extra": "^9.0.13",
+		"@types/howler": "^2.2.4",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
 		"eslint": "^7.32.0",

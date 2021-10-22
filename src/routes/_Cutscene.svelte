@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { playAudio } from '$lib/audio';
+
 	import { getMapList } from '$lib/map-registry';
 
 	import { currentLevelId } from '$lib/stores';
@@ -33,7 +35,7 @@
 	$: {
 		if (videoElem && currentSection) {
 			videoElem.pause();
-			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120;
+			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120 + 1 / cutscene.fps;
 			videoElem.play();
 		}
 		if (!currentSection) {
@@ -47,6 +49,7 @@
 	}
 
 	$: done = (dependOn(videoElem, currentSectionI), false);
+	$: hasPressedSpace = (dependOn(videoElem, currentSectionI), false);
 
 	function play() {
 		let running = true;
@@ -81,9 +84,18 @@
 	});
 
 	function onKeyDown(event: KeyboardEvent) {
-		if (event.key === ' ') {
+		if (event.key === ' ' && !hasPressedSpace) {
 			if (done) {
-				currentSectionI++;
+				hasPressedSpace = true;
+				playAudio(currentSection.overrideSFX ?? 'dialogue_advance_default');
+
+				if (!currentSection.flagNextSectionDoesntClear) {
+					unassociate(videoElem).currentTime = videoElem.currentTime + 1 / cutscene.fps;
+				}
+
+				setTimeout(() => {
+					currentSectionI++;
+				}, 170);
 			} else if (!currentSection.unskippable) {
 				videoElem.pause();
 				unassociate(videoElem).currentTime = pauseTime;
@@ -96,7 +108,7 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <video src={video} bind:this={videoElem} on:play={play} />
-{#if done}
+{#if done && !hasPressedSpace && !currentSection.autoplay}
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
 		{currentSection.continueText ?? '(Press space to continue)'}
 	</div>

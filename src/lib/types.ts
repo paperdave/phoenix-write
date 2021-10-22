@@ -23,7 +23,9 @@ export interface CutsceneSubsection {
 	autoplay?: boolean;
 	keys?: CutsceneKey[];
 	lenient?: boolean;
-	continueText: string;
+	continueText?: string;
+	overrideSFX?: string;
+	flagNextSectionDoesntClear?: boolean;
 }
 
 export interface CutsceneKey {
