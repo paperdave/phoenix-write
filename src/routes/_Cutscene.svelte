@@ -22,7 +22,7 @@
 		? convertTT(cutscene.subsection[currentSectionI].end)
 		: currentSectionI === cutscene.subsection.length - 1
 		? videoElem.duration
-		: convertTT(cutscene.subsection[currentSectionI + 1].begin) - 1 / 120;
+		: convertTT(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120;
 
 	$: {
 		if (videoElem) {
@@ -48,10 +48,11 @@
 			if (!running) return;
 			requestAnimationFrame(loop);
 
-			if (videoElem.currentTime >= pauseTime) {
+			if (videoElem.currentTime >= pauseTime - 1 / cutscene.fps) {
 				running = false;
 				done = true;
 				videoElem.pause();
+				unassociate(videoElem).currentTime = pauseTime;
 			}
 		});
 	}
@@ -67,8 +68,8 @@
 			if (done) {
 				currentSectionI++;
 			} else {
-				unassociate(videoElem).currentTime = pauseTime;
 				videoElem.pause();
+				unassociate(videoElem).currentTime = pauseTime;
 				done = true;
 			}
 		}
