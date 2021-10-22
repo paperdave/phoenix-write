@@ -8,8 +8,12 @@
 			"begin": [0, 0],
 			"overridepause": true,
 			"unskippable": true,
-			"goal": ["b"],
-			"goaltime": [4, 4]
+			"keys": [
+				{
+					"key": "b",
+					"time": [4, 4]
+				}
+			]
 		},
 
 		{

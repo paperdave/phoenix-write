@@ -2,9 +2,8 @@
 	"fps": 24,
 	"leadsto": "reddit-recap",
 	"subsection": [
-
 		{
-			"begin": [1, 5]
+			"begin": [0, 5]
 		},
 
 		{

@@ -16,6 +16,7 @@
 
 <script lang="ts">
 	import LevelLoader from './_LevelLoader.svelte';
+	import Container from './_Container.svelte';
 
 	let currentLevel: string | null = null;
 
@@ -28,14 +29,16 @@
 	}
 </script>
 
-{#if currentLevel === null}
-	<main>
-		<h1>video typer prototype</h1>
+<Container>
+	{#if currentLevel === null}
+		<main>
+			<h1>video typer prototype</h1>
 
-		{#each order as key}
-			<li><a href="#" on:click={(ev) => setLoadMap(ev, key)}>{maps[key].name}</a></li>
-		{/each}
-	</main>
-{:else}
-	<LevelLoader key={currentLevel} meta={maps[currentLevel]} />
-{/if}
+			{#each order as key}
+				<li><a href="#" on:click={(ev) => setLoadMap(ev, key)}>{maps[key].name}</a></li>
+			{/each}
+		</main>
+	{:else}
+		<LevelLoader key={currentLevel} meta={maps[currentLevel]} />
+	{/if}
+</Container>
