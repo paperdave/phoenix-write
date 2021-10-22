@@ -32,7 +32,7 @@
 <Container>
 	{#if currentLevel === null}
 		<main>
-			<h1>video typer prototype</h1>
+			<h1>Pheonix, Write! beta</h1>
 
 			{#each order as key}
 				<li><a href="#" on:click={(ev) => setLoadMap(ev, key)}>{maps[key].name}</a></li>

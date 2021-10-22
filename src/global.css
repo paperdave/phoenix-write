@@ -10,3 +10,13 @@ body {
 	font-family: Carlito;
 	font-weight: bold;
 }
+
+a {
+	color: red;
+}
+a:visited {
+	color: red;
+}
+a:active {
+	color: yellow;
+}
