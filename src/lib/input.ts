@@ -2,10 +2,9 @@ import { browser } from '$app/env';
 import EventEmitter from 'eventemitter3';
 import type { LoadedMap } from './types';
 
-const PRESS_MARGIN = 0.75;
-const PRESS_MARGIN_START = PRESS_MARGIN;
-const PRESS_MARGIN_END = PRESS_MARGIN;
-const LETTER_EXTRA_TIME = 0.2;
+const PRESS_MARGIN_START = 0.2;
+const PRESS_MARGIN_END = 0.65;
+const LETTER_EXTRA_TIME = 0.1;
 
 export interface KeyPress {
 	key: string;
@@ -67,7 +66,7 @@ export class LevelLogic extends EventEmitter {
 			word.missingLetters.forEach((i, j) => {
 				this.mapKeyPresses.push({
 					key: word.text[i],
-					start: word.start - PRESS_MARGIN_END,
+					start: word.start - PRESS_MARGIN_START,
 					end: word.start + word.text.length * LETTER_EXTRA_TIME + PRESS_MARGIN_END,
 					wordIndex: w,
 					letterIndex: i
@@ -91,6 +90,15 @@ export class LevelLogic extends EventEmitter {
 
 	tick() {
 		const keypresses = this.popKeyPresses();
+		if (keypresses.length === 0) {
+			const currentTime = (performance.now() - this.startTime) / 1000;
+			const mapKey = this.mapKeyPresses[this.currentWord];
+			if (currentTime > mapKey.end) {
+				this.emit('lose', {
+					tooLate: true
+				});
+			}
+		}
 		while (keypresses.length > 0) {
 			const key = keypresses.shift();
 			const mapKey = this.mapKeyPresses[this.currentWord];

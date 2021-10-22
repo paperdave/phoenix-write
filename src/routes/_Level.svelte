@@ -16,8 +16,10 @@
 		keyResults[wordIndex][letterIndex] = true;
 	});
 
-	logic.on('lose', ({ wordIndex, letterIndex, mistype }) => {
-		keyResults[wordIndex][letterIndex] = mistype;
+	logic.on('lose', ({ tooLate, wordIndex, letterIndex, mistype }) => {
+		if (!tooLate) {
+			keyResults[wordIndex][letterIndex] = mistype;
+		}
 		videoElem.pause();
 	});
 
