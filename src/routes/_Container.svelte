@@ -17,7 +17,7 @@
 
 <svelte:window on:resize={handleResize} />
 
-<div class="outer">
+<div class="outer" on:contextmenu={(e) => e.preventDefault()}>
 	<div
 		class="inner"
 		style="width:{containerWidth}px;height:{containerHeight}px;--unit:{containerWidth / 100}px"
@@ -39,5 +39,9 @@
 	}
 	.inner {
 		position: relative;
+		cursor: url('/cursor.png'), auto;
+	}
+	.inner :global(a) {
+		cursor: url('/cursor-red.png'), auto;
 	}
 </style>

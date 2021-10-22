@@ -3,6 +3,7 @@ import type { ParsedMap } from './map-parser';
 export type TimmyTimestamp = [seconds: number, frames: number];
 
 export interface MapMeta {
+	key: string;
 	name: string;
 	type: 'map' | 'cutscene';
 	difficulty: number;
@@ -19,10 +20,10 @@ export interface CutsceneSubsection {
 	begin: TimmyTimestamp;
 	end: TimmyTimestamp;
 	unskippable?: boolean;
-	overridepause?: boolean;
-	skipTo?: TimmyTimestamp;
+	autoplay?: boolean;
 	keys?: CutsceneKey[];
 	lenient?: boolean;
+	continueText: string;
 }
 
 export interface CutsceneKey {
@@ -31,7 +32,7 @@ export interface CutsceneKey {
 	lenient?: boolean;
 }
 
-export interface LoadedMap {
+export interface LoadedLevel {
 	type: 'map';
 	key: string;
 	meta: MapMeta;
@@ -50,4 +51,4 @@ export interface LoadedCutscene {
 	video: Blob;
 }
 
-export type LoadedLevel = LoadedMap | LoadedCutscene;
+export type LoadedMap = LoadedLevel | LoadedCutscene;

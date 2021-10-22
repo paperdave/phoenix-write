@@ -1,4 +1,8 @@
 <script lang="ts">
+	import { getMapList } from '$lib/map-registry';
+
+	import { currentLevelId } from '$lib/stores';
+
 	import type { LoadedCutscene, TimmyTimestamp } from '$lib/types';
 	import { onDestroy } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
@@ -18,17 +22,27 @@
 
 	let currentSectionI = 0;
 	$: currentSection = cutscene.subsection[currentSectionI];
-	$: pauseTime = cutscene.subsection[currentSectionI].end
-		? convertTT(cutscene.subsection[currentSectionI].end)
-		: currentSectionI === cutscene.subsection.length - 1
-		? videoElem.duration
-		: convertTT(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120;
+	$: pauseTime = cutscene.subsection[currentSectionI]
+		? cutscene.subsection[currentSectionI].end
+			? convertTT(cutscene.subsection[currentSectionI].end)
+			: currentSectionI === cutscene.subsection.length - 1
+			? videoElem.duration
+			: convertTT(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120
+		: 0;
 
 	$: {
-		if (videoElem) {
+		if (videoElem && currentSection) {
 			videoElem.pause();
 			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120;
 			videoElem.play();
+		}
+		if (!currentSection) {
+			getMapList().then((list) => {
+				const i = list.findIndex(({ key }) => key === cutscene.key);
+				const next = list[i + 1];
+				console.log(next);
+				$currentLevelId = next.key;
+			});
 		}
 	}
 
@@ -53,6 +67,9 @@
 				done = true;
 				videoElem.pause();
 				unassociate(videoElem).currentTime = pauseTime;
+				if (currentSection.autoplay) {
+					currentSectionI++;
+				}
 			}
 		});
 	}
@@ -67,7 +84,7 @@
 		if (event.key === ' ') {
 			if (done) {
 				currentSectionI++;
-			} else {
+			} else if (!currentSection.unskippable) {
 				videoElem.pause();
 				unassociate(videoElem).currentTime = pauseTime;
 				done = true;
@@ -81,7 +98,7 @@
 <video src={video} bind:this={videoElem} on:play={play} />
 {#if done}
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
-		(Press space to continue)
+		{currentSection.continueText ?? '(Press space to continue)'}
 	</div>
 {/if}
 
@@ -92,6 +109,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		cursor: none;
 	}
 	.bottom {
 		position: absolute;
@@ -102,5 +120,6 @@
 		font-size: calc(var(--unit) * 2);
 		color: white;
 		opacity: 0.8;
+		cursor: none;
 	}
 </style>

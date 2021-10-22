@@ -3,7 +3,8 @@
 	"leadsto": "reddit-recap",
 	"subsection": [
 		{
-			"begin": [0, 5]
+			"begin": [0, 5],
+			"unskippable": true
 		},
 
 		{
@@ -37,7 +38,8 @@
 		},
 
 		{
-			"begin": [10, 20]
+			"begin": [10, 20],
+			"continueText": "(Press space to accept this job offer)"
 		},
 
 		{
@@ -50,11 +52,12 @@
 
 		{
 			"stopMusic": true,
+			"autoplay": true,
 			"begin": [17, 21]
 		},
 		{
 			"begin": [19, 2],
-			"unskippable": true
+			"autoplay": true
 		}
 
 	]

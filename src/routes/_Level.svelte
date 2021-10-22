@@ -1,0 +1,197 @@
+<script lang="ts">
+	import { LevelLogic } from '$lib/input';
+
+	import type { LoadedLevel } from '$lib/types';
+	import { onDestroy } from 'svelte';
+
+	export let map: LoadedLevel;
+
+	let running = false;
+
+	function genKeyResults() {
+		return map.words.map((x) => x.missingLetters.map(() => null));
+	}
+	let keyResults: (null | true | string)[][] = genKeyResults();
+
+	const logic = new LevelLogic(map);
+
+	const videoUrl = URL.createObjectURL(map.video);
+	onDestroy(() => {
+		URL.revokeObjectURL(videoUrl);
+	});
+
+	let videoElem: HTMLVideoElement;
+	let textRoot: HTMLDivElement;
+
+	logic.on('start', () => {
+		videoElem.currentTime = map.words[0].start;
+		videoElem.play();
+		keyResults = genKeyResults();
+		running = true;
+	});
+
+	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
+		keyResults[wordIndex][letterIndex] = true;
+	});
+
+	logic.on('lose', ({ tooLate, wordIndex, letterIndex, mistype }) => {
+		if (!tooLate) {
+			keyResults[wordIndex][letterIndex] = mistype;
+		}
+		videoElem.pause();
+		running = false;
+	});
+
+	function updateFrame() {
+		let videoTime = videoElem.currentTime;
+
+		const currentWord = map.words.filter((word) => word.start <= videoTime).pop();
+
+		if (!currentWord) {
+			return;
+		}
+
+		const currentWordIndex = map.words.indexOf(currentWord);
+		const nextWord = map.words[currentWordIndex + 1];
+		const wordDom = textRoot.querySelector(`[data-word="${currentWordIndex}"]`) as HTMLElement;
+		const nextDom = textRoot.querySelector(`[data-word="${currentWordIndex + 1}"]`) as HTMLElement;
+
+		let offsetLeft = wordDom.offsetLeft;
+		let offsetRight = nextDom?.offsetLeft ?? wordDom.offsetLeft + wordDom.offsetWidth;
+
+		const percent =
+			(videoTime - currentWord.start) /
+			((nextWord?.start || videoElem.duration) - currentWord.start);
+
+		textRoot.style.setProperty(
+			'transform',
+			`translateX(calc(var(--unit) * 50)) translateX(-${
+				offsetLeft + (offsetRight - offsetLeft) * percent
+			}px)`
+		);
+	}
+
+	function start() {
+		let running = true;
+		function stop() {
+			running = false;
+			videoElem.removeEventListener('pause', stop);
+		}
+
+		videoElem.addEventListener('pause', stop);
+
+		requestAnimationFrame(function loop(t) {
+			if (!running) return;
+			requestAnimationFrame(loop);
+			updateFrame();
+			let videoTime = videoElem.currentTime;
+			logic.update(videoTime);
+			logic.tick();
+		});
+	}
+</script>
+
+<main class:running>
+	<video src={videoUrl} bind:this={videoElem} on:play={start} />
+
+	<div class="text-container">
+		<div class="text" bind:this={textRoot}>
+			{#each map.words as word, i}
+				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
+					{#if i !== 0 && !word.isWordJoiner}
+						<span class="space">&nbsp;</span>
+					{/if}
+					{#each word.text as letter, j}
+						{#if word.missingLetters.includes(j)}
+							<span
+								class="underline"
+								class:success={keyResults[i][j] === true}
+								class:failed={typeof keyResults[i][j] === 'string'}
+								>{typeof keyResults[i][j] === 'string' ? keyResults[i][j] : letter}</span
+							>
+						{:else}
+							<span>{letter}</span>
+						{/if}
+					{/each}
+				</span>
+			{/each}
+		</div>
+	</div>
+</main>
+
+<style>
+	.running {
+		cursor: none;
+	}
+	.running * {
+		cursor: none !important;
+	}
+	video {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.text-container {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+	.text {
+		position: absolute;
+		transform: translateX(calc(var(--unit) * 50));
+		bottom: calc(var(--unit) * 5);
+		font-size: calc(var(--unit) * 4);
+		white-space: nowrap;
+	}
+	.word {
+		display: inline-flex;
+		background-color: rgba(0, 0, 0, 0.6);
+		backdrop-filter: blur(4px);
+	}
+	.underline {
+		position: relative;
+		color: rgba(255, 255, 255, 0.25);
+	}
+	.underline::after {
+		content: '';
+		position: absolute;
+		bottom: -5px;
+		left: 0;
+		width: 100%;
+		height: 4px;
+		background-color: red;
+	}
+	.section-start {
+		margin-left: 50px;
+	}
+	.space {
+		margin-right: 2px;
+	}
+	.success {
+		color: #fff;
+		animation: pop 0.2s ease-out;
+	}
+	.success::after {
+		background-color: #0f0;
+	}
+	@keyframes pop {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+	.failed {
+		color: #f00;
+		animation: pop 0.2s ease-out;
+	}
+</style>

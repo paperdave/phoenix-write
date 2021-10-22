@@ -15,10 +15,7 @@ export const get: RequestHandler = async ({}) => {
 
 	return {
 		body: {
-			maps: Object.fromEntries(allData),
-			order: maps
-				.filter((mapName) => allData.find(([key, meta]) => key === mapName && !meta.disabled))
-				.map((mapName) => mapName)
+			maps: Object.fromEntries(allData)
 		}
 	};
 };

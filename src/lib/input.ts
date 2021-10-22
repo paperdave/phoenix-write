@@ -1,6 +1,6 @@
 import { browser } from '$app/env';
 import EventEmitter from 'eventemitter3';
-import type { LoadedMap } from './types';
+import type { LoadedLevel } from './types';
 
 const PRESS_MARGIN_START = 0.2;
 const PRESS_MARGIN_END = 0.65;
@@ -60,7 +60,7 @@ export class LevelLogic extends EventEmitter {
 		}
 	};
 
-	constructor(readonly map: LoadedMap) {
+	constructor(readonly map: LoadedLevel) {
 		super();
 		map.words.forEach((word, w) => {
 			word.missingLetters.forEach((i, j) => {
@@ -109,7 +109,6 @@ export class LevelLogic extends EventEmitter {
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
 				const keyTime = (key.time - this.startTime) / 1000;
 				if (keyTime > mapKey.start && keyTime < mapKey.end) {
-					console.log('good', keyTime);
 					this.currentWord++;
 					this.emit('key', {
 						key: key.key,
