@@ -6,18 +6,18 @@
 
 	export let map: LoadedMap;
 
-	let keySuccesses: (null | 'success' | 'fail')[][] = map.words.map((x) =>
+	let keyResults: (null | true | string)[][] = map.words.map((x) =>
 		x.missingLetters.map(() => null)
 	);
 
 	const logic = new LevelLogic(map);
 
 	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-		keySuccesses[wordIndex][letterIndex] = 'success';
+		keyResults[wordIndex][letterIndex] = true;
 	});
 
-	logic.on('lose', ({ wordIndex, letterIndex }) => {
-		keySuccesses[wordIndex][letterIndex] = 'fail';
+	logic.on('lose', ({ wordIndex, letterIndex, mistype }) => {
+		keyResults[wordIndex][letterIndex] = mistype;
 		videoElem.pause();
 	});
 
@@ -28,9 +28,6 @@
 	});
 
 	let videoElem: HTMLVideoElement;
-	let videoTime = 0;
-	let xOffset = 0;
-
 	let textRoot: HTMLDivElement;
 
 	logic.on('start', () => {
@@ -39,12 +36,11 @@
 	});
 
 	function updateFrame() {
-		videoTime = videoElem.currentTime;
+		let videoTime = videoElem.currentTime;
 
 		const currentWord = map.words.filter((word) => word.start <= videoTime).pop();
 
 		if (!currentWord) {
-			xOffset = 0;
 			return;
 		}
 
@@ -60,7 +56,10 @@
 			(videoTime - currentWord.start) /
 			((nextWord?.start || videoElem.duration) - currentWord.start);
 
-		xOffset = offsetLeft + (offsetRight - offsetLeft) * percent;
+		textRoot.style.setProperty(
+			'transform',
+			`translateX(50vw) translateX(-${offsetLeft + (offsetRight - offsetLeft) * percent}px)`
+		);
 	}
 
 	function start() {
@@ -72,10 +71,11 @@
 
 		videoElem.addEventListener('pause', stop);
 
-		requestAnimationFrame(function loop() {
+		requestAnimationFrame(function loop(t) {
 			if (!running) return;
 			requestAnimationFrame(loop);
 			updateFrame();
+			let videoTime = videoElem.currentTime;
 			logic.update(videoTime);
 			logic.tick();
 		});
@@ -86,7 +86,7 @@
 	<div class="top">
 		<div class="bit" />
 		<div class="bit top" />
-		<div class="text" style="--x:{-xOffset}px" bind:this={textRoot}>
+		<div class="text" bind:this={textRoot}>
 			{#each map.words as word, i}
 				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
 					{#if i !== 0 && !word.isWordJoiner}
@@ -96,8 +96,9 @@
 						{#if word.missingLetters.includes(j)}
 							<span
 								class="underline"
-								class:success={keySuccesses[i][j] === 'success'}
-								class:failed={keySuccesses[i][j] === 'fail'}>{letter}</span
+								class:success={keyResults[i][j] === true}
+								class:failed={typeof keyResults[i][j] === 'string'}
+								>{typeof keyResults[i][j] === 'string' ? keyResults[i][j] : letter}</span
 							>
 						{:else}
 							<span>{letter}</span>
@@ -143,7 +144,8 @@
 	}
 	.text {
 		white-space: nowrap;
-		transform: translateX(50vw) translateX(var(--x));
+		transform: translateX(50vw);
+		transition: transform 0.0333s linear;
 	}
 	.word {
 		display: inline-flex;

@@ -107,15 +107,14 @@ export class LevelLogic extends EventEmitter {
 					});
 				} else {
 					this.emit('lose', {
-						key: key.key,
+						mistype: key.key,
 						wordIndex: mapKey.wordIndex,
-						letterIndex: mapKey.letterIndex,
-						offset: keyTime - mapKey.start
+						letterIndex: mapKey.letterIndex
 					});
 				}
 			} else {
 				this.emit('lose', {
-					key: key.key,
+					mistype: key.key,
 					wordIndex: mapKey.wordIndex,
 					letterIndex: mapKey.letterIndex
 				});
