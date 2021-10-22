@@ -64,8 +64,6 @@
 	}
 
 	function start() {
-		logic.update(videoTime);
-
 		let running = true;
 		function stop() {
 			running = false;
@@ -78,6 +76,7 @@
 			if (!running) return;
 			requestAnimationFrame(loop);
 			updateFrame();
+			logic.update(videoTime);
 			logic.tick();
 		});
 	}

@@ -36,7 +36,11 @@ export class LevelLogic extends EventEmitter {
 		return keypresses;
 	}
 
-	handleKeyPress = (event) => {
+	handleKeyPress = (event: KeyboardEvent) => {
+		if (event.ctrlKey || event.altKey || event.metaKey) {
+			return;
+		}
+		event.preventDefault();
 		if (!this.gameStarted) {
 			if (event.key.toLowerCase() === this.map.words[0].text[0].toLowerCase()) {
 				this.gameStarted = true;
@@ -63,8 +67,8 @@ export class LevelLogic extends EventEmitter {
 			word.missingLetters.forEach((i, j) => {
 				this.mapKeyPresses.push({
 					key: word.text[i],
-					start: word.start,
-					end: word.start + word.text.length * LETTER_EXTRA_TIME,
+					start: word.start - PRESS_MARGIN_END,
+					end: word.start + word.text.length * LETTER_EXTRA_TIME + PRESS_MARGIN_END,
 					wordIndex: w,
 					letterIndex: i
 				});
@@ -92,10 +96,8 @@ export class LevelLogic extends EventEmitter {
 			const mapKey = this.mapKeyPresses[this.currentWord];
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
 				const keyTime = (key.time - this.startTime) / 1000;
-				if (
-					keyTime > mapKey.start - PRESS_MARGIN_START &&
-					keyTime < mapKey.end + PRESS_MARGIN_END
-				) {
+				if (keyTime > mapKey.start && keyTime < mapKey.end) {
+					console.log('good', keyTime);
 					this.currentWord++;
 					this.emit('key', {
 						key: key.key,
