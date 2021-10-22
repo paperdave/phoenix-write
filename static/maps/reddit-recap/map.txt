@@ -25,4 +25,4 @@ join: 6.308
 -[L]ud: 7.949
 -[w]ig: 8.563
 [Ahahah]: 9.25
-[grennnnnnnnnnnnn]: 10.625
+[grennnnnnnnnnnnn]: 10.3
