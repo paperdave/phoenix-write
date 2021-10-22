@@ -6,25 +6,14 @@
 
 	export let map: LoadedMap;
 
-	let keyResults: (null | true | string)[][] = map.words.map((x) =>
-		x.missingLetters.map(() => null)
-	);
+	function genKeyResults() {
+		return map.words.map((x) => x.missingLetters.map(() => null));
+	}
+	let keyResults: (null | true | string)[][] = genKeyResults();
 
 	const logic = new LevelLogic(map);
 
-	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-		keyResults[wordIndex][letterIndex] = true;
-	});
-
-	logic.on('lose', ({ tooLate, wordIndex, letterIndex, mistype }) => {
-		if (!tooLate) {
-			keyResults[wordIndex][letterIndex] = mistype;
-		}
-		videoElem.pause();
-	});
-
 	const videoUrl = URL.createObjectURL(map.video);
-
 	onDestroy(() => {
 		URL.revokeObjectURL(videoUrl);
 	});
@@ -35,6 +24,18 @@
 	logic.on('start', () => {
 		videoElem.currentTime = map.words[0].start;
 		videoElem.play();
+		keyResults = genKeyResults();
+	});
+
+	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
+		keyResults[wordIndex][letterIndex] = true;
+	});
+
+	logic.on('lose', ({ tooLate, wordIndex, letterIndex, mistype }) => {
+		if (!tooLate) {
+			keyResults[wordIndex][letterIndex] = mistype;
+		}
+		videoElem.pause();
 	});
 
 	function updateFrame() {

@@ -76,6 +76,10 @@ export class LevelLogic extends EventEmitter {
 		if (browser) {
 			document.addEventListener('keydown', this.handleKeyPress);
 		}
+
+		this.on('lose', () => {
+			this.gameStarted = false;
+		});
 	}
 
 	destroy() {
