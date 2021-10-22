@@ -131,6 +131,20 @@
 		align-items: center;
 		position: relative;
 		overflow: hidden;
+		mask-image: linear-gradient(
+			90deg,
+			rgba(0, 0, 0, 0) 10%,
+			rgba(0, 0, 0, 1) 35%,
+			rgba(0, 0, 0, 1) 65%,
+			rgba(0, 0, 0, 0) 90%
+		);
+		-webkit-mask-image: linear-gradient(
+			90deg,
+			rgba(0, 0, 0, 0) 10%,
+			rgba(0, 0, 0, 1) 35%,
+			rgba(0, 0, 0, 1) 65%,
+			rgba(0, 0, 0, 0) 90%
+		);
 	}
 	.video {
 		flex: 1;
