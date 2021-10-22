@@ -27,7 +27,7 @@
 	$: {
 		if (videoElem) {
 			videoElem.pause();
-			videoElem.currentTime = convertTT(currentSection.begin);
+			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120;
 			videoElem.play();
 		}
 	}
