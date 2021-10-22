@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"eventemitter3": "^4.0.7",
 		"fs-extra": "^10.0.0"
 	}
 }

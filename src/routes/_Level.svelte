@@ -1,22 +1,42 @@
 <script lang="ts">
+	import { LevelLogic } from '$lib/input';
+
 	import type { LoadedMap } from '$lib/types';
 	import { onDestroy } from 'svelte';
 
 	export let map: LoadedMap;
 
+	let keySuccesses: (null | 'success' | 'fail')[][] = map.words.map((x) =>
+		x.missingLetters.map(() => null)
+	);
+
+	const logic = new LevelLogic(map);
+
+	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
+		keySuccesses[wordIndex][letterIndex] = 'success';
+	});
+
+	logic.on('lose', ({ wordIndex, letterIndex }) => {
+		keySuccesses[wordIndex][letterIndex] = 'fail';
+		videoElem.pause();
+	});
+
 	const videoUrl = URL.createObjectURL(map.video);
 
-	// onDestroy(() => {
-	// 	URL.revokeObjectURL(videoUrl);
-	// });
-
-	// const allMapWords = mapData.sections.flatMap((x) => x.words);
+	onDestroy(() => {
+		URL.revokeObjectURL(videoUrl);
+	});
 
 	let videoElem: HTMLVideoElement;
 	let videoTime = 0;
 	let xOffset = 0;
 
 	let textRoot: HTMLDivElement;
+
+	logic.on('start', () => {
+		videoElem.currentTime = map.words[0].start;
+		videoElem.play();
+	});
 
 	function updateFrame() {
 		videoTime = videoElem.currentTime;
@@ -44,6 +64,8 @@
 	}
 
 	function start() {
+		logic.update(videoTime);
+
 		let running = true;
 		function stop() {
 			running = false;
@@ -56,6 +78,7 @@
 			if (!running) return;
 			requestAnimationFrame(loop);
 			updateFrame();
+			logic.tick();
 		});
 	}
 </script>
@@ -72,7 +95,11 @@
 					{/if}
 					{#each word.text as letter, j}
 						{#if word.missingLetters.includes(j)}
-							<span class="underline">{letter}</span>
+							<span
+								class="underline"
+								class:success={keySuccesses[i][j] === 'success'}
+								class:failed={keySuccesses[i][j] === 'fail'}>{letter}</span
+							>
 						{:else}
 							<span>{letter}</span>
 						{/if}
@@ -82,7 +109,7 @@
 		</div>
 	</div>
 	<div class="video">
-		<video src={videoUrl} bind:this={videoElem} on:play={start} controls />
+		<video src={videoUrl} bind:this={videoElem} on:play={start} />
 	</div>
 </main>
 
@@ -151,5 +178,27 @@
 	}
 	.space {
 		margin-right: 2px;
+	}
+	.success {
+		color: #000;
+		animation: pop 0.2s ease-out;
+	}
+	.success::after {
+		background-color: #0f0;
+	}
+	@keyframes pop {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+		100% {
+			transform: translateY(0);
+		}
+	}
+	.failed {
+		color: #f00;
+		animation: pop 0.2s ease-out;
 	}
 </style>
