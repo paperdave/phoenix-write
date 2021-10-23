@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { playAudio } from '$lib/audio';
 
-	import { getMapList } from '$lib/map-registry';
-
-	import { currentLevelId } from '$lib/stores';
+	import { setNextMap } from '$lib/stores';
 
 	import type { LoadedCutscene, TimmyTimestamp } from '$lib/types';
 	import { onDestroy } from 'svelte';
@@ -39,12 +37,7 @@
 			videoElem.play();
 		}
 		if (!currentSection) {
-			getMapList().then((list) => {
-				const i = list.findIndex(({ key }) => key === cutscene.key);
-				const next = list[i + 1];
-				console.log(next);
-				$currentLevelId = next.key;
-			});
+			setNextMap(cutscene);
 		}
 	}
 
@@ -110,7 +103,7 @@
 <video src={video} bind:this={videoElem} on:play={play} />
 {#if done && !hasPressedSpace && !currentSection.autoplay}
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
-		{currentSection.continueText ?? '(Press space to continue)'}
+		{@html currentSection.continueText ?? '(Press space to continue)'}
 	</div>
 {/if}
 

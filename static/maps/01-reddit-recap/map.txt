@@ -1,28 +1,28 @@
 # hello future generations who see this
 
-[I]t's: 0.25
-time: 0.506
-for: 0.753
-the: 0.942
+[I]t's: 2.65
+time: 2.9059
+for: 3.153
+the: 3.3419999
 
-[R]ed: 1.262
--[d]it: 1.957
-[R]e: 2.567
--[c]ap: 3.231
+[R]ed: 3.662
+-[d]it: 4.357
+[R]e: 4.967
+-[c]ap: 5.631
 
-[R]ed: 3.919
--[d]it: 4.27
-[R]e: 4.61
--[c]ap: 4.984
+[R]ed: 6.319
+-[d]it: 6.67
+[R]e: 7.01
+-[c]ap: 7.384
 
-So: 5.494
-come: 5.868
-and: 6.177
-join: 6.308
+So: 7.894
+come: 8.268
+and: 8.577
+join: 8.708
 
-[r]: 6.633
--[/]: 7.285
--[L]ud: 7.949
--[w]ig: 8.563
-[Ahahah]: 9.25
-[grennnnnnnnnnnnn]: 10.3
+[r]: 9.033
+-[/]: 9.685
+-[L]ud: 10.34
+-[w]ig: 11.0
+[Ahahah]: 11.70
+[grennnnnnnnnnnnn]: 12.70

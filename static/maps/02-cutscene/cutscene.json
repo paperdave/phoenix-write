@@ -1,6 +1,6 @@
 {
 	"fps": 24,
-	"bgm": "bgm1.mp3",
+	"bgm": "bgm1",
 	"subsection": [
 
 		{
@@ -16,26 +16,27 @@
 		},
 
 		{
-			"begin": [4, 10]
+			"begin": [4, 11]
 		},
 
 		{
-			"begin": [5, 18]
+			"begin": [5, 19]
 		},
 		
 		{
-			"begin": [6, 23],
-			"overrideSFX": "questionmark.mp3",
+			"begin": [6, 24],
+			"overrideSFX": "questionmark",
 			"stopMusic": true
 		},
 		
 		{
-			"begin": [8, 2]
+			"begin": [8, 3],
+			"continueText": "(Press space to start the <em>real</em> game)"
 		},
 		
 		{
-			"begin": [9, 2],
-			"unskippable":true
+			"begin": [9, 3],
+			"autoplay": true
 		}
 
 	]

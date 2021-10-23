@@ -16,5 +16,9 @@ audioList.forEach((audio) => {
 });
 
 export function playAudio(audio: string) {
-	audioMap.get(audio).play();
+	if (audioMap.has(audio)) {
+		audioMap.get(audio).play();
+	} else {
+		console.warn(`Audio ${audio} not found`);
+	}
 }

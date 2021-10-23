@@ -6,13 +6,13 @@
 	import LevelLoader from './_LevelLoader.svelte';
 	import Container from './_Container.svelte';
 	import { getMapList } from '$lib/map-registry';
-	import { currentLevelId } from '$lib/stores';
+	import { currentMapId } from '$lib/stores';
 
 	const mapPromise = getMapList();
 </script>
 
 <Container>
-	{#if $currentLevelId === null}
+	{#if $currentMapId === null}
 		<main>
 			<h1>Pheonix, Write! beta</h1>
 			{#await mapPromise}
@@ -24,7 +24,7 @@
 							href="#level"
 							on:click={(e) => {
 								e.preventDefault();
-								$currentLevelId = meta.key;
+								$currentMapId = meta.key;
 							}}>{meta.name}</a
 						>
 					</li>
@@ -32,6 +32,6 @@
 			{/await}
 		</main>
 	{:else}
-		<LevelLoader key={$currentLevelId} />
+		<LevelLoader key={$currentMapId} />
 	{/if}
 </Container>

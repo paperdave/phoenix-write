@@ -25,6 +25,9 @@ export class LevelLogic extends EventEmitter {
 	gameStarted = false;
 	mapKeyPresses: MapKeyPress[] = [];
 	currentWord = 0;
+	introductionEnd = 0;
+	isIntroGame = true;
+	won = false;
 
 	popKeyPresses(): KeyPress[] {
 		const keypresses: KeyPress[] = [];
@@ -40,6 +43,10 @@ export class LevelLogic extends EventEmitter {
 			return;
 		}
 		event.preventDefault();
+		const time = performance.now();
+		if ((time - this.startTime) / 1000 < this.introductionEnd) {
+			return;
+		}
 		if (!this.gameStarted) {
 			if (event.key.toLowerCase() === this.map.words[0].text[0].toLowerCase()) {
 				this.gameStarted = true;
@@ -55,7 +62,7 @@ export class LevelLogic extends EventEmitter {
 		} else {
 			this.keypressList.add({
 				key: event.key,
-				time: performance.now()
+				time
 			});
 		}
 	};
@@ -64,6 +71,10 @@ export class LevelLogic extends EventEmitter {
 		super();
 		map.words.forEach((word, w) => {
 			word.missingLetters.forEach((i, j) => {
+				if (i === 0 && w === 0) {
+					console.log('first letter', word.start - PRESS_MARGIN_START);
+					this.introductionEnd = word.start - PRESS_MARGIN_START;
+				}
 				this.mapKeyPresses.push({
 					key: word.text[i],
 					start: word.start - PRESS_MARGIN_START,
@@ -94,6 +105,11 @@ export class LevelLogic extends EventEmitter {
 
 	tick() {
 		const keypresses = this.popKeyPresses();
+		if (this.currentWord >= this.mapKeyPresses.length && !this.won) {
+			this.emit('win');
+			this.won = true;
+		}
+		if (this.won) return;
 		if (keypresses.length === 0) {
 			const currentTime = (performance.now() - this.startTime) / 1000;
 			const mapKey = this.mapKeyPresses[this.currentWord];

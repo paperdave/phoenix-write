@@ -1,21 +1,24 @@
 <script lang="ts">
 	import { LevelLogic } from '$lib/input';
+	import { setNextMap } from '$lib/stores';
 
 	import type { LoadedLevel } from '$lib/types';
 	import { onDestroy } from 'svelte';
 
-	export let map: LoadedLevel;
+	export let level: LoadedLevel;
+
+	let isIntroduction = true;
 
 	let running = false;
 
 	function genKeyResults() {
-		return map.words.map((x) => x.missingLetters.map(() => null));
+		return level.words.map((x) => x.missingLetters.map(() => null));
 	}
 	let keyResults: (null | true | string)[][] = genKeyResults();
 
-	const logic = new LevelLogic(map);
+	const logic = new LevelLogic(level);
 
-	const videoUrl = URL.createObjectURL(map.video);
+	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
 		URL.revokeObjectURL(videoUrl);
 	});
@@ -23,8 +26,10 @@
 	let videoElem: HTMLVideoElement;
 	let textRoot: HTMLDivElement;
 
+	let win = false;
+
 	logic.on('start', () => {
-		videoElem.currentTime = map.words[0].start;
+		videoElem.currentTime = level.words[0].start;
 		videoElem.play();
 		keyResults = genKeyResults();
 		running = true;
@@ -42,17 +47,37 @@
 		running = false;
 	});
 
+	logic.on('win', () => {
+		win = true;
+		setTimeout(() => {
+			setNextMap(level);
+		}, 1000);
+	});
+
 	function updateFrame() {
 		let videoTime = videoElem.currentTime;
 
-		const currentWord = map.words.filter((word) => word.start <= videoTime).pop();
+		const currentWord = level.words.filter((word) => word.start <= videoTime).pop();
 
 		if (!currentWord) {
+			let offsetLeft = -100;
+			const wordDom = textRoot.querySelector(`[data-word="0"]`) as HTMLElement;
+			let offsetRight = wordDom.offsetLeft;
+
+			const percent = videoTime / level.words[0].start;
+
+			textRoot.style.setProperty(
+				'transform',
+				`translateX(calc(var(--unit) * 50)) translateX(${-(
+					offsetLeft +
+					(offsetRight - offsetLeft) * percent
+				)}px)`
+			);
 			return;
 		}
 
-		const currentWordIndex = map.words.indexOf(currentWord);
-		const nextWord = map.words[currentWordIndex + 1];
+		const currentWordIndex = level.words.indexOf(currentWord);
+		const nextWord = level.words[currentWordIndex + 1];
 		const wordDom = textRoot.querySelector(`[data-word="${currentWordIndex}"]`) as HTMLElement;
 		const nextDom = textRoot.querySelector(`[data-word="${currentWordIndex + 1}"]`) as HTMLElement;
 
@@ -84,6 +109,14 @@
 			if (!running) return;
 			requestAnimationFrame(loop);
 			updateFrame();
+			if (isIntroduction) {
+				if (videoElem.currentTime >= level.words[0].start - 0.05) {
+					isIntroduction = false;
+					if (logic.currentWord === 0) {
+						videoElem.pause();
+					}
+				}
+			}
 			let videoTime = videoElem.currentTime;
 			logic.update(videoTime);
 			logic.tick();
@@ -92,11 +125,11 @@
 </script>
 
 <main class:running>
-	<video src={videoUrl} bind:this={videoElem} on:play={start} />
+	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay />
 
 	<div class="text-container">
 		<div class="text" bind:this={textRoot}>
-			{#each map.words as word, i}
+			{#each level.words as word, i}
 				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
 					{#if i !== 0 && !word.isWordJoiner}
 						<span class="space">&nbsp;</span>
@@ -150,8 +183,6 @@
 	}
 	.word {
 		display: inline-flex;
-		background-color: rgba(0, 0, 0, 0.6);
-		backdrop-filter: blur(4px);
 	}
 	.underline {
 		position: relative;

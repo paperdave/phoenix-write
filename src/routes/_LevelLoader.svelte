@@ -19,7 +19,7 @@
 		<LoadingScreen />
 	{:then loadedMap}
 		{#if loadedMap.type === 'map'}
-			<Level map={loadedMap} />
+			<Level level={loadedMap} />
 		{:else if loadedMap.type === 'cutscene'}
 			<Cutscene cutscene={loadedMap} />
 		{/if}
