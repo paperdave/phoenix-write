@@ -1,5 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { readdir, readJson } from 'fs-extra';
+import { readdir, readFile, readJson } from 'fs-extra';
+import JSON5 from 'json5';
 
 export const get: RequestHandler = async ({}) => {
 	const maps = await readdir('static/maps');
@@ -7,8 +8,9 @@ export const get: RequestHandler = async ({}) => {
 	const allData = (
 		await Promise.all(
 			maps.map(async (mapName) => {
-				const meta = await readJson('static/maps/' + mapName + '/meta.json');
-				return [mapName, meta];
+				const meta = await readFile('static/maps/' + mapName + '/meta.json');
+				const parsed = JSON5.parse(meta.toString());
+				return [mapName, parsed];
 			})
 		)
 	).filter(([, meta]) => !meta.disabled);

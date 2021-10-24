@@ -1,3 +1,4 @@
+import JSON5 from 'json5';
 import { parseMap } from './map-parser';
 import type { CutsceneSubsection, LoadedMap, MapMeta } from './types';
 
@@ -6,8 +7,8 @@ const loadedLevels = new Map<string, LoadedMap>();
 
 async function fetchLevelMetadata() {
 	const response = await fetch('/get-map-list');
-	const metadata = await response.json();
-	return metadata;
+	const metadata = await response.text();
+	return JSON5.parse(metadata);
 }
 
 function touchSubsection(subsection: CutsceneSubsection) {
@@ -31,7 +32,11 @@ async function fetchLevel(meta: MapMeta) {
 		} as LoadedMap;
 	} else if (meta.type === 'cutscene') {
 		const results = await Promise.all([
-			fetch(`/maps/${key}/cutscene.json`).then((x) => x.json()),
+			fetch(`/maps/${key}/cutscene.json`)
+				.then((x) => x.text())
+				.then((x) => {
+					return JSON5.parse(x);
+				}),
 			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
 		]);
 		return {

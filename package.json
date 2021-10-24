@@ -30,6 +30,7 @@
 	"dependencies": {
 		"eventemitter3": "^4.0.7",
 		"fs-extra": "^10.0.0",
-		"howler": "^2.2.3"
+		"howler": "^2.2.3",
+		"json5": "^2.2.0"
 	}
 }
