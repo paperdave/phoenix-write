@@ -93,7 +93,7 @@
 
 		textRoot.style.setProperty(
 			'transform',
-			`translateX(calc(var(--unit) * 50)) translateX(-${
+			`translateX(calc(var(--unit) * 25)) translateX(-${
 				offsetLeft + (offsetRight - offsetLeft) * percent
 			}px)`
 		);
@@ -129,6 +129,8 @@
 
 <main class:running>
 	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay />
+
+	<div class="marker" />
 
 	<div class="text-container">
 		<div class="text" bind:this={textRoot}>
@@ -229,5 +231,13 @@
 	.failed {
 		color: #f00;
 		animation: pop 0.2s ease-out;
+	}
+	.marker {
+		width: calc(var(--unit) * 0.25);
+		height: calc(var(--unit) * 15);
+		position: absolute;
+		left: calc(var(--unit) * 25);
+		bottom: 0;
+		background-color: rgba(0, 255, 0, 0.8);
 	}
 </style>

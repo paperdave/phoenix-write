@@ -1,6 +1,6 @@
 import JSON5 from 'json5';
 import { parseMap } from './map-parser';
-import type { CutsceneSubsection, LoadedMap, MapMeta } from './types';
+import type { Cutscene, CutsceneSubsection, LoadedMap, MapMeta } from './types';
 
 const levelMetadata = new Map<string, MapMeta>();
 const loadedLevels = new Map<string, LoadedMap>();
@@ -35,7 +35,7 @@ async function fetchLevel(meta: MapMeta) {
 			fetch(`/maps/${key}/cutscene.json`)
 				.then((x) => x.text())
 				.then((x) => {
-					return JSON5.parse(x);
+					return JSON5.parse(x) as Cutscene;
 				}),
 			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
 		]);
@@ -89,4 +89,8 @@ export async function getMapList(): Promise<MapMeta[]> {
 		});
 		return [...levelMetadata.values()];
 	}
+}
+
+export function getMapListNoPromise() {
+	return [...levelMetadata.values()];
 }

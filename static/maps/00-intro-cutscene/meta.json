@@ -1,5 +1,6 @@
 {
   "name": "Slime Needs You",
   "type": "cutscene",
+  "background": "white",
   "disabled": false
 }

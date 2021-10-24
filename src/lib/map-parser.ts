@@ -1,3 +1,5 @@
+import type { MapWord, ParsedMap } from './types';
+
 export function parseMap(map: string): ParsedMap {
 	return {
 		words: map

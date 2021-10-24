@@ -1,5 +1,6 @@
 {
   "name": "Reddit Recap",
   "type": "map",
+  "background": "white",
   "disabled": false
 }
