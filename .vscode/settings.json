@@ -3,4 +3,15 @@
     "*.txt": "makefile",
     "*.json": "jsonc"
   },
+  "files.exclude": {
+    "node_modules": true,
+    ".svelte-kit": true,
+    ".vscode": true,
+    ".prettierignore": true,
+    ".prettierrc": true,
+    ".eslintrc.cjs": true,
+    "yarn.lock": true,
+    "tsconfig.json": true,
+    "~$timesheet.xlsx": true
+  },
 }
