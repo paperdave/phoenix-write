@@ -64,7 +64,7 @@ the: [27, 10]
 # I used to take it so personally, and it would hurt and scare me a lot deep down. I would feel ashamed.
 HE: [30, 2]
 # But now that I'm older, I realize old people just say stuff. It doesn't really mean anything to us.
-'S: [30, 5] { endTime: [30, 9]}
+-'S: [30, 5] { endTime: [30, 9]}
 # When I turned seventeen, I actually felt bad that I was allowed to watch R-Rated Movies. I didn't want to be able to, yet.
 [1]: [30, 11]
 # Ironically, I went completely straight edge at age 20. I haven't had alcohol in over three years.
@@ -79,6 +79,7 @@ Doesn't know: [32, 02]
 [=]: [33, 8]
 [+]: [33, 17]
 eh-: [33, 17]
+# note here: please split this into multiple lines
 [mx+7b],: [34, 4] {endTime: [35, 7]}
 
 [PEMDAS]: [36, 11]
@@ -86,7 +87,7 @@ eh-: [33, 17]
 [idk], I got an english degree.: [40, 7] {endTime: [41, 08]}
 
 [M]aybe it's: [42, 8] {checkpoint}
-[d]umb.: [42, 20] {endTime: 43:00}
+[d]umb.: [42, 20] {endTime: [43, 0]}
 It's: [44, 2]
 just: [44, 6]
 a: [44, 13]

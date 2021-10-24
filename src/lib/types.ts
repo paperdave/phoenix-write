@@ -16,9 +16,11 @@ export interface WordFlags {
 	endTime?: number | TimmyTimestamp;
 
 	////// VISUAL FLARE
-	// adds a new line after the word flare
+	// do not show this flare
+	none?: boolean;
+	// adds a new line after the flare
 	newline?: boolean;
-	// angle which the word enters the screen
+	// angle which the flare enters the screen
 	angle?: number;
 	// z-order: defaults to 0
 	zOrder?: number;

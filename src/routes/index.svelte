@@ -7,8 +7,14 @@
 	import Container from './_Container.svelte';
 	import { getMapList } from '$lib/map-registry';
 	import { currentMapId } from '$lib/stores';
+	import { loadRequiredAudio } from '$lib/audio';
+	import { browser } from '$app/env';
 
 	const mapPromise = getMapList();
+
+	if (browser) {
+		loadRequiredAudio();
+	}
 </script>
 
 <Container>

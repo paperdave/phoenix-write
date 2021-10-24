@@ -140,6 +140,12 @@
 		<div class="text" bind:this={textRoot}>
 			{#each level.words as word, i}
 				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
+					{#if word.flags.checkpoint}
+						<div class="checkpoint-container">
+							<div class="checkpoint-marker" />
+							<div class="checkpoint-marker-gradient" />
+						</div>
+					{/if}
 					{#if i !== 0 && !word.isWordJoiner}
 						<span class="space">&nbsp;</span>
 					{/if}
@@ -179,10 +185,10 @@
 	}
 	.text-container {
 		position: absolute;
-		top: 0;
+		bottom: 0;
 		left: 0;
 		width: 100%;
-		height: 100%;
+		height: calc(var(--unit) * 15);
 		overflow: hidden;
 		mask-image: linear-gradient(to right, transparent 0%, white 10%, white 50%, transparent 90%);
 		-webkit-mask-image: linear-gradient(
@@ -194,14 +200,25 @@
 		);
 	}
 	.text {
+		display: flex;
+		align-items: center;
 		position: absolute;
 		transform: translateX(calc(var(--unit) * 25));
-		bottom: calc(var(--unit) * 5);
+		bottom: 0;
+		height: 100%;
 		font-size: calc(var(--unit) * 4);
-		white-space: pre;
+		white-space: nowrap;
+	}
+	.checkpoint-container {
+		position: relative;
+		width: 0;
+		height: calc(var(--unit) * 15);
 	}
 	.word {
 		display: inline-flex;
+		align-items: center;
+		white-space: pre;
+		position: relative;
 	}
 	.underline {
 		position: relative;
@@ -252,6 +269,14 @@
 		bottom: 0;
 		background-color: rgba(200, 255, 200, 0.8);
 	}
+	.checkpoint-marker {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(var(--unit) * 0.25);
+		height: calc(var(--unit) * 15);
+		background-color: rgba(200, 255, 255, 0.5);
+	}
 	.marker-gradient {
 		width: calc(var(--unit) * 8);
 		height: calc(var(--unit) * 15);
@@ -265,8 +290,23 @@
 			rgba(0, 255, 0, 0) 100%
 		);
 	}
+	.checkpoint-marker-gradient {
+		position: absolute;
+		top: 0;
+		left: calc(var(--unit) * -4);
+		width: calc(var(--unit) * 8);
+		height: calc(var(--unit) * 15);
+		background: linear-gradient(
+			90deg,
+			rgba(0, 255, 255, 0) 0%,
+			rgba(0, 255, 255, 0.1) 50%,
+			rgba(0, 255, 255, 0) 100%
+		);
+	}
 	.marker,
-	.marker-gradient {
+	.marker-gradient,
+	.checkpoint-marker,
+	.checkpoint-marker-gradient {
 		mask-image: linear-gradient(0deg, rgba(255, 255, 255, 1) 90%, rgba(255, 255, 255, 0) 100%);
 		-webkit-mask-image: linear-gradient(
 			0deg,

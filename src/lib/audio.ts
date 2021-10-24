@@ -1,25 +1,15 @@
 import { Howl } from 'howler';
 import { delay } from './utils';
 
-const MUSIC_VOLUME = 0.2;
-
-const audioList = [
-	'dialogue_advance_default',
-	'bgm1',
-	'b0',
-	'b1',
-	'b2',
-	'b3',
-	'b4',
-	'b5',
-	'b6',
-	'b7',
-	'b8'
-];
-
 const audioMap = new Map<string, Howl>();
 
-audioList.forEach((audio) => {
+const MUSIC_VOLUME = 0.2;
+
+export function registerAudio(audio: string) {
+	if (audioMap.has(audio)) {
+		return;
+	}
+
 	audioMap.set(
 		audio,
 		new Howl({
@@ -32,7 +22,7 @@ audioList.forEach((audio) => {
 	);
 
 	audioMap.set(`${audio}.mp3`, audioMap.get(audio));
-});
+}
 
 export function playAudio(audio: string) {
 	const howl = audioMap.get(audio);
@@ -106,4 +96,32 @@ export async function startMusic(audio: string) {
 	music.volume(0, currentMusicId);
 	music.loop(true, currentMusicId);
 	music.fade(0, MUSIC_VOLUME, 1000, currentMusicId);
+}
+
+export function loadRequiredAudio() {
+	// 'dialogue_advance_default',
+	// 'bgm1'
+	registerAudio('dialogue_advance_default');
+	registerAudio('bgm1');
+}
+
+export function loadRestAudio() {
+	const audioList = [
+		'b0',
+		'b1',
+		'b2',
+		'b3',
+		'b4',
+		'b5',
+		'b6',
+		'b7',
+		'b8',
+		'doomedfarewell',
+		'lose',
+		'boyscorrect'
+	];
+
+	for (const audio of audioList) {
+		registerAudio(audio);
+	}
 }

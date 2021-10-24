@@ -65,7 +65,7 @@ function parseWord(word: string): MapWord {
 function parseFlags(flags: string) {
 	const result: WordFlags = {};
 
-	const flagContents = flags.slice(1, -1);
+	const flagContents = flags.trim().slice(1, -1);
 
 	let state = 'key';
 	let flagName = '';
@@ -76,6 +76,11 @@ function parseFlags(flags: string) {
 		if (state === 'key') {
 			if (char === ':') {
 				state = 'value';
+			} else if (char === ',') {
+				result[flagName] = true;
+				flagName = '';
+				flagValue = '';
+				state = 'key';
 			} else {
 				flagName += char;
 			}
@@ -87,13 +92,24 @@ function parseFlags(flags: string) {
 			}
 
 			if (stack === 0 && char === ',') {
-				result[flagName] = JSON5.parse(flagValue.replace(/\b0+([0-9]+)/g, '$1'));
+				result[flagName.trim()] = JSON5.parse(flagValue.trim().replace(/\b0+([0-9]+)/g, '$1'));
 				flagName = '';
 				flagValue = '';
 				state = 'key';
 			} else {
 				flagValue += char;
 			}
+		}
+	}
+
+	if (flagName) {
+		try {
+			result[flagName.trim()] = flagValue
+				? JSON5.parse(flagValue.trim().replace(/\b0+([0-9]+)/g, '$1'))
+				: true;
+		} catch (error) {
+			console.log(flagName, flagValue);
+			throw error;
 		}
 	}
 

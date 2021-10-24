@@ -5,7 +5,7 @@ time: 2.9059 { none }
 for: 3.153 { none } 
 the: 3.3419999 { none }
 
-[R]ed: 3.662 { angle: -90}
+[R]ed: 3.662 { angle: -90 }
 -[d]it: 4.357 {newline, angle: -90}
 [R]e: 4.967 {angle: -90, zOrder: -1}
 -[c]ap: 5.631 {angle: -90, zOrder: -1}
