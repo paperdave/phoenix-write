@@ -1,20 +1,3 @@
-export interface ParsedMap {
-	words: MapWord[];
-}
-export interface MapWord {
-	text: string;
-	missingLetters: number[];
-	start: number;
-	isSectionStart: boolean;
-	isWordJoiner: boolean;
-	flags: WordFlags;
-}
-// used for visualization
-export interface WordFlags {
-	// adds a new line after the word for visual purposes
-	newline?: boolean;
-}
-
 export function parseMap(map: string): ParsedMap {
 	return {
 		words: map
