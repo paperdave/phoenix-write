@@ -11,22 +11,22 @@
 couple: [3, 9]
 [j]umps.: [3, 9]
 
-This one's just a: [3, 23] { endTime, [4, 11] }
+This one's just a: [3, 23] { endTime: [4, 11] }
 baby: [5, 10]
-[j]ump.: [5, 18] { endtime, [5, 22] }
+[j]ump.: [5, 18] { endtime: [5, 22] }
 
 'Kay, this one's a: [6, 15]
 [f]ull hop: [7, 10]
-[r]ight.: [7, 20] {endtime, [8, 6]}
+[r]ight.: [7, 20] {endtime: [8, 6]}
 
 [F]ull hop: [9, 2]
 left.: [9, 11]
 
 Thank you the: [9, 18]
 [r]aid,: [10, 1]
-Hotline.: [10, 8] {endTime, [10, 20]}
+Hotline.: [10, 8] {endTime: [10, 20]}
 Easy: [11, 21]
-does it here.: [12, 08] {endTime, [12, 20]}
+does it here.: [12, 08] {endTime: [12, 20]}
 
 [E]a: [14, 1]
 -sy: [14, 9] {endTime, 14, 13}
@@ -34,16 +34,16 @@ does it here.: [12, 08] {endTime, [12, 20]}
 [d]oes it.: [16, 15]
 
 [E]asy: [17, 05]
-[d]oes it.: [17, 16] {endTime, [17, 21]}
+[d]oes it.: [17, 16] {endTime: [17, 21]}
 
 [E]asy: [18, 06]
-[d]oes it: [18, 18] {endTime, [18, 23]}
+[d]oes it: [18, 18] {endTime: [18, 23]}
 
-[F]UCK.: [19, 11] {checkpoint, endTime, [19, 17]}
-that's a: [20, 7] {endTime, [20, 10]}
+[F]UCK.: [19, 11] {checkpoint, endTime: [19, 17]}
+that's a: [20, 7] {endTime: [20, 10]}
 [F]UCKING: [20, 16]
 [SH]IT: [21, 01] 
-[J]UMP.: [21, 10] {endTime, [21, 15]}
+[J]UMP.: [21, 10] {endTime: [21, 15]}
 
 It's a: [24, 05] 
 S: [24, 08]
@@ -51,24 +51,24 @@ S: [24, 08]
 [SH]: [25, 0]
 -IT: [25, 6]
 [F]UCKIN': [25, 9] 
-[J]UMP.: [26, 03] {endTime, [26, 8]}
+[J]UMP.: [26, 03] {endTime: [26, 8]}
 
 And: [27, 07]
 the: [27, 10]
 [D]EV: [27, 15]
 [KN]OWS: [27, 22]
-[I]T.: [28, 4] {endTime, [28, 8]}
+[I]T.: [28, 4] {endTime: [28, 8]}
 
 #I remember being young and feeling bad when old people would make fun of people my age.
 'CAUSE: [30, 0]
 # I used to take it so personally, and it would hurt and scare me a lot deep down. I would feel ashamed.
 HE: [30, 2]
 # But now that I'm older, I realize old people just say stuff. It doesn't really mean anything to us.
-'S: [30, 5] { endTime, [30, 9]}
+'S: [30, 5] { endTime: [30, 9]}
 # When I turned seventeen, I actually felt bad that I was allowed to watch R-Rated Movies. I didn't want to be able to, yet.
 [1]: [30, 11]
 # Ironically, I went completely straight edge at age 20. I haven't had alcohol in over three years.
-[5].: [30, 18] {endTime, [31, 1]}
+[5].: [30, 18] {endTime: [31, 1]}
 
 Doesn't know: [32, 02]
 [SH]: [32, 11]
@@ -79,29 +79,29 @@ Doesn't know: [32, 02]
 [=]: [33, 8]
 [+]: [33, 17]
 eh-: [33, 17]
-[mx+7b],: [34, 4] {endTime, [35, 7]}
+[mx+7b],: [34, 4] {endTime: [35, 7]}
 
 [PEMDAS]: [36, 11]
-[MY ASS]: [37, 17] {endTime, [38, 13]}
-[idk], I got an english degree.: [40, 7] {endTime, [41, 08]}
+[MY ASS]: [37, 17] {endTime: [38, 13]}
+[idk], I got an english degree.: [40, 7] {endTime: [41, 08]}
 
 [M]aybe it's: [42, 8] {checkpoint}
-[d]umb.: [42, 20] {endTime, 43:00}
+[d]umb.: [42, 20] {endTime: 43:00}
 It's: [44, 2]
 just: [44, 6]
 a: [44, 13]
 [v]ideo: [44, 13.5]
-[g]ame,: [44, 20] {endTime, [45, 1]}
+[g]ame,: [44, 20] {endTime: [45, 1]}
 
 does: [46, 1]
 [n]othing but: [46, 6]
 [c]ause me: [46, 15]
-[p]ain.: [47, 0] {endTime, [47, 9]}
+[p]ain.: [47, 0] {endTime: [47, 9]}
 
 It'd be: [48, 14]
 [eee]a: [48, 22]
 -sy to: [49, 9]
-[q]uit.: [49, 15] {endTime, [49, 21]}
+[q]uit.: [49, 15] {endTime: [49, 21]}
 
 but the: [52,12]
 # The space at the end is deliberate, it keeps the timing and spacing completely even.
@@ -113,10 +113,15 @@ you quit once: [55, 22] { endTime: [56, 13] }
 even if it's a: [56, 16]
 [sh]itty: [57, 08]
 [v]ideo: [57, 17]
-[g]ame,: [58, 0] { endTime: 58, 5 }
+[g]ame,: [58, 0] { endTime: [58, 5] }
 
 #Oops. Format changed. HAHAHAHAHAAHAHAHHAHHAHAHHAHAHA Hello future dave. Yes it's me, THE ARTIST. AND THIS IS MY VISION, YOUR NIGHTMARE.
 #I have been hand-transcribing timestamps for almost 90 minutes and I am less than a sixth of the way through.
+
+# dave says fuck you. the flags object is supposed to use colons, not commas everywhere. ALSO
+# the flag value cant have commas cause the shit. BUT, just because you are cool, i will rewrite
+# the parsing to handle these. oh also just the entire thing using these timmy timestamps.
+
 then: [1, 01, 23]
 [q]uitting will: [1, 02, 06]
 [b]e your new: [1, 02, 14]
@@ -128,14 +133,16 @@ So I'd rather be the: [1, 09, 08]
 [m]other: [1, 10, 13]
 -[f]ucker to: [1, 10, 22]
 [b]eat this: [1, 11, 8]
-[g]ame...: [1, 11, 8] {endTime: 1, 12, 2}
+[g]ame...: [1, 11, 8] {endTime: [1, 12, 2]}
 
 ...than the: [1, 14, 19]
 [9000th] to: [1, 15, 2]
-quit it.: [1, 16, 2] {endTime, [1, 16, 7]}
+quit it.: [1, 16, 2] {endTime: [1, 16, 7]}
 
 #I just realize, I should probably make these colons anyway since you're gonna wake up and fix all the formattting quirks regardless.
 [W]ait--: [1, 18, 4] {endTime: [1, 18, 10], checkpoint}
+
+# dave: EXACTLY. fuckin hell.
 
 [I]'m: [1, 19, 4]
 [t]he: [1, 19, 11]
@@ -163,9 +170,9 @@ walawala: [1, 29, 20]
 bing bang: [1, 30, 5]
 
 Oo: [1, 30, 14]
-ee:
-oo a-:
-ah ding:
-dang wala:
-wala bing:
-bang:
+# ee: 
+# oo a-:
+# ah ding:
+# dang wala:
+# wala bing:
+# bang:
