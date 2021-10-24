@@ -3,6 +3,8 @@ import EventEmitter from 'eventemitter3';
 import type { LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
+const WORD_PENALTY = 6;
+
 const PRESS_MARGIN_START = 0.3;
 const PRESS_MARGIN_END = 0.65;
 const LETTER_EXTRA_TIME = 0.1;
@@ -102,7 +104,27 @@ export class LevelLogic extends EventEmitter {
 
 		this.on('lose', () => {
 			this.gameStarted = false;
-			this.rewoundWord = this.latestCheckpoint;
+			let wordsRewound = 0;
+			this.rewoundWord = this.currentWord;
+			while (wordsRewound < WORD_PENALTY) {
+				this.rewoundWord--;
+				console.log(
+					this.rewoundWord,
+					this.mapKeyPresses[this.rewoundWord].underlyingWord.text[
+						this.mapKeyPresses[this.rewoundWord].underlyingWord.missingLetters[0]
+					].toLowerCase(),
+					this.mapKeyPresses[this.rewoundWord].key.toLowerCase()
+				);
+				if (this.rewoundWord === 0) break;
+				if (
+					this.mapKeyPresses[this.rewoundWord].underlyingWord.text[
+						this.mapKeyPresses[this.rewoundWord].underlyingWord.missingLetters[0]
+					].toLowerCase() === this.mapKeyPresses[this.rewoundWord].key.toLowerCase()
+				) {
+					wordsRewound++;
+					console.log('word is ', this.mapKeyPresses[this.rewoundWord].underlyingWord.text);
+				}
+			}
 		});
 	}
 
