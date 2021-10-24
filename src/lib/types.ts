@@ -9,10 +9,19 @@ export type TimmyTimestamp =
 	| [minutes: number, seconds: number, frames: number];
 
 export interface WordFlags {
-	// adds a new line after the word for visual purposes
-	newline?: boolean;
+	// specifies a checkpoint
+	checkpoint?: boolean;
+
 	// specify end of this word, used for the typing line
 	endTime?: number | TimmyTimestamp;
+
+	////// VISUAL FLARE
+	// adds a new line after the word flare
+	newline?: boolean;
+	// angle which the word enters the screen
+	angle?: number;
+	// z-order: defaults to 0
+	zOrder?: number;
 }
 
 export interface MapMeta {
