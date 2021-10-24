@@ -1,4 +1,5 @@
 import JSON5 from 'json5';
+import { canPlayVP9 } from './compatibility';
 import { parseMap } from './map-parser';
 import type { Cutscene, CutsceneSubsection, LoadedMap, MapMeta } from './types';
 
@@ -18,11 +19,19 @@ function touchSubsection(subsection: CutsceneSubsection) {
 
 async function fetchLevel(meta: MapMeta) {
 	const key = meta.key;
+	const video = canPlayVP9
+		? fetch(`/maps/${key}/video.webm`)
+				.then((x) => {
+					if (x.status !== 200) {
+						throw new Error(`${x.status} ${x.statusText}`);
+					}
+					return x;
+				})
+				.then((x) => x.blob())
+				.catch(() => fetch(`/maps/${key}/video.mp4`).then((x) => x.blob()))
+		: fetch(`/maps/${key}/video.mp4`).then((x) => x.blob());
 	if (meta.type === 'map') {
-		const results = await Promise.all([
-			fetch(`/maps/${key}/map.txt`).then((x) => x.text()),
-			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
-		]);
+		const results = await Promise.all([fetch(`/maps/${key}/map.txt`).then((x) => x.text()), video]);
 		return {
 			type: 'map',
 			key,
@@ -37,7 +46,7 @@ async function fetchLevel(meta: MapMeta) {
 				.then((x) => {
 					return JSON5.parse(x) as Cutscene;
 				}),
-			fetch(`/maps/${key}/video.mp4`).then((x) => x.blob())
+			video
 		]);
 		return {
 			type: 'cutscene',

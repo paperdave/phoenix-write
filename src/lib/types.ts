@@ -79,6 +79,8 @@ export interface CutsceneSubsection {
 	endMusicFade?: number;
 	// OPTIONAL: special flag for the boys
 	theBoys?: boolean;
+	// OPTIONAL: isBussinB
+	isBussinB: boolean;
 }
 
 export interface CutsceneKey {

@@ -118,7 +118,9 @@ export function loadRestAudio() {
 		'b8',
 		'doomedfarewell',
 		'lose',
-		'boyscorrect'
+		'boyscorrect',
+		'correctpluck',
+		'questionmark'
 	];
 
 	for (const audio of audioList) {

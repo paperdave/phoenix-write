@@ -4,7 +4,7 @@
 
 	export let level: LoadedLevel;
 	export let logic: LevelLogic;
-	export let keyResults: (string | true | null)[][];
+	export let keyResults: (string | boolean | null)[][];
 	export let win: boolean;
 	export let currentWordI: number;
 </script>

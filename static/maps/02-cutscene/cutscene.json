@@ -8,6 +8,7 @@
 			"begin": [0, 0],
 			"overridepause": true,
 			"unskippable": true,
+			"isBussinB": true,
 			"keys": [
 				{
 					"key": "b",
