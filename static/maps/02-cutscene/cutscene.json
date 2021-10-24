@@ -4,6 +4,7 @@
 	"subsection": [
 
 		{
+			// Daaamn, viewer, that shit [b]ussin'!
 			"begin": [0, 0],
 			"overridepause": true,
 			"unskippable": true,
@@ -16,25 +17,31 @@
 		},
 
 		{
+			// Daaamn, viewer, that shit bussin'!
+			// I almost forgot you were half my age.
 			"begin": [4, 11]
 		},
 
 		{
+			// Next up, you've got to caption...
 			"begin": [5, 19]
 		},
 		
 		{
+			// That's odd. It just says "FODDIAN GAME."
 			"begin": [6, 24],
 			"overrideSFX": "questionmark",
 			"stopMusic": true
 		},
 		
 		{
+			// Good luck!
 			"begin": [8, 3],
 			"continueText": "(Press space to start the <em>real</em> game)"
 		},
 		
 		{
+			// [Fades to white]			
 			"begin": [9, 3],
 			"autoplay": true
 		}

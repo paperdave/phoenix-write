@@ -1,14 +1,14 @@
 # hello future generations who see this
 
-[I]t's: 2.65
-time: 2.9059 { newline }
-for: 3.153
-the: 3.3419999
+[I]t's: 2.65 { none }
+time: 2.9059 { none }
+for: 3.153 { none } 
+the: 3.3419999 { none }
 
-[R]ed: 3.662
--[d]it: 4.357 { newline }
-[R]e: 4.967
--[c]ap: 5.631
+[R]ed: 3.662 { angle, -90}
+-[d]it: 4.357 {newline, angle, -90}
+[R]e: 4.967 {angle, -90, zOrder, -1}
+-[c]ap: 5.631 {angle, -90, zOrder, -1}
 
 [R]ed: 6.319
 -[d]it: 6.67 { newline }
@@ -16,7 +16,7 @@ the: 3.3419999
 -[c]ap: 7.384
 
 So: 7.894
-go: 8.268
+go: 8.268 { newline }
 and: 8.577
 join: 8.708
 
@@ -26,4 +26,4 @@ join: 8.708
 -[w]ig: 11.0
 
 [Ahahah]: 11.70
-[grennnnnnnnnnnnn]: 12.70
+[grennnnnnnnnnnnn]: 12.70 { endTime: 14 }

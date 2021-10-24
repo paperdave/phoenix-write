@@ -2,59 +2,74 @@
 	"fps": 24,
 	"subsection": [
 		{
+			// Pssst...
 			"begin": [0, 5],
 			"unskippable": true
 		},
 
 		{
+			// Pssst...
+			// Hey viewer.
 			"begin": [2, 14]
 		},
 
 		{
+			// It's me, Slime.
 			"begin": [3, 4],
 			"unskippable": true
 		},
 
 		{
-			"begin": [4, 14]
-		},
-
-		{
-			"begin": [5, 6],
+			// Listen, I need your help.
+			"begin": [4, 14],
 			"startMusic": "bgm1.mp3"
 		},
 
 		{
+			// ShakeDrizzle fucked up the captions to Ludwig's clips!
+			"begin": [5, 6]
+		},
+
+		{
+			// And Polite and Lud are too busy whackin' it to hentai to help.
 			"begin": [6, 12]
 		},
 
 		{
+			// As for me, my aging fingers render me far too frail to type captions.
 			"begin": [7, 16]
 		},
 
 		{
+			// So that leaves you.
 			"begin": [10, 6]
 		},
 
 		{
+			// Will you, viewer, do Ludwig's job for him for little to no compensation?
 			"begin": [10, 20],
 			"continueText": "(Press space to accept this job offer)"
 		},
 
 		{
+			// Fuck yeah! Don't worry, it's easy.
+			// Just watch carefully, and type all the letters Shake left blank.
 			"begin": [12, 11]
 		},
 
 		{
+			// Watch out, though. If you fuck up even once, you gotta start all over.
 			"begin": [15, 14]
 		},
 
 		{
+			// Let's do this!
 			"stopMusic": true,
 			"autoplay": true,
 			"begin": [17, 21]
 		},
 		{
+			// [Fades to white]
 			"begin": [19, 2],
 			"autoplay": true
 		}
