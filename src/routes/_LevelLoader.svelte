@@ -20,11 +20,13 @@
 			getMap(nextMap.key);
 		});
 	}
+
+	$: color = mapList.find((x) => x.key === key).background;
 </script>
 
-<main>
+<main style="background:{color}">
 	{#await loadingPromise}
-		<LoadingScreen color={mapList.find((x) => x.key === key).background} />
+		<LoadingScreen {color} />
 	{:then loadedMap}
 		{#if loadedMap.type === 'map'}
 			<Level level={loadedMap} />
@@ -33,3 +35,14 @@
 		{/if}
 	{/await}
 </main>
+
+<style>
+	main {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+</style>
