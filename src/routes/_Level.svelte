@@ -17,8 +17,6 @@
 	}
 	let keyResults: (null | true | string)[][] = genKeyResults();
 
-	console.log(level);
-
 	const logic = new LevelLogic(level);
 
 	const videoUrl = URL.createObjectURL(level.video);

@@ -25,15 +25,10 @@ function parseSection(section: string): MapWord[] {
 
 function parseWord(word: string): MapWord {
 	let [text, ...rest] = word.split(':');
-	let startTimeText, rest2;
-	try {
-		[, startTimeText, rest2] = rest
-			.join(':')
-			.trim()
-			.match(/^([ \t,\[\]0-9\.]+)(\s+{.*})?\s*$/);
-	} catch (error) {
-		console.log(error);
-	}
+	let [, startTimeText, rest2] = rest
+		.join(':')
+		.trim()
+		.match(/^([ \t,\[\]0-9\.]+)(\s+{.*})?\s*$/);
 	const startTime = parseTimmyTimestamp(JSON5.parse(startTimeText.replace(/\b0+([0-9]+)/g, '$1')));
 	const flags = rest2 ? parseFlags(rest2) : {};
 	const missingLetters = [];
@@ -103,14 +98,9 @@ function parseFlags(flags: string) {
 	}
 
 	if (flagName) {
-		try {
-			result[flagName.trim()] = flagValue
-				? JSON5.parse(flagValue.trim().replace(/\b0+([0-9]+)/g, '$1'))
-				: true;
-		} catch (error) {
-			console.log(flagName, flagValue);
-			throw error;
-		}
+		result[flagName.trim()] = flagValue
+			? JSON5.parse(flagValue.trim().replace(/\b0+([0-9]+)/g, '$1'))
+			: true;
 	}
 
 	return result;

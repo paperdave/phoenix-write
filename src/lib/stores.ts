@@ -8,7 +8,6 @@ export function setNextMap(map: LoadedMap | MapMeta) {
 	getMapList().then((list) => {
 		const i = list.findIndex(({ key }) => key === map.key);
 		const next = list[i + 1];
-		console.log(next);
 		currentMapId.set(next.key);
 	});
 }
