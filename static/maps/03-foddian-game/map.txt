@@ -76,13 +76,17 @@ Doesn't know: [32, 02]
 -BOUT: [32, 22]
 
 [Y]: [33, 3]
-[=]: [33, 8]
-[+]: [33, 17]
+=: [33, 8]
++: [33, 17]
 eh-: [33, 17]
-[mx]+[7b],: [34, 4] {endTime: [35, 7], allowedCharacters: ["+"] }
+# note here: please split this into multiple lines
+mx+: [34, 4]
+[7b]: [34, 20] {endTime: [35, 08]}
 
-[PEMDAS]: [36, 11]
-[MY] [ASS]: [37, 17] {endTime: [38, 13]}
+[P]EM: [36, 11]
+[D]AS: [36, 17]
+[M]Y: [37, 17] 
+[A]SS: [37, 23]
 [idk], I got an english degree.: [40, 7] {endTime: [41, 08]}
 
 [M]aybe it's: [42, 8] {checkpoint}
@@ -146,13 +150,16 @@ quit it.: [1, 16, 2] {endTime: [1, 16, 7]}
 
 [I]'m: [1, 19, 4]
 [t]he: [1, 19, 11]
-[s]e[c]ond: [1, 19, 22]
+[s]e: [1, 19, 22]
+-[c]ond: [1, 20, 3]
 [sl]: [1, 20, 7]
 -o: [1, 20, 12]
 - west: [1, 20, 18]
-[p]er[s]on: [1, 21, 1]
+[p]er: [1, 21, 1]
+[s]on: [1, 21, 6]
 [t]o: [1, 21, 12]
-[ev]er: [1, 21, 17]
+[e]: [1, 21, 17]
+[v]er: [1, 21, 22]
 [b]eat: [1, 22, 4]
 [t]he: [1, 22, 10]
 [game?] : [1, 22, 16] {endTime: [1, 23, 06]} 

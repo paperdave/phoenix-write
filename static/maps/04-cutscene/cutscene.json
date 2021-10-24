@@ -1,5 +1,181 @@
 {
-	"name": "Cutscene!",
 	"fps": 24,
-	"subsection": []
+	"bgm": "bgm1",
+	"subsection": [
+
+		{
+			// Wow! You were doing so shit, this game alm[o]st
+			// seemed relevant to the prompt.
+			"begin": [0, 0],
+			"unskippable": true,
+			"keys": [
+				{
+					"key": "s",
+					"time": [6, 10]
+				},
+				{
+					"key": "o",
+					"time": [7, 7]
+				}
+			]
+		},
+
+		{
+			// I just wish this script had more fart jokes.
+			"begin": [7, 12],
+			"endMusic": true
+	
+		},
+
+		{
+			// Buckle up, viewer, 'cause we still got a long way to--
+			"unskippable": true,
+			"begin": [8, 19],
+			"keys": [
+				{
+					"key": "a",
+					"time": [11, 8]
+				},
+				{
+					"key": "s",
+					"time": [11, 10]
+				},
+				{
+					"key": "s",
+					"time": [11, 20]
+				}
+			]				
+		},
+
+
+		{
+			// HEY.
+			"unskippable": true,
+			"begin": [12, 22]
+		},
+		
+		{
+			// Did you hear something?
+			// It sounded like a... slight winny.
+			"begin": [16, 2],
+			"overrideSFX": "questionmark",
+			"stopMusic": true
+		},
+		
+		{
+			// [QT APPEARS]
+			"begin": [17, 17],
+			"unskippable": true
+		},
+		
+		{
+			// Oh, hey QT. Where's Lud?		
+			"begin": [18, 10]
+		},
+
+		{
+			// SLIME. DEPLOY MY ELEVATIVE PEACH BASKET. NOW.		
+			"begin": [18, 23]
+		},
+
+		{
+			// Sigh... yes sir.		
+			"begin": [20, 23],
+			"startMusic": "bgm1",
+			"flagNextSectionDoesntClear": true
+
+		},
+
+		{
+			// [FADE IN LUDWIG]
+			"unskippable": true,
+			"begin": [20, 16]
+		},
+
+		{
+			// And what might this peasant be doing in my sight?
+			"begin": [21, 20]
+		},
+
+		{
+			// Viewer's just helping fill out some captions--		
+			"begin": [23, 10]
+		},
+
+		{
+			// Silence.	What makes viewer think 84%-likelihood-HE
+			// should be deemed worthy of such an honor?
+			"begin": [24, 12],
+			"keys": [
+				{
+					"key": "%",
+					"time": [27, 5]
+				}
+			]	
+		},
+
+		{
+			// I shall be the sole judge of this with-near-certainty-
+			// BBBBBBOOOOOOYYYYYYSSSSSS's worthiness.
+			"theBoys": true,
+			"unskippable": true,
+			"begin": [28, 20]
+
+		},
+
+		{
+			// Hang on. Shut up for a sec.
+			"begin": [33, 23]
+		},
+
+		{
+			// How come I have no lines in this stupid script?
+			"begin": [34, 13]
+		},
+
+		{
+			// Going off pure statistics, the game's cr[e]ators must n[o]t
+			// [w]atch y[o]ur strea[m]...
+
+			"unskippable": true,
+			"begin": [35, 16],
+			"keys": [
+				{
+					"key": "e",
+					"time": [39, 8]
+				},
+				{
+					"key": "n",
+					"time": [40, 10]
+				},
+				{
+					"key": "w",
+					"time": [40, 15]
+				},
+				{
+					"key": "o",
+					"time": [41, 1]
+				},
+				{
+					"key": "m",
+					"time": [41, 14]
+				}
+			]	
+		},
+
+		{
+			//[QT SLAPS LUD]
+			"begin": [41, 20],
+			"qtSlap": [42, 0],
+			"unskippable": true
+		},
+
+		{
+			// What was that for?
+			"begin": [42, 1],
+			"heartFlag":[47, 13] 
+		}
+
+	]
+
 }
