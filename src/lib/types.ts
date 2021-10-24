@@ -11,6 +11,8 @@ export type TimmyTimestamp =
 export interface WordFlags {
 	// specifies a checkpoint
 	checkpoint?: boolean;
+	// list of ignored input keys
+	allowedCharacters: string[];
 
 	// specify end of this word, used for the typing line
 	endTime?: number | TimmyTimestamp;

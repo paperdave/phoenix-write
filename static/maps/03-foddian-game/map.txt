@@ -79,11 +79,10 @@ Doesn't know: [32, 02]
 [=]: [33, 8]
 [+]: [33, 17]
 eh-: [33, 17]
-# note here: please split this into multiple lines
-[mx+7b],: [34, 4] {endTime: [35, 7]}
+[mx]+[7b],: [34, 4] {endTime: [35, 7], allowedCharacters: ["+"] }
 
 [PEMDAS]: [36, 11]
-[MY ASS]: [37, 17] {endTime: [38, 13]}
+[MY] [ASS]: [37, 17] {endTime: [38, 13]}
 [idk], I got an english degree.: [40, 7] {endTime: [41, 08]}
 
 [M]aybe it's: [42, 8] {checkpoint}
@@ -147,16 +146,13 @@ quit it.: [1, 16, 2] {endTime: [1, 16, 7]}
 
 [I]'m: [1, 19, 4]
 [t]he: [1, 19, 11]
-[s]e: [1, 19, 22]
--[c]ond: [1, 20, 3]
+[s]e[c]ond: [1, 19, 22]
 [sl]: [1, 20, 7]
 -o: [1, 20, 12]
 - west: [1, 20, 18]
-[p]er: [1, 21, 1]
-[s]on: [1, 21, 6]
+[p]erson: [1, 21, 1]
 [t]o: [1, 21, 12]
-[e]: [1, 21, 17]
-[v]er: [1, 21, 22]
+[ev]er: [1, 21, 17]
 [b]eat: [1, 22, 4]
 [t]he: [1, 22, 10]
 [game?] : [1, 22, 16] {endTime: [1, 23, 06]} 

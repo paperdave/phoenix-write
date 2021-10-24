@@ -5,7 +5,8 @@
 	import { isFocused } from '$lib/isFocused';
 	import { setNextMap } from '$lib/stores';
 
-	import type { LoadedLevel } from '$lib/types';
+	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
+	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
 	import Flares from './_LevelFlares.svelte';
 
@@ -14,13 +15,21 @@
 	let isIntroduction = true;
 	let running = false;
 	let currentWordI = 0;
-
-	function genKeyResults() {
-		return level.words.map((x) => x.missingLetters.map(() => null));
-	}
-	let keyResults: (null | true | string)[][] = genKeyResults();
+	let videoHasLoaded = false;
 
 	const logic = new LevelLogic(level);
+
+	function genKeyResults() {
+		return level.words.map((x) =>
+			x.missingLetters.map((i) => {
+				let index = logic.mapKeyPresses.findIndex(
+					(y) => y.underlyingWord === x && y.key === x.text[i]
+				);
+				return index < logic.currentWord ? true : null;
+			})
+		);
+	}
+	let keyResults: (null | boolean | string)[][] = genKeyResults();
 
 	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
@@ -34,7 +43,7 @@
 	let win = false;
 
 	logic.on('start', () => {
-		videoElem.currentTime = level.words[0].start;
+		videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
 		videoElem.play();
 		keyResults = genKeyResults();
 		running = true;
@@ -44,19 +53,41 @@
 		keyResults[wordIndex][letterIndex] = true;
 	});
 
-	logic.on('lose', ({ tooLate, wordIndex, letterIndex, mistype }) => {
+	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
 		if (!tooLate) {
 			keyResults[wordIndex][letterIndex] = mistype;
 		}
+
+		logic.canPlay = false;
+
 		videoElem.pause();
 		running = false;
+
+		await delay(300);
+
+		let rewindPosition = logic.mapKeyPresses[logic.rewoundWord].underlyingWord.start;
+		let lastTime = performance.now();
+		let speed = 0.5;
+		requestAnimationFrame(function loop(now) {
+			let dt = (now - lastTime) / 1000;
+			speed = Math.min(2, speed + dt * 0.2);
+			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
+			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
+				videoElem.currentTime = rewindPosition;
+				logic.canPlay = true;
+				genKeyResults();
+			} else {
+				requestAnimationFrame(loop);
+			}
+			updateFrame();
+		});
 	});
 
 	logic.on('win', () => {
 		win = true;
-		setTimeout(() => {
-			setNextMap(level);
-		}, 1000);
+		// setTimeout(() => {
+		// 	setNextMap(level);
+		// }, 1000);
 	});
 
 	function updateFrame() {
@@ -93,7 +124,8 @@
 
 		const percent =
 			(videoTime - currentWord.start) /
-			((nextWord?.start || videoElem.duration) - currentWord.start);
+			(parseTimmyTimestamp(nextWord?.start || currentWord.flags.endTime || videoElem.duration) -
+				currentWord.start);
 
 		textRoot.style.setProperty(
 			'transform',
@@ -104,10 +136,14 @@
 	}
 
 	function start() {
+		videoHasLoaded = true;
 		let running = true;
 		function stop() {
 			running = false;
 			videoElem.removeEventListener('pause', stop);
+			if (videoElem.currentTime >= videoElem.duration - 0.1) {
+				setNextMap(level);
+			}
 		}
 
 		videoElem.addEventListener('pause', stop);
@@ -141,16 +177,22 @@
 			playAudio('lose');
 		}
 	});
+
+	let innerW = 0;
+	let innerH = 0;
+	$: innerW * innerH && updateFrame();
 </script>
+
+<svelte:window bind:innerWidth={innerW} bind:innerHeight={innerH} />
 
 <main class:running>
 	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay />
 
-	<div class="bottom-fill" />
-	<div class="marker" />
-	<div class="marker-gradient" />
+	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 bottom-fill" />
+	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 marker" />
+	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 marker-gradient" />
 
-	<div class="text-container">
+	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 text-container">
 		<div class="text" bind:this={textRoot}>
 			{#each level.words as word, i}
 				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
@@ -340,5 +382,40 @@
 			rgba(0, 0, 0, 0.6) 70%,
 			rgba(0, 0, 0, 0) 100%
 		);
+	}
+	.fadein {
+		animation: fadein 1s cubic-bezier(0.215, 0.61, 0.355, 1) both;
+	}
+	.fadeout {
+		animation: fadeoutwin 1s cubic-bezier(0.645, 0.045, 0.355, 1) both;
+	}
+
+	@keyframes fadeoutwin {
+		0% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		80% {
+			opacity: 0;
+		}
+		100% {
+			transform: translateY(calc(var(--unit) * 3));
+		}
+	}
+	@keyframes fadein {
+		0% {
+			transform: translateY(calc(var(--unit) * 3));
+		}
+		20% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	.opacity0 {
+		opacity: 0;
 	}
 </style>
