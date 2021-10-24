@@ -3,6 +3,8 @@
 	it displays <Level/> once the level is loaded.
 -->
 <script lang="ts">
+	import { loadRestAudio } from '$lib/audio';
+
 	import { getMap, getMapList, getMapListNoPromise } from '$lib/map-registry';
 
 	import LoadingScreen from './LoadingScreen.svelte';
@@ -18,6 +20,8 @@
 		loadingPromise.then(async () => {
 			let nextMap = mapList[mapList.findIndex((x) => x.key === key) + 1];
 			getMap(nextMap.key);
+
+			loadRestAudio();
 		});
 	}
 

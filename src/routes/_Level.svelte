@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { loadRestAudio, playAudio } from '$lib/audio';
+
 	import { LevelLogic } from '$lib/input';
+	import { isFocused } from '$lib/isFocused';
 	import { setNextMap } from '$lib/stores';
 
 	import type { LoadedLevel } from '$lib/types';
@@ -22,6 +25,7 @@
 	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
 		URL.revokeObjectURL(videoUrl);
+		logic.destroy();
 	});
 
 	let videoElem: HTMLVideoElement;
@@ -125,6 +129,18 @@
 			logic.tick();
 		});
 	}
+
+	$: if (!$isFocused) {
+		videoElem.pause();
+		logic.emit('lose', { tooLate: true });
+		running = false;
+	}
+
+	logic.on('lose', () => {
+		if ($isFocused) {
+			playAudio('lose');
+		}
+	});
 </script>
 
 <main class:running>

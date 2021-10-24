@@ -125,3 +125,17 @@ export function loadRestAudio() {
 		registerAudio(audio);
 	}
 }
+
+document.addEventListener('visibilitychange', () => {
+	if (document.visibilityState === 'hidden') {
+		// pause music
+		if (currentMusicId) {
+			audioMap.get(currentMusic).pause(currentMusicId);
+		}
+	} else {
+		// resume music
+		if (currentMusicId) {
+			audioMap.get(currentMusic).play(currentMusicId);
+		}
+	}
+});

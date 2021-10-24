@@ -14,6 +14,11 @@
 
 	if (browser) {
 		loadRequiredAudio();
+
+		// this makes it so the videos cant be messed with media keys
+		if ('mediaSession' in navigator) {
+			navigator.mediaSession.playbackState = 'none';
+		}
 	}
 </script>
 

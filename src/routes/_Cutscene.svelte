@@ -6,6 +6,7 @@
 		stopMusic,
 		stopMusicInstant
 	} from '$lib/audio';
+	import { isFocused } from '$lib/isFocused';
 
 	import { setNextMap } from '$lib/stores';
 
@@ -135,6 +136,20 @@
 				unassociate(videoElem).currentTime = pauseTime;
 				done = true;
 			}
+		}
+	}
+
+	$: {
+		if (!$isFocused) {
+			videoElem.pause();
+			function handleUnpause() {
+				if (document.visibilityState === 'visible') {
+					videoElem.play();
+					document.removeEventListener('visibilitychange', handleUnpause);
+				}
+			}
+
+			document.addEventListener('visibilitychange', handleUnpause);
 		}
 	}
 </script>

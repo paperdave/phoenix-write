@@ -147,4 +147,10 @@ export class LevelLogic extends EventEmitter {
 			}
 		}
 	}
+
+	unfocusLoss() {
+		this.emit('lose', {
+			unfocused: true
+		});
+	}
 }
