@@ -130,7 +130,9 @@
 <main class:running>
 	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay />
 
+	<div class="bottom-fill" />
 	<div class="marker" />
+	<div class="marker-gradient" />
 
 	<div class="text-container">
 		<div class="text" bind:this={textRoot}>
@@ -238,6 +240,41 @@
 		position: absolute;
 		left: calc(var(--unit) * 25);
 		bottom: 0;
-		background-color: rgba(0, 255, 0, 0.8);
+		background-color: rgba(200, 255, 200, 0.8);
+	}
+	.marker-gradient {
+		width: calc(var(--unit) * 8);
+		height: calc(var(--unit) * 15);
+		position: absolute;
+		left: calc(var(--unit) * (25 - 4));
+		bottom: 0;
+		background: linear-gradient(
+			90deg,
+			rgba(0, 255, 0, 0) 0%,
+			rgba(0, 255, 0, 0.2) 50%,
+			rgba(0, 255, 0, 0) 100%
+		);
+	}
+	.marker,
+	.marker-gradient {
+		mask-image: linear-gradient(0deg, rgba(255, 255, 255, 1) 90%, rgba(255, 255, 255, 0) 100%);
+		-webkit-mask-image: linear-gradient(
+			0deg,
+			rgba(255, 255, 255, 1) 90%,
+			rgba(255, 255, 255, 0) 100%
+		);
+	}
+	.bottom-fill {
+		position: absolute;
+		width: 100%;
+		height: calc(var(--unit) * 18);
+		bottom: 0;
+		left: 0;
+		background: linear-gradient(
+			0deg,
+			rgba(0, 0, 0, 0.7) 0%,
+			rgba(0, 0, 0, 0.6) 70%,
+			rgba(0, 0, 0, 0) 100%
+		);
 	}
 </style>

@@ -39,7 +39,7 @@ export class LevelLogic extends EventEmitter {
 	}
 
 	handleKeyPress = (event: KeyboardEvent) => {
-		if (event.ctrlKey || event.altKey || event.metaKey) {
+		if (event.ctrlKey || event.altKey || event.metaKey || event.key.length > 1) {
 			return;
 		}
 		event.preventDefault();
