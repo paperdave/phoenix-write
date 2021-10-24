@@ -9,9 +9,7 @@
 	export let currentWordI: number;
 </script>
 
-<main>
-	<!--  -->
-</main>
+<main />
 
 <style>
 	main {

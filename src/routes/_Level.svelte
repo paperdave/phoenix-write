@@ -4,7 +4,7 @@
 
 	import type { LoadedLevel } from '$lib/types';
 	import { onDestroy } from 'svelte';
-	import LevelVisualizations from './_LevelVisualizations.svelte';
+	import Flares from './_LevelFlares.svelte';
 
 	export let level: LoadedLevel;
 
@@ -166,7 +166,7 @@
 		</div>
 	</div>
 
-	<LevelVisualizations {level} {logic} {currentWordI} {keyResults} {win} />
+	<Flares {level} {logic} {currentWordI} {keyResults} {win} />
 </main>
 
 <style>
