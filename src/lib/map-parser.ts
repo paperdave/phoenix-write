@@ -1,4 +1,6 @@
-import type { MapWord, ParsedMap } from './types';
+import type { MapWord, ParsedMap, WordFlags } from './types';
+import { parseTimmyTimestamp } from './types';
+import JSON5 from 'json5';
 
 export function parseMap(map: string): ParsedMap {
 	return {
@@ -22,9 +24,17 @@ function parseSection(section: string): MapWord[] {
 }
 
 function parseWord(word: string): MapWord {
-	let [text, rest] = word.split(':', 2);
-	let [, startTimeText, rest2] = rest.trim().match(/^(\d+\.?\d*)(\s+{.*})?\s*$/);
-	const startTime = parseFloat(startTimeText);
+	let [text, ...rest] = word.split(':');
+	let startTimeText, rest2;
+	try {
+		[, startTimeText, rest2] = rest
+			.join(':')
+			.trim()
+			.match(/^([ \t,\[\]0-9\.]+)(\s+{.*})?\s*$/);
+	} catch (error) {
+		console.log(error);
+	}
+	const startTime = parseTimmyTimestamp(JSON5.parse(startTimeText.replace(/\b0+([0-9]+)/g, '$1')));
 	const flags = rest2 ? parseFlags(rest2) : {};
 	const missingLetters = [];
 	const isWordJoiner = text.startsWith('-');
@@ -53,11 +63,39 @@ function parseWord(word: string): MapWord {
 }
 
 function parseFlags(flags: string) {
-	const result = {};
-	const parts = flags.trim().slice(1, -1).split(',');
-	for (const part of parts) {
-		const [key, value] = part.split(':', 2);
-		result[key.trim()] = value ? JSON.parse(value.trim()) : true;
+	const result: WordFlags = {};
+
+	const flagContents = flags.slice(1, -1);
+
+	let state = 'key';
+	let flagName = '';
+	let flagValue = '';
+	let stack = 0;
+
+	for (const char of flagContents) {
+		if (state === 'key') {
+			if (char === ':') {
+				state = 'value';
+			} else {
+				flagName += char;
+			}
+		} else if (state === 'value') {
+			if (char === '{' || char === '[' || char === '(') {
+				stack++;
+			} else if (char === '}' || char === ']' || char === ')') {
+				stack--;
+			}
+
+			if (stack === 0 && char === ',') {
+				result[flagName] = JSON5.parse(flagValue.replace(/\b0+([0-9]+)/g, '$1'));
+				flagName = '';
+				flagValue = '';
+				state = 'key';
+			} else {
+				flagValue += char;
+			}
+		}
 	}
+
 	return result;
 }

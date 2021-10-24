@@ -8,8 +8,8 @@
 [j]um: [2, 13]
 -ps,: [3, 1]
 
-couple: [3, 9]
-[j]umps.: [3, 9]
+couple: [3, 7]
+[j]umps.: [3, 12]
 
 This one's just a: [3, 23] { endTime: [4, 11] }
 baby: [5, 10]

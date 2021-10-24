@@ -17,6 +17,8 @@
 	}
 	let keyResults: (null | true | string)[][] = genKeyResults();
 
+	console.log(level);
+
 	const logic = new LevelLogic(level);
 
 	const videoUrl = URL.createObjectURL(level.video);
@@ -182,6 +184,14 @@
 		width: 100%;
 		height: 100%;
 		overflow: hidden;
+		mask-image: linear-gradient(to right, transparent 0%, white 10%, white 50%, transparent 90%);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			white 10%,
+			white 50%,
+			transparent 90%
+		);
 	}
 	.text {
 		position: absolute;

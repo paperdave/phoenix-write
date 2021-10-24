@@ -4,11 +4,15 @@
 //
 //
 
-export type TimmyTimestamp = [seconds: number, frames: number];
+export type TimmyTimestamp =
+	| [seconds: number, frames: number]
+	| [minutes: number, seconds: number, frames: number];
 
 export interface WordFlags {
 	// adds a new line after the word for visual purposes
 	newline?: boolean;
+	// specify end of this word, used for the typing line
+	endTime?: number | TimmyTimestamp;
 }
 
 export interface MapMeta {
@@ -112,3 +116,13 @@ export interface LoadedCutscene {
 }
 
 export type LoadedMap = LoadedLevel | LoadedCutscene;
+
+export function parseTimmyTimestamp(t: number | TimmyTimestamp): number {
+	if (typeof t === 'number') {
+		return t;
+	}
+	if (t.length === 2) {
+		return t[0] + t[1] / 24;
+	}
+	return t[0] * 60 + t[1] + t[2] / 24;
+}
