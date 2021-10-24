@@ -26,6 +26,10 @@ export interface CutsceneSubsection {
 	continueText?: string;
 	overrideSFX?: string;
 	flagNextSectionDoesntClear?: boolean;
+	startMusicFade?: string;
+	startMusic?: string;
+	endMusic?: boolean;
+	endMusicFade?: number;
 }
 
 export interface CutsceneKey {

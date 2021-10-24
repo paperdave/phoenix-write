@@ -3,7 +3,7 @@
 	it displays <Level/> once the level is loaded.
 -->
 <script lang="ts">
-	import { getMap } from '$lib/map-registry';
+	import { getMap, getMapList } from '$lib/map-registry';
 
 	import LoadingScreen from './LoadingScreen.svelte';
 	import Cutscene from './_Cutscene.svelte';
@@ -12,6 +12,13 @@
 	export let key: string;
 
 	$: loadingPromise = getMap(key);
+	$: {
+		loadingPromise.then(async () => {
+			const mapList = await getMapList();
+			let nextMap = mapList[mapList.findIndex((x) => x.key === key) + 1];
+			getMap(nextMap.key);
+		});
+	}
 </script>
 
 <main>

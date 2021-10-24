@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { playAudio } from '$lib/audio';
+	import {
+		playAudio,
+		startMusic,
+		startMusicInstant,
+		stopMusic,
+		stopMusicInstant
+	} from '$lib/audio';
 
 	import { setNextMap } from '$lib/stores';
 
@@ -35,6 +41,16 @@
 			videoElem.pause();
 			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120 + 1 / cutscene.fps;
 			videoElem.play();
+
+			if (currentSectionI === 0) {
+				if (cutscene.subsection[0].startMusic) {
+					startMusicInstant(cutscene.subsection[0].startMusic);
+				} else if (cutscene.subsection[0].startMusicFade) {
+					startMusic(cutscene.subsection[0].startMusicFade);
+				} else if (cutscene.bgm) {
+					startMusic(cutscene.bgm);
+				}
+			}
 		}
 		if (!currentSection) {
 			setNextMap(cutscene);
@@ -54,9 +70,20 @@
 		videoElem.addEventListener('pause', stopHandler);
 		videoElem.play();
 
+		let hasFadedOutMusic = false;
+
 		requestAnimationFrame(function loop() {
 			if (!running) return;
 			requestAnimationFrame(loop);
+
+			if (
+				currentSectionI === cutscene.subsection.length - 1 &&
+				videoElem.currentTime >= pauseTime - 1 &&
+				!hasFadedOutMusic
+			) {
+				stopMusic();
+				hasFadedOutMusic = true;
+			}
 
 			if (videoElem.currentTime >= pauseTime - 1 / cutscene.fps) {
 				running = false;
@@ -84,6 +111,20 @@
 
 				if (!currentSection.flagNextSectionDoesntClear) {
 					unassociate(videoElem).currentTime = videoElem.currentTime + 1 / cutscene.fps;
+				}
+
+				let nextSection = cutscene.subsection[currentSectionI + 1];
+				if (nextSection) {
+					let startMusicFade = nextSection.startMusicFade;
+					if (startMusicFade) {
+						startMusic(startMusicFade);
+					} else if (nextSection.startMusic) {
+						startMusicInstant(nextSection.startMusic);
+					} else if (nextSection.endMusicFade) {
+						stopMusic();
+					} else if (nextSection.endMusic) {
+						stopMusicInstant();
+					}
 				}
 
 				setTimeout(() => {
