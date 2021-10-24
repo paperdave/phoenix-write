@@ -198,7 +198,7 @@
 		transform: translateX(calc(var(--unit) * 25));
 		bottom: calc(var(--unit) * 5);
 		font-size: calc(var(--unit) * 4);
-		white-space: nowrap;
+		white-space: pre;
 	}
 	.word {
 		display: inline-flex;
