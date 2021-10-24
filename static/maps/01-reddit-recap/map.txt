@@ -1,17 +1,17 @@
 # hello future generations who see this
 
 [I]t's: 2.65
-time: 2.9059
+time: 2.9059 { newline }
 for: 3.153
 the: 3.3419999
 
 [R]ed: 3.662
--[d]it: 4.357
+-[d]it: 4.357 { newline }
 [R]e: 4.967
 -[c]ap: 5.631
 
 [R]ed: 6.319
--[d]it: 6.67
+-[d]it: 6.67 { newline }
 [R]e: 7.01
 -[c]ap: 7.384
 
@@ -24,5 +24,6 @@ join: 8.708
 -[/]: 9.685
 -[L]ud: 10.34
 -[w]ig: 11.0
+
 [Ahahah]: 11.70
 [grennnnnnnnnnnnn]: 12.70

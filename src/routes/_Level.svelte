@@ -4,12 +4,13 @@
 
 	import type { LoadedLevel } from '$lib/types';
 	import { onDestroy } from 'svelte';
+	import LevelVisualizations from './_LevelVisualizations.svelte';
 
 	export let level: LoadedLevel;
 
 	let isIntroduction = true;
-
 	let running = false;
+	let currentWordI = 0;
 
 	function genKeyResults() {
 		return level.words.map((x) => x.missingLetters.map(() => null));
@@ -59,6 +60,8 @@
 
 		const currentWord = level.words.filter((word) => word.start <= videoTime).pop();
 
+		currentWordI = level.words.indexOf(currentWord);
+
 		if (!currentWord) {
 			let offsetLeft = -100;
 			const wordDom = textRoot.querySelector(`[data-word="0"]`) as HTMLElement;
@@ -68,7 +71,7 @@
 
 			textRoot.style.setProperty(
 				'transform',
-				`translateX(calc(var(--unit) * 50)) translateX(${-(
+				`translateX(calc(var(--unit) * 25)) translateX(${-(
 					offsetLeft +
 					(offsetRight - offsetLeft) * percent
 				)}px)`
@@ -150,6 +153,8 @@
 			{/each}
 		</div>
 	</div>
+
+	<LevelVisualizations {level} {logic} {currentWordI} {keyResults} {win} />
 </main>
 
 <style>
@@ -176,7 +181,7 @@
 	}
 	.text {
 		position: absolute;
-		transform: translateX(calc(var(--unit) * 50));
+		transform: translateX(calc(var(--unit) * 25));
 		bottom: calc(var(--unit) * 5);
 		font-size: calc(var(--unit) * 4);
 		white-space: nowrap;

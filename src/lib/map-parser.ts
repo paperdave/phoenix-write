@@ -7,6 +7,12 @@ export interface MapWord {
 	start: number;
 	isSectionStart: boolean;
 	isWordJoiner: boolean;
+	flags: WordFlags;
+}
+// used for visualization
+export interface WordFlags {
+	// adds a new line after the word for visual purposes
+	newline?: boolean;
 }
 
 export function parseMap(map: string): ParsedMap {
@@ -31,8 +37,10 @@ function parseSection(section: string): MapWord[] {
 }
 
 function parseWord(word: string): MapWord {
-	let [text, start] = word.split(':');
-	const startTime = parseFloat(start);
+	let [text, rest] = word.split(':', 2);
+	let [, startTimeText, rest2] = rest.trim().match(/^(\d+\.?\d*)(\s+{.*})?\s*$/);
+	const startTime = parseFloat(startTimeText);
+	const flags = rest2 ? parseFlags(rest2) : {};
 	const missingLetters = [];
 	const isWordJoiner = text.startsWith('-');
 	if (isWordJoiner) {
@@ -54,6 +62,17 @@ function parseWord(word: string): MapWord {
 		missingLetters,
 		start: startTime,
 		isSectionStart: false,
-		isWordJoiner
+		isWordJoiner,
+		flags
 	};
+}
+
+function parseFlags(flags: string) {
+	const result = {};
+	const parts = flags.trim().slice(1, -1).split(',');
+	for (const part of parts) {
+		const [key, value] = part.split(':', 2);
+		result[key.trim()] = value ? JSON.parse(value.trim()) : true;
+	}
+	return result;
 }

@@ -12,3 +12,13 @@ export function setNextMap(map: LoadedMap | MapMeta) {
 		currentMapId.set(next.key);
 	});
 }
+
+export const totalRewound = writable(0);
+
+export function addToRewoundTime(n: number) {
+	totalRewound.update((t) => t + n);
+}
+
+export function resetRewoundTime() {
+	totalRewound.set(0);
+}
