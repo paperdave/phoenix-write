@@ -72,7 +72,6 @@ export class LevelLogic extends EventEmitter {
 		map.words.forEach((word, w) => {
 			word.missingLetters.forEach((i, j) => {
 				if (i === 0 && w === 0) {
-					console.log('first letter', word.start - PRESS_MARGIN_START);
 					this.introductionEnd = word.start - PRESS_MARGIN_START;
 				}
 				this.mapKeyPresses.push({
