@@ -17,26 +17,33 @@
 	$: containerWidth = isTall ? width : height * (16 / 9);
 	$: containerHeight = isTall ? width * (9 / 16) : height;
 
+	let cancelShake;
+
 	function doShake(shakeIntensity: number, decay1: number, decay: number) {
+		if (cancelShake) cancelShake();
 		let shakeX = 0;
 		let shakeY = 0;
 		let shakeVar = 1;
+		cancelShake = () => (shakeVar = 0);
 		function render() {
+			console.log('x', shakeVar);
 			if (shakeVar >= 0.0001) {
 				shakeVar *= decay1 - decay * shakeVar;
 
 				if (shakeVar >= 0.0001) {
 					shakeX = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
 					shakeY = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
-					console.log(shakeX, shakeY);
-					if (dom) dom.style.transform = `translate(${shakeX}px,${shakeY}px)`;
+					if (dom)
+						dom.style.transform = `translate(calc(var(--unit) * ${
+							shakeX / 10
+						}),calc(var(--unit) * ${shakeY / 10}))`;
 				} else {
-					shakeX = 0;
-					shakeY = 0;
-					if (dom) dom.style.removeProperty('transform');
+					// shakeX = 0;
+					// shakeY = 0;
+					// if (dom) dom.style.removeProperty('transform');
 				}
+				requestAnimationFrame(render);
 			}
-			requestAnimationFrame(render);
 		}
 		render();
 	}
@@ -47,13 +54,17 @@
 	function handleShake2() {
 		doShake(65, 0.99, 0.1);
 	}
-
+	function handleShake3(v: number) {
+		doShake(v * 15, 0.97, 0.22);
+	}
 	shakeeventemitter.on('shake', handleShake);
 	shakeeventemitter.on('shake2', handleShake2);
+	shakeeventemitter.on('shake3', handleShake3);
 
 	onDestroy(() => {
 		shakeeventemitter.off('shake', handleShake);
 		shakeeventemitter.off('shake2', handleShake2);
+		shakeeventemitter.off('shake3', handleShake3);
 	});
 </script>
 

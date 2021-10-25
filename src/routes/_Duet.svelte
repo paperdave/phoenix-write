@@ -5,6 +5,7 @@
  -->
 <script lang="ts">
 	import { DuetLevelLogic } from '$lib/duet_fork';
+	import { setScreenshake, setScreenshake2, setScreenshakeVariable } from '$lib/screenshake';
 
 	import { setNextMap } from '$lib/stores';
 
@@ -20,6 +21,8 @@
 	let currentWordLudI = 0;
 	let videoHasLoaded = false;
 	let shift = 0;
+
+	let lastssword = 0;
 
 	let mangoing = false;
 
@@ -148,6 +151,11 @@
 				)}px)`
 			);
 			return;
+		}
+
+		if (currentWordQT.flags.shake && lastssword !== currentWordQTI) {
+			lastssword = currentWordQTI;
+			setScreenshakeVariable(currentWordQT.flags.shake);
 		}
 
 		const currentWordIndexQT = level.wordsQt.indexOf(currentWordQT);
