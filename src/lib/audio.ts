@@ -1,3 +1,4 @@
+import { browser } from '$app/env';
 import { Howl } from 'howler';
 import { delay } from './utils';
 
@@ -129,16 +130,18 @@ export function loadRestAudio() {
 	}
 }
 
-document.addEventListener('visibilitychange', () => {
-	if (document.visibilityState === 'hidden') {
-		// pause music
-		if (currentMusicId) {
-			audioMap.get(currentMusic).pause(currentMusicId);
+if (browser) {
+	document.addEventListener('visibilitychange', () => {
+		if (document.visibilityState === 'hidden') {
+			// pause music
+			if (currentMusicId) {
+				audioMap.get(currentMusic).pause(currentMusicId);
+			}
+		} else {
+			// resume music
+			if (currentMusicId) {
+				audioMap.get(currentMusic).play(currentMusicId);
+			}
 		}
-	} else {
-		// resume music
-		if (currentMusicId) {
-			audioMap.get(currentMusic).play(currentMusicId);
-		}
-	}
-});
+	});
+}

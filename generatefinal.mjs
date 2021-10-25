@@ -1,8 +1,10 @@
-import type { RequestHandler } from '@sveltejs/kit';
-import { readdir, readFile, readJson } from 'fs-extra';
+// GENERATES FINAL THING
+import fajds from 'fs-extra';
 import JSON5 from 'json5';
 
-export const get: RequestHandler = async ({}) => {
+const { readdir, readFile, readJson, writeJsonSync } = fajds;
+
+export const get = async ({}) => {
 	const maps = await readdir('static/maps');
 
 	const allData = (
@@ -21,3 +23,7 @@ export const get: RequestHandler = async ({}) => {
 		}
 	};
 };
+
+get({}).then((x) => {
+	writeJsonSync('build/maps.json', x.body);
+});

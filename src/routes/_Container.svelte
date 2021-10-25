@@ -84,10 +84,10 @@
 	.inner {
 		position: absolute;
 		overflow: hidden;
-		cursor: url('/cursor.png'), auto;
+		cursor: url('./cursor.png'), auto;
 	}
 	.inner :global(a) {
-		cursor: url('/cursor-red.png'), auto;
+		cursor: url('./cursor-red.png'), auto;
 	}
 	.shakebase {
 		position: relative;
