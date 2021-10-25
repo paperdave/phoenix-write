@@ -7,7 +7,7 @@ const levelMetadata = new Map<string, MapMeta>();
 const loadedLevels = new Map<string, LoadedMap>();
 
 async function fetchLevelMetadata() {
-	const response = await fetch('./get-map-list');
+	const response = await fetch('./maps.json');
 	const metadata = await response.text();
 	return JSON5.parse(metadata);
 }
