@@ -2,6 +2,10 @@
 	font-family: Carlito;
 	src: url(./carlito-bold.ttf);
 }
+@font-face {
+	font-family: Rapper;
+	src: url(./AlfaSlabOne-Regular.ttf);
+}
 
 body {
 	margin: 0;

@@ -29,7 +29,11 @@ export function playAudio(audio: string) {
 	const howl = audioMap.get(audio);
 	if (howl) {
 		let soundid = howl.play();
-		howl.volume(1, soundid);
+		let v = 1;
+		if (audio === 'falling') {
+			v = 0.9;
+		}
+		howl.volume(v, soundid);
 	} else {
 		console.warn(`Audio ${audio} not found`);
 	}
@@ -122,11 +126,22 @@ export function loadRestAudio() {
 		'wronghit',
 		'boyscorrect',
 		'correctpluck',
-		'questionmark'
+		'questionmark',
+		'boyscorrect',
+		'screwup',
+		'falling',
+		'seriousBusinessSlapNoise'
 	];
 
 	for (const audio of audioList) {
 		registerAudio(audio);
+	}
+}
+
+export function stopFallingAudio() {
+	const audio = audioMap.get('falling');
+	if (audio) {
+		audio.stop();
 	}
 }
 

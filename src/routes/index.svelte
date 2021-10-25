@@ -65,30 +65,3 @@
 		<LevelLoader key={$currentMapId} />
 	{/if}
 </Container>
-
-<style>
-	:global {
-		@font-face {
-			font-family: Carlito;
-			src: url(/carlito-bold.ttf);
-		}
-
-		body {
-			margin: 0;
-			background-color: black;
-			color: white;
-			font-family: Carlito;
-			font-weight: bold;
-		}
-
-		a {
-			color: red;
-		}
-		a:visited {
-			color: red;
-		}
-		a:active {
-			color: yellow;
-		}
-	}
-</style>

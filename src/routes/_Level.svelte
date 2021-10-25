@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { loadRestAudio, playAudio } from '$lib/audio';
+	import { loadRestAudio, playAudio, stopFallingAudio } from '$lib/audio';
 
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
@@ -65,19 +65,29 @@
 		videoElem.pause();
 		running = false;
 
+		if ($isFocused) {
+			playAudio('screwup');
+		}
+
 		await delay(300);
+
+		if ($isFocused) {
+			playAudio('falling');
+		}
 
 		let rewindPosition = logic.mapKeyPresses[logic.rewoundWord].underlyingWord.start;
 		let lastTime = performance.now();
 		let speed = 0.5;
+
 		requestAnimationFrame(function loop(now) {
 			let dt = (now - lastTime) / 1000;
-			speed = Math.min(2, speed + dt * 0.2);
+			speed = Math.min(2, speed + dt * 0.1);
 			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
 			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;
 				keyResults = genKeyResults();
+				stopFallingAudio();
 				playAudio('fall');
 			} else {
 				requestAnimationFrame(loop);

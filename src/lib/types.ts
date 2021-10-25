@@ -89,6 +89,8 @@ export interface CutsceneSubsection {
 	heartFlag: TimmyTimestamp;
 	// OPTIONAL
 	shake: TimmyTimestamp;
+	// OPTIONAL
+	playqtslap: TimmyTimestamp;
 }
 
 export interface CutsceneKey {
@@ -96,6 +98,8 @@ export interface CutsceneKey {
 	key: string;
 	// when to press it relative to entire video
 	time: TimmyTimestamp;
+	// position
+	pos: [number, number];
 }
 
 //

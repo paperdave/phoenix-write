@@ -7,7 +7,7 @@
 		stopMusicInstant
 	} from '$lib/audio';
 	import { isFocused } from '$lib/isFocused';
-	import { setScreenshake2 } from '$lib/screenshake';
+	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
 
 	const PRESS_MARGIN_END = 0.3;
 	const PRESS_MARGIN_START = 0.4;
@@ -24,6 +24,33 @@
 	let lost = false;
 
 	const boysString = 'bbbbbbooooooyyyyyysssssss';
+	const sounds = [
+		'b0',
+		'b0',
+		'b0',
+		'b0',
+		'b0',
+		'b1',
+		'b1',
+		'b1',
+		'b1',
+		'b1',
+		'b2',
+		'b2',
+		'b2',
+		'b2',
+		'b2',
+		'b3',
+		'b3',
+		'b3',
+		'b3',
+		'b3',
+		'b6',
+		'b6',
+		'b7',
+		'b8',
+		'boyscorrect'
+	];
 
 	let boysIndex = 0;
 	let boysWon = false;
@@ -37,7 +64,7 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 0;
+	let currentSectionI = 9;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
@@ -99,12 +126,13 @@
 				setScreenshake2();
 			}
 			if (
-				currentSection.pl &&
+				currentSection.playqtslap &&
 				!slap &&
-				videoElem.currentTime > parseTimmyTimestamp(currentSection.shake)
+				videoElem.currentTime > parseTimmyTimestamp(currentSection.playqtslap)
 			) {
-				didshake = true;
-				setScreenshake2();
+				slap = true;
+				setScreenshake();
+				playAudio('seriousBusinessSlapNoise');
 			}
 
 			if (
@@ -262,9 +290,9 @@
 			let requiredKey = boysString.charAt(boysIndex);
 			if (event.key === requiredKey) {
 				boysIndex++;
+				playAudio(sounds[boysIndex]);
 				if (boysIndex === boysString.length) {
 					boysWon = true;
-					playAudio('correctpluck');
 				}
 			}
 		}
@@ -288,18 +316,20 @@
 
 	export function lose() {
 		lost = true;
-		stopMusicInstant();
 		videoElem.pause();
 		unassociate(videoElem).currentTime = parseTimmyTimestamp(currentSection.keys[keyIndex].time);
 
 		if (currentSection.isBussinB) {
 			playAudio('doomedfarewell');
+			stopMusicInstant();
 			setTimeout(() => {
 				isFadeToWhite = true;
 			}, 500);
 			setTimeout(() => {
 				currentMapId.set('01-reddit-recap');
 			}, 1500);
+		} else {
+			playAudio('screwup');
 		}
 	}
 </script>
