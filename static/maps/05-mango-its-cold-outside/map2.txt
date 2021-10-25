@@ -1,0 +1,252 @@
+#Please preserve the linebreaks, as they correspond to parts between files.
+
+
+
+
+
+-: [8, 02] {sanity}
+Ba: [8, 17]
+-by: [8, 23]
+it's: [9, 03]
+cold: [9, 9]
+out: [9, 16]
+-side.: [9, 21]
+-:  [10 18] {sanity}
+
+
+
+
+Ba: [12, 7] {sanity}
+-by,: [12, 17]
+it's: [12, 22]
+cold: [13, 6]
+out: [13, 23]
+-side.: [14, 4]
+-: [15, 6] {sanity}
+
+
+
+-: [16, 12] {sanity}
+Been: [16, 18]
+ho: [17, 1]
+-ping: [17, 7]
+that: [17, 10]
+you: [17, 14]
+drop: [18, 3] {sanity}
+in.: [18, 7]
+
+-: [19, 4]
+
+I'll: [20, 1]
+hold: [20, 18] {sanity}
+your: [21, 9]
+hands;: [21, 16]
+they're: [22, 14]
+just: [22, 20]
+like: [23, 8] 
+
+ice.: [23, 21] {sanity}
+
+
+
+-: [25, 12] {sanity}
+Beau: [26, 0] {sanity}
+-ti: [26, 9] {sanity}
+-ful,: [26, 13]
+what's: [27, 1]
+your: [27, 13]
+
+hur: [28, 2] {sanity}
+-ry?: [28, 9] {sanity}
+
+-: [28, 22] {sanity}
+
+
+
+Lis: [29, 21] {sanity}
+-ten: [30, 10]
+to: [30, 16] {sanity}
+the: [30, 22]
+fire: [31, 4]
+-place: [31, 19]
+roar.: [32, 7] {sanity}
+
+
+
+
+Beau: [34, 3]
+
+
+-ti: [34, 17]
+-ful,: [34, 22]
+please: [35, 11] {sanity}
+don't: [36, 0]
+
+hur: [36, 12] {sanity}
+-ry.: [36, 20] {sanity}
+
+
+
+
+
+I'll: [38, 8] {sanity}
+put: [38, 12]
+some: [38, 19]
+re: [39, 2]
+-cor: [39, 10]
+-ds on: [39, 14]
+while: [39, 23]
+I: [40, 5]
+pour.: [40, 13]
+
+
+
+
+Baby,: [42, 8] {sanity}
+it's: [14, 16]
+bad: [43, 5]
+out: [43, 12]
+there.: [44, 1]
+-: [44, 10] {sanity}
+
+
+
+No : [45, 19]
+cabs :  [46, 0] {sanity}
+to : [46, 15] {sanity}
+be : [46, 18]
+had : [47, 1]
+out : [47, 10]
+there. : [47, 19]
+-: [48, 03] {sanity}
+
+
+
+Your : [50, 1]
+eyes : [50, 5] {sanity}
+are : [50, 16]
+like : [51, 16]
+s : [51, 03]
+-tar : [51, 7]
+-light : [51, 18] {sanity}
+now. : [52, 2]
+
+
+
+I'll : [53, 15]
+take : [54, 11]
+your : [55, 1]
+hat. : [55, 8]
+-: [55, 14]
+Your : [56, 7]
+hair : [56, 13]
+looks : [57, 1]
+swell.: [57, 12] { sanity }
+
+
+
+
+Mind: [59, 12]
+
+if : [59, 23]
+
+I : [1, 0, 6]
+move : [1, 0, 17]
+in : [1, 1, 6]
+c : [1, 1, 14] { sanity }
+-loser? : [1, 1, 19] {sanity}
+
+
+
+-: [1, 2, 19] {sanity}
+
+
+What's :  [1, 3, 16] {sanity}
+the : [1, 4, 4]
+sense : [1, 4, 9]
+of : [1, 4, 19]
+hurting : [1, 4, 23]
+my : [1, 5, 11]
+pride? : [1, 5, 18] {sanity}
+
+
+
+-: [1, 7, 1]
+Ba:  [1, 7, 18]
+by,: [1, 7, 23]
+don't : [1, 8, 3]
+hold : [1, 8, 9]
+out. : [1, 8, 21]
+-: [1, 9, 3] { sanity }
+
+
+
+
+The : [1, 11, 14] {sanity}
+vari: [1, 11, 21] {sanity}
+a: [1, 12, 6] {sanity}
+tions: [1, 12, 11]
+are: [1, 12, 18]
+in: [1, 12,22.5]
+s: [1, 13, 2]
+ane.: [1, 13, 9] {sanity}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[ba] : [2, 24, 22] { sanity }
+-by : [ 2, 25, 8] { sanity }
+[i]ts: [2, 25, 12] { sanity }
+c[o]o[o]o[o]o[o]o[o]o[o]o[o]o[o]o[l]d: [2, 25, 20] { sanity }
+
+ba: [2, 28, 2] { sanity }
+-[by]: [2, 28, 11] { sanity }
+its: [2, 28, 15] { sanity }
+[cold]: [2, 28, 23] { sanity }
+out: [2, 29, 10] { sanity }
+-[s]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]d[e]: [2, 29, 23] { sanity }
+-: [2, 34, 1] { sanity}
