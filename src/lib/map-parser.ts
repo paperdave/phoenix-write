@@ -2,6 +2,8 @@ import type { MapWord, ParsedMap, WordFlags } from './types';
 import { parseTimmyTimestamp } from './types';
 import JSON5 from 'json5';
 
+let isRapper = false;
+
 export function parseMap(map: string): ParsedMap {
 	return {
 		words: map
@@ -47,13 +49,19 @@ function parseWord(word: string): MapWord {
 		}
 		actualIndex++;
 	}
+	if (flags.replacingQTCinderellaTheRapperLudwigHiredOnFiverOneYearAgoStartsRappingHere) {
+		isRapper = true;
+	} else if (flags.replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere) {
+		isRapper = false;
+	}
 	return {
 		text: text.replace(/\[|\]/g, ''),
 		missingLetters,
 		start: startTime,
 		isSectionStart: false,
 		isWordJoiner,
-		flags
+		flags,
+		isRapperStyle: isRapper
 	};
 }
 

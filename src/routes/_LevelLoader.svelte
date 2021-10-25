@@ -5,12 +5,13 @@
 <script lang="ts">
 	import { loadRestAudio } from '$lib/audio';
 
-	import { getMap, getMapList, getMapListNoPromise } from '$lib/map-registry';
+	import { getMap, getMapListNoPromise } from '$lib/map-registry';
 
 	import LoadingScreen from './_LoadingScreen.svelte';
 	import Cutscene from './_Cutscene.svelte';
 	import Level from './_Level.svelte';
 	import { delay } from '$lib/utils';
+	import Duet from './_Duet.svelte';
 
 	export let key: string;
 
@@ -41,6 +42,8 @@
 			<Level level={loadedMap} />
 		{:else if loadedMap.type === 'cutscene'}
 			<Cutscene cutscene={loadedMap} />
+		{:else if loadedMap.type === 'duet'}
+			<Duet level={loadedMap} />
 		{/if}
 	{/await}
 </main>

@@ -38,7 +38,7 @@ export interface MapMeta {
 	// display name
 	name: string;
 	// type of map
-	type: 'map' | 'cutscene';
+	type: 'map' | 'cutscene' | 'duet';
 	// background color of the FIRST frame, used on loading
 	background: string;
 	// background image number
@@ -91,6 +91,8 @@ export interface CutsceneSubsection {
 	shake: TimmyTimestamp;
 	// OPTIONAL
 	playqtslap: TimmyTimestamp;
+	// OPTIONAL
+	'hardcoded flag Autoplay Only once. but this flag only is supported on this subsection and it wont work properly on any other sections': boolean;
 }
 
 export interface CutsceneKey {
@@ -118,6 +120,7 @@ export interface MapWord {
 	start: number;
 	isSectionStart: boolean;
 	isWordJoiner: boolean;
+	isRapperStyle?: boolean;
 	flags: WordFlags;
 }
 
@@ -126,6 +129,15 @@ export interface LoadedLevel {
 	key: string;
 	meta: MapMeta;
 	words: ParsedMap['words'];
+	video: Blob;
+}
+
+export interface LoadedDuet {
+	type: 'duet';
+	key: string;
+	meta: MapMeta;
+	wordsLud: ParsedMap['words'];
+	wordsQt: ParsedMap['words'];
 	video: Blob;
 }
 
@@ -140,7 +152,7 @@ export interface LoadedCutscene {
 	video: Blob;
 }
 
-export type LoadedMap = LoadedLevel | LoadedCutscene;
+export type LoadedMap = LoadedLevel | LoadedCutscene | LoadedDuet;
 
 export function parseTimmyTimestamp(t: number | TimmyTimestamp): number {
 	if (typeof t === 'number') {

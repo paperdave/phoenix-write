@@ -56,7 +56,7 @@
 			// It sounded like a... slight winny.
 			"begin": [13, 1],
 			"overrideSFX": "questionmark",
-			"stopMusic": true
+			"endMusic": true
 		},
 		
 		{
@@ -85,6 +85,8 @@
 			// Silence.	What makes viewer think 84%-likelihood-HE
 			// should be deemed worthy of such an honor?
 			"begin": [22, 14],
+			"unskippable": true,
+			"autoplay": true,
 			"keys": [
 				{
 					"key": "%",
@@ -92,6 +94,10 @@
 					"pos": [1246, 799]
 				}
 			]	
+		},
+
+		{
+			"begin": [26, 21],
 		},
 
 		{
@@ -143,7 +149,8 @@
 				},
 				{
 					"key": "m",
-					"time": [694.5, 875.5]
+					"time": [39, 16],
+					"pos": [694.5, 875.5]
 				}
 			]
 		},
@@ -153,12 +160,13 @@
 			"begin": [39, 23],
 			"playqtslap": [40, 2],
 			"unskippable": true,
-			"autoplay": true
+			"autoplay": true,
+			"hardcoded flag Autoplay Only once. but this flag only is supported on this subsection and it wont work properly on any other sections": true
 		},
 
 		{
 			// What was that for? I have a hole in my chest, not my damn 💖!
-			"begin": [42, 1],
+			"begin": [40, 16],
 			"heartFlag":[45, 15],
 			"coords": [1381, 871.5]
 		},

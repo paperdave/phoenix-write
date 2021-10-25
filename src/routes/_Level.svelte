@@ -184,7 +184,7 @@
 
 	logic.on('lose', () => {
 		if ($isFocused) {
-			playAudio('wronghit');
+			playAudio('screwup');
 			setScreenshake();
 		}
 	});
@@ -207,12 +207,6 @@
 		<div class="text" bind:this={textRoot}>
 			{#each level.words as word, i}
 				<span class="word" class:section-start={word.isSectionStart && i !== 0} data-word={i}>
-					{#if word.flags.checkpoint}
-						<div class="checkpoint-container">
-							<div class="checkpoint-marker" />
-							<div class="checkpoint-marker-gradient" />
-						</div>
-					{/if}
 					{#if i !== 0 && !word.isWordJoiner}
 						<span class="space">&nbsp;</span>
 					{/if}

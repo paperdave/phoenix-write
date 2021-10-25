@@ -4,7 +4,7 @@ import { delay } from './utils';
 
 const audioMap = new Map<string, Howl>();
 
-const MUSIC_VOLUME = 0.2;
+const MUSIC_VOLUME = 1;
 
 export function registerAudio(audio: string) {
 	if (audioMap.has(audio)) {
@@ -30,9 +30,6 @@ export function playAudio(audio: string) {
 	if (howl) {
 		let soundid = howl.play();
 		let v = 1;
-		if (audio === 'falling') {
-			v = 0.9;
-		}
 		howl.volume(v, soundid);
 	} else {
 		console.warn(`Audio ${audio} not found`);
@@ -123,7 +120,6 @@ export function loadRestAudio() {
 		'b8',
 		'doomedfarewell',
 		'fall',
-		'wronghit',
 		'boyscorrect',
 		'correctpluck',
 		'questionmark',

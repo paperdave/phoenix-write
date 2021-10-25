@@ -39,7 +39,8 @@
 		{
 			// Good luck!
 			"begin": [8, 3],
-			"continueText": "(Press space to start the <em>real</em> game)"
+			// see GAME DEV WISHLIST FOR WHY THIS IS REMOVED
+			// "continueText": "(Press space to start the <em>real</em> game)"
 		},
 		
 		{

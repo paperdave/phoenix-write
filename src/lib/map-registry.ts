@@ -1,7 +1,7 @@
 import JSON5 from 'json5';
 import { canPlayVP9 } from './compatibility';
 import { parseMap } from './map-parser';
-import type { Cutscene, CutsceneSubsection, LoadedMap, MapMeta } from './types';
+import type { Cutscene, CutsceneSubsection, LoadedDuet, LoadedMap, MapMeta } from './types';
 
 const levelMetadata = new Map<string, MapMeta>();
 const loadedLevels = new Map<string, LoadedMap>();
@@ -42,6 +42,20 @@ async function fetchLevel(meta: MapMeta) {
 			words: parseMap(results[0]).words,
 			video: results[1]
 		} as LoadedMap;
+	} else if (meta.type === 'duet') {
+		const results = await Promise.all([
+			fetch(`./maps/${key}/map2.txt`).then((x) => x.text()),
+			fetch(`./maps/${key}/map1.txt`).then((x) => x.text()),
+			video
+		]);
+		return {
+			type: 'duet',
+			key,
+			meta,
+			wordsLud: parseMap(results[0]).words,
+			wordsQt: parseMap(results[1]).words,
+			video: results[2]
+		} as LoadedDuet;
 	} else if (meta.type === 'cutscene') {
 		const results = await Promise.all([
 			fetch(`./maps/${key}/cutscene.json`)

@@ -9,8 +9,8 @@
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
 
-	const PRESS_MARGIN_END = 0.3;
-	const PRESS_MARGIN_START = 0.4;
+	const PRESS_MARGIN_END = 0.15;
+	const PRESS_MARGIN_START = 0.15;
 
 	import { currentMapId, setNextMap } from '$lib/stores';
 
@@ -23,13 +23,13 @@
 
 	let lost = false;
 
+	let didAutoPlayOnce = false;
+
 	const boysString = 'bbbbbbooooooyyyyyysssssss';
 	const sounds = [
 		'b0',
 		'b0',
 		'b0',
-		'b0',
-		'b0',
 		'b1',
 		'b1',
 		'b1',
@@ -39,14 +39,17 @@
 		'b2',
 		'b2',
 		'b2',
-		'b2',
 		'b3',
 		'b3',
 		'b3',
 		'b3',
-		'b3',
+		'b4',
+		'b4',
+		'b5',
+		'b5',
 		'b6',
 		'b6',
+		'b7',
 		'b7',
 		'b8',
 		'boyscorrect'
@@ -64,13 +67,13 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 9;
+	let currentSectionI = 0;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
 			? parseTimmyTimestamp(cutscene.subsection[currentSectionI].end)
 			: currentSectionI === cutscene.subsection.length - 1
-			? videoElem.duration
+			? videoElem?.duration
 			: parseTimmyTimestamp(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120
 		: 0;
 
@@ -144,16 +147,16 @@
 					videoElem.currentTime >=
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
 				) {
-					lose();
+					lose(parseTimmyTimestamp(currentSection.keys[keyIndex].time));
 				}
 			}
 
 			if (
 				currentSection.heartFlag &&
 				!heartWon &&
-				videoElem.currentTime > parseTimmyTimestamp(currentSection.heartFlag) + 0.5
+				videoElem.currentTime > parseTimmyTimestamp(currentSection.heartFlag)
 			) {
-				lose();
+				lose(parseTimmyTimestamp(currentSection.heartFlag));
 			}
 
 			if (
@@ -171,6 +174,16 @@
 				videoElem.pause();
 				unassociate(videoElem).currentTime = pauseTime;
 				if (currentSection.autoplay) {
+					if (
+						currentSection[
+							'hardcoded flag Autoplay Only once. but this flag only is supported on this subsection and it wont work properly on any other sections'
+						]
+					) {
+						if (didAutoPlayOnce) {
+							return;
+						}
+						didAutoPlayOnce = true;
+					}
 					currentSectionI++;
 				}
 			}
@@ -314,10 +327,12 @@
 
 	let isFadeToWhite = false;
 
-	export function lose() {
+	export function lose(time?: number) {
 		lost = true;
 		videoElem.pause();
-		unassociate(videoElem).currentTime = parseTimmyTimestamp(currentSection.keys[keyIndex].time);
+
+		unassociate(videoElem).currentTime =
+			time ?? parseTimmyTimestamp(currentSection.keys[keyIndex].time) ?? videoElem.currentTime;
 
 		if (currentSection.isBussinB) {
 			playAudio('doomedfarewell');
@@ -330,6 +345,22 @@
 			}, 1500);
 		} else {
 			playAudio('screwup');
+			setTimeout(() => {
+				isFadeToWhite = true;
+			}, 500);
+			setTimeout(() => {
+				isFadeToWhite = false;
+				slap = false;
+				boysIndex = 0;
+				boysWon = false;
+				heartBuffer = '';
+				heartWon = false;
+				keyIndex = 0;
+				lost = false;
+				done = false;
+				currentSectionI = Math.max(0, currentSectionI - 1);
+				currentSection = cutscene.subsection[currentSectionI];
+			}, 1500);
 		}
 	}
 </script>
@@ -337,17 +368,17 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
-{#if done && !hasPressedSpace && !currentSection.autoplay}
+{#if done && !hasPressedSpace}
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
 		{@html currentSection.continueText ?? '(Press space to continue)'}
 	</div>
 {/if}
 
 {#if isFadeToWhite}
-	<div class="fade-to-white" in:fade={{ duration: 500 }} />
+	<div class="fade-to-white" transition:fade={{ duration: 500 }} />
 {/if}
 
-{#if currentSection.theBoys}
+{#if currentSection && currentSection.theBoys}
 	<div class="THEBOYS">
 		{#each boysString as char, i}
 			<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
