@@ -28,6 +28,8 @@
 	let boysIndex = 0;
 	let boysWon = false;
 
+	let slap = false;
+
 	function dependOn(...args: unknown[]) {}
 	function unassociate<T>(arg: T) {
 		return arg;
@@ -35,7 +37,7 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 9;
+	let currentSectionI = 0;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
@@ -96,6 +98,15 @@
 				didshake = true;
 				setScreenshake2();
 			}
+			if (
+				currentSection.pl &&
+				!slap &&
+				videoElem.currentTime > parseTimmyTimestamp(currentSection.shake)
+			) {
+				didshake = true;
+				setScreenshake2();
+			}
+
 			if (
 				currentSection.keys &&
 				currentSection.keys.length &&
