@@ -1,12 +1,5 @@
-- top ui bit as pngs for different states
-- remove the darkened gradient thing cause imma add it in code because i feel like it
-- All videos in WEBM VP9 codec
-- rewind sound
-- correct cutscene key sound
+- ending cutscene or screen. whatever time allows
 - reddit recap top ui, start the progress bar AFTER he says pussy
-- fix the foddian file including the cutscene
-- content aware fill the "its time for the" in reddit recap.
-  - this is definetly gonna be hard to pull off and this might help
-    https://www.youtube.com/watch?v=25ltIoHtiO4
 - TITLE SCREEN! (photo/video/etc)
-- a click button sound :)
+- record scratch / buzzer sound. combine this with rewind that plays like 150ms into the sound
+  and goes for 5 seconds. name it "fail"

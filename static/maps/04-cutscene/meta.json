@@ -2,5 +2,6 @@
   "name": "Free Will Is A Hoax!",
   "type": "cutscene",
   "background": "white",
+  "backgroundImage": "3",
   "disabled": false
 }

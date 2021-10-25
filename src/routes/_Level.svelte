@@ -20,6 +20,7 @@
 	const logic = new LevelLogic(level);
 
 	function genKeyResults() {
+		console.log('genkeyresults', logic.currentWord);
 		return level.words.map((x) =>
 			x.missingLetters.map((i) => {
 				let index = logic.mapKeyPresses.findIndex(
@@ -75,7 +76,8 @@
 			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;
-				genKeyResults();
+				keyResults = genKeyResults();
+				playAudio('fall');
 			} else {
 				requestAnimationFrame(loop);
 			}
@@ -85,9 +87,6 @@
 
 	logic.on('win', () => {
 		win = true;
-		// setTimeout(() => {
-		// 	setNextMap(level);
-		// }, 1000);
 	});
 
 	function updateFrame() {
@@ -174,7 +173,7 @@
 
 	logic.on('lose', () => {
 		if ($isFocused) {
-			playAudio('lose');
+			playAudio('wronghit');
 		}
 	});
 

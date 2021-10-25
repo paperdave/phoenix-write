@@ -3,11 +3,11 @@ import EventEmitter from 'eventemitter3';
 import type { LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
-const WORD_PENALTY = 6;
+export const WORD_PENALTY = 6;
 
-const PRESS_MARGIN_START = 0.3;
-const PRESS_MARGIN_END = 0.65;
-const LETTER_EXTRA_TIME = 0.1;
+export const PRESS_MARGIN_START = 0.3;
+export const PRESS_MARGIN_END = 0.65;
+export const LETTER_EXTRA_TIME = 0.1;
 
 export interface KeyPress {
 	key: string;

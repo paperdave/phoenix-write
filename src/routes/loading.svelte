@@ -3,7 +3,7 @@
 </script>
 
 <script>
-	import LoadingScreen from './LoadingScreen.svelte';
+	import LoadingScreen from './_LoadingScreen.svelte';
 	import Container from './_Container.svelte';
 </script>
 

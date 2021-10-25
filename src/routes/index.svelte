@@ -15,6 +15,13 @@
 	if (browser) {
 		loadRequiredAudio();
 
+		// global in case some garbage collector throws the images away
+		(window as any).globalImages = [0, 1, 2, 3, 4].map((n) => {
+			const img = new Image();
+			img.src = `./loadingframes/load${n}.png`;
+			return img;
+		});
+
 		// this makes it so the videos cant be messed with media keys
 		if ('mediaSession' in navigator) {
 			navigator.mediaSession.playbackState = 'none';

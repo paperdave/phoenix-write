@@ -8,16 +8,16 @@
 			// seemed relevant to the prompt.
 			"begin": [0, 0],
 			"unskippable": true,
-			"keys": [
-				{
-					"key": "s",
-					"time": [6, 10]
-				},
-				{
-					"key": "o",
-					"time": [7, 7]
-				}
-			]
+			// "keys": [
+			// 	{
+			// 		"key": "s",
+			// 		"time": [6, 10]
+			// 	},
+			// 	{
+			// 		"key": "o",
+			// 		"time": [7, 7]
+			// 	}
+			// ]
 		},
 
 		{
@@ -31,20 +31,20 @@
 			// Buckle up, viewer, 'cause we still got a long way to--
 			"unskippable": true,
 			"begin": [8, 19],
-			"keys": [
-				{
-					"key": "a",
-					"time": [11, 8]
-				},
-				{
-					"key": "s",
-					"time": [11, 10]
-				},
-				{
-					"key": "s",
-					"time": [11, 20]
-				}
-			]				
+			// "keys": [
+			// 	{
+			// 		"key": "a",
+			// 		"time": [11, 8]
+			// 	},
+			// 	{
+			// 		"key": "s",
+			// 		"time": [11, 10]
+			// 	},
+			// 	{
+			// 		"key": "s",
+			// 		"time": [11, 20]
+			// 	}
+			// ]				
 		},
 
 

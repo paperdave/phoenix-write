@@ -7,15 +7,19 @@
 
 	import { getMap, getMapList, getMapListNoPromise } from '$lib/map-registry';
 
-	import LoadingScreen from './LoadingScreen.svelte';
+	import LoadingScreen from './_LoadingScreen.svelte';
 	import Cutscene from './_Cutscene.svelte';
 	import Level from './_Level.svelte';
+	import { delay } from '$lib/utils';
 
 	export let key: string;
 
 	let mapList = getMapListNoPromise();
 
-	$: loadingPromise = getMap(key);
+	$: loadingPromise = getMap(key).then(async (x) => {
+		await delay(10);
+		return x;
+	});
 	$: {
 		loadingPromise.then(async () => {
 			let nextMap = mapList[mapList.findIndex((x) => x.key === key) + 1];
@@ -26,11 +30,12 @@
 	}
 
 	$: color = mapList.find((x) => x.key === key).background;
+	$: imageId = mapList.find((x) => x.key === key).backgroundImage;
 </script>
 
 <main style="background:{color}">
 	{#await loadingPromise}
-		<LoadingScreen {color} />
+		<LoadingScreen {color} {imageId} />
 	{:then loadedMap}
 		{#if loadedMap.type === 'map'}
 			<Level level={loadedMap} />

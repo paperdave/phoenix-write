@@ -8,21 +8,23 @@
 	} from '$lib/audio';
 	import { isFocused } from '$lib/isFocused';
 
-	import { setNextMap } from '$lib/stores';
+	const PRESS_MARGIN_END = 0.2;
+	const PRESS_MARGIN_START = 0.2;
 
-	import type { LoadedCutscene, TimmyTimestamp } from '$lib/types';
+	import { currentMapId, setNextMap } from '$lib/stores';
+
+	import type { LoadedCutscene } from '$lib/types';
+	import { parseTimmyTimestamp } from '$lib/types';
 	import { onDestroy } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
 
 	export let cutscene: LoadedCutscene;
 
+	let lost = false;
+
 	function dependOn(...args: unknown[]) {}
 	function unassociate<T>(arg: T) {
 		return arg;
-	}
-
-	function convertTT(time: TimmyTimestamp) {
-		return time[0] + time[1] / cutscene.fps;
 	}
 
 	let videoElem: HTMLVideoElement;
@@ -31,16 +33,17 @@
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
-			? convertTT(cutscene.subsection[currentSectionI].end)
+			? parseTimmyTimestamp(cutscene.subsection[currentSectionI].end)
 			: currentSectionI === cutscene.subsection.length - 1
 			? videoElem.duration
-			: convertTT(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120
+			: parseTimmyTimestamp(cutscene.subsection[currentSectionI + 1].begin) + 1 / 120
 		: 0;
 
 	$: {
 		if (videoElem && currentSection) {
 			videoElem.pause();
-			videoElem.currentTime = convertTT(currentSection.begin) + 1 / 120 + 1 / cutscene.fps;
+			videoElem.currentTime =
+				parseTimmyTimestamp(currentSection.begin) + 1 / 120 + 1 / cutscene.fps;
 			videoElem.play();
 
 			if (currentSectionI === 0) {
@@ -60,6 +63,7 @@
 
 	$: done = (dependOn(videoElem, currentSectionI), false);
 	$: hasPressedSpace = (dependOn(videoElem, currentSectionI), false);
+	$: keyIndex = (dependOn(videoElem, currentSectionI), 0);
 
 	function play() {
 		let running = true;
@@ -74,8 +78,26 @@
 		let hasFadedOutMusic = false;
 
 		requestAnimationFrame(function loop() {
+			if (lost) return;
 			if (!running) return;
 			requestAnimationFrame(loop);
+
+			if (
+				currentSection.keys &&
+				currentSection.keys.length &&
+				keyIndex < currentSection.keys.length
+			) {
+				console.log(
+					videoElem.currentTime,
+					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
+				);
+				if (
+					videoElem.currentTime >=
+					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
+				) {
+					lose();
+				}
+			}
 
 			if (
 				currentSectionI === cutscene.subsection.length - 1 &&
@@ -105,6 +127,8 @@
 	});
 
 	function onKeyDown(event: KeyboardEvent) {
+		if (lost) return;
+
 		if (event.key === ' ' && !hasPressedSpace) {
 			if (done) {
 				hasPressedSpace = true;
@@ -137,6 +161,31 @@
 				done = true;
 			}
 		}
+
+		if (
+			currentSection.keys &&
+			currentSection.keys.length &&
+			keyIndex < currentSection.keys.length
+		) {
+			if (event.key === currentSection.keys[keyIndex].key) {
+				// check timing information
+				let startAllowed =
+					parseTimmyTimestamp(currentSection.keys[keyIndex].time) - PRESS_MARGIN_START;
+				let endAllowed =
+					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_START;
+
+				let currentTime = videoElem.currentTime;
+
+				if (currentTime >= startAllowed && currentTime <= endAllowed) {
+					keyIndex++;
+					playAudio('correctpluck');
+				} else {
+					lose();
+				}
+			} else {
+				lose();
+			}
+		}
 	}
 
 	$: {
@@ -152,6 +201,25 @@
 			document.addEventListener('visibilitychange', handleUnpause);
 		}
 	}
+
+	let isFadeToWhite = false;
+
+	export function lose() {
+		lost = true;
+		stopMusicInstant();
+		videoElem.pause();
+		unassociate(videoElem).currentTime = parseTimmyTimestamp(currentSection.keys[keyIndex].time);
+
+		if (currentSection.isBussinB) {
+			playAudio('doomedfarewell');
+			setTimeout(() => {
+				isFadeToWhite = true;
+			}, 500);
+			setTimeout(() => {
+				currentMapId.set('01-reddit-recap');
+			}, 1500);
+		}
+	}
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
@@ -161,6 +229,10 @@
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
 		{@html currentSection.continueText ?? '(Press space to continue)'}
 	</div>
+{/if}
+
+{#if isFadeToWhite}
+	<div class="fade-to-white" in:fade={{ duration: 500 }} />
 {/if}
 
 <style>
@@ -182,5 +254,13 @@
 		color: white;
 		opacity: 0.8;
 		cursor: none;
+	}
+	.fade-to-white {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: white;
 	}
 </style>

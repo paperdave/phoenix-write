@@ -37,6 +37,8 @@ export interface MapMeta {
 	type: 'map' | 'cutscene';
 	// background color of the FIRST frame, used on loading
 	background: string;
+	// background image number
+	backgroundImage?: string;
 	// game progress, used on the loading screen to preserve the top ui. omit to not include
 	progress?: number;
 }
@@ -79,6 +81,8 @@ export interface CutsceneSubsection {
 	endMusicFade?: number;
 	// OPTIONAL: special flag for the boys
 	theBoys?: boolean;
+	// OPTIONAL: isBussinB
+	isBussinB: boolean;
 }
 
 export interface CutsceneKey {
