@@ -524,7 +524,7 @@
 
 	.gangster {
 		font-family: Rapper;
-		letter-spacing: calc(var(--unit) * 0.5);
+		letter-spacing: 0;
 		font-weight: 100;
 		-webkit-text-stroke: calc(var(--unit) * 0.3) rgba(0, 0, 0, 1);
 		transition: font-size 0.15s ease-out;
