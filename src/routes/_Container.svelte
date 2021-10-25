@@ -33,10 +33,14 @@
 				if (shakeVar >= 0.0001) {
 					shakeX = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
 					shakeY = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
-					if (dom)
+					if (dom) {
 						dom.style.transform = `translate(calc(var(--unit) * ${
 							shakeX / 10
 						}),calc(var(--unit) * ${shakeY / 10}))`;
+						if (window.dfsajhjsdfa) {
+							dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
+						}
+					}
 				} else {
 					// shakeX = 0;
 					// shakeY = 0;

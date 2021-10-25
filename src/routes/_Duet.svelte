@@ -21,7 +21,7 @@
 	let currentWordLudI = 0;
 	let videoHasLoaded = false;
 	let shift = 0;
-
+	let batman = false;
 	let lastssword = 0;
 
 	let mangoing = false;
@@ -113,7 +113,12 @@
 	const MANGOEND = 83.5;
 
 	function updateFrame1() {
+		// gave up on var names here. this does screenshake related code
+		window.dfsajhjsdfa = true;
+
 		let videoTime = videoElem.currentTime;
+
+		batman = videoTime > 74.38588166666666 && videoTime < 81.83;
 
 		if (videoTime < MANGOSTART) {
 			mangoing = false;
@@ -295,6 +300,7 @@
 		autoplay
 		disablePictureInPicture
 		controls
+		class:batman
 	/>
 
 	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 bottom-fill" />
@@ -532,5 +538,9 @@
 
 	.mangoing .text .gangster {
 		font-size: calc(var(--unit) * 5.5);
+	}
+
+	.batman {
+		filter: saturate(4) brightness(0.8) contrast(2) hue-rotate(329deg);
 	}
 </style>

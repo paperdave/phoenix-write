@@ -3,7 +3,7 @@ import EventEmitter from 'eventemitter3';
 import type { LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
-export const WORD_PENALTY = 6;
+export const WORD_PENALTY = 4;
 
 export const PRESS_MARGIN_START = 0.3;
 export const PRESS_MARGIN_END = 0.65;
@@ -118,12 +118,13 @@ export class LevelLogic extends EventEmitter {
 				);
 				if (this.rewoundWord === 0) break;
 				if (
-					this.mapKeyPresses[this.rewoundWord].underlyingWord.text[
-						this.mapKeyPresses[this.rewoundWord].underlyingWord.missingLetters[0]
-					].toLowerCase() === this.mapKeyPresses[this.rewoundWord].key.toLowerCase()
+					this.mapKeyPresses[this.rewoundWord].letterIndex === 0 &&
+					!this.mapKeyPresses[this.rewoundWord].underlyingWord.isWordJoiner
 				) {
 					wordsRewound++;
-					console.log('word is ', this.mapKeyPresses[this.rewoundWord].underlyingWord.text);
+					if (wordsRewound >= WORD_PENALTY) {
+						break;
+					}
 				}
 			}
 		});

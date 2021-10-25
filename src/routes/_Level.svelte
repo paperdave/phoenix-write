@@ -13,6 +13,8 @@
 
 	export let level: LoadedLevel;
 
+	let batman = false;
+
 	let isIntroduction = true;
 	let running = false;
 	let currentWordI = 0;
@@ -271,11 +273,6 @@
 		font-size: calc(var(--unit) * 4);
 		white-space: nowrap;
 	}
-	.checkpoint-container {
-		position: relative;
-		width: 0;
-		height: calc(var(--unit) * 15);
-	}
 	.word {
 		display: inline-flex;
 		align-items: center;
@@ -331,14 +328,6 @@
 		bottom: 0;
 		background-color: rgba(200, 255, 200, 0.8);
 	}
-	.checkpoint-marker {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: calc(var(--unit) * 0.25);
-		height: calc(var(--unit) * 15);
-		background-color: rgba(200, 255, 255, 0.5);
-	}
 	.marker-gradient {
 		width: calc(var(--unit) * 8);
 		height: calc(var(--unit) * 15);
@@ -352,23 +341,8 @@
 			rgba(0, 255, 0, 0) 100%
 		);
 	}
-	.checkpoint-marker-gradient {
-		position: absolute;
-		top: 0;
-		left: calc(var(--unit) * -4);
-		width: calc(var(--unit) * 8);
-		height: calc(var(--unit) * 15);
-		background: linear-gradient(
-			90deg,
-			rgba(0, 255, 255, 0) 0%,
-			rgba(0, 255, 255, 0.1) 50%,
-			rgba(0, 255, 255, 0) 100%
-		);
-	}
 	.marker,
-	.marker-gradient,
-	.checkpoint-marker,
-	.checkpoint-marker-gradient {
+	.marker-gradient {
 		mask-image: linear-gradient(0deg, rgba(255, 255, 255, 1) 90%, rgba(255, 255, 255, 0) 100%);
 		-webkit-mask-image: linear-gradient(
 			0deg,
