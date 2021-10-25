@@ -1,1 +1,27 @@
+
 BETTER WORD WHITELIST
+
+MAP:
+	sometimes a mistake respawns me to the middle of a word and i don't know where in the word i am because the entire word is green
+
+	please make the hue of the green for the bar = the hue from the green of the correct hit marks
+
+CUTSCENE:
+
+
+
+captions of the clip are off by a few frames in the second cutscene
+
+timing in the first clip seems odd now (webm issue?), with glitches towards the very end
+I think it's erroneously applying your ". . ." slowdown where it shouldn't be applied
+
+
+i think if our goal is to be truly foddian, we should try to minimize the gap between the A and B sections
+the "start the REAL game" kind of implies that there's infighting between the developers, which there isn't
+
+BOTH:
+
+for both cutscenes AND maps, please, an _amplitude tag_ in json/txt,  (changes amplituide of the video file from this moment on, until it changes again)
+the levels are mixed really poorly and inconsistently across the entire game, sometimes in the same level
+
+
