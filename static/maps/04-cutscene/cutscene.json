@@ -11,105 +11,79 @@
 			"keys": [
 				{
 					"key": "s",
-					"time": [6, 10]
+					"time": [4, 10]
 				},
 				{
 					"key": "o",
-					"time": [7, 7]
+					"time": [5, 9]
 				}
 			]
 		},
 
 		{
 			// I just wish this script had more fart jokes.
-			"begin": [7, 12],
-			"endMusic": true
-	
+			"begin": [5, 14],
+			"flagNextSectionDoesntClear": true	
 		},
 
 		{
 			// Buckle up, viewer, 'cause we still got a long way to--
 			"unskippable": true,
-			"begin": [8, 19],
+			"begin": [6, 21],
 			"keys": [
 				{
 					"key": "a",
-					"time": [11, 8]
+					"time": [9, 8]
 				},
 				{
 					"key": "s",
-					"time": [11, 10]
+					"time": [9, 12]
 				},
 				{
 					"key": "s",
-					"time": [11, 20]
+					"time": [9, 22]
 				}
 			]				
-		},
-
-
-		{
-			// HEY.
-			"unskippable": true,
-			"begin": [12, 22]
 		},
 		
 		{
 			// Did you hear something?
 			// It sounded like a... slight winny.
-			"begin": [16, 2],
+			"begin": [13, 1],
 			"overrideSFX": "questionmark",
 			"stopMusic": true
 		},
 		
 		{
 			// [QT APPEARS]
-			"begin": [17, 17],
+			"begin": [15, 18],
 			"unskippable": true
-		},
-		
-		{
-			// Oh, hey QT. Where's Lud?		
-			"begin": [18, 10]
 		},
 
 		{
 			// SLIME. DEPLOY MY ELEVATIVE PEACH BASKET. NOW.		
-			"begin": [18, 23]
+			"begin": [17, 1]
 		},
 
 		{
 			// Sigh... yes sir.		
-			"begin": [20, 23],
-			"startMusic": "bgm1",
-			"flagNextSectionDoesntClear": true
-
-		},
-
-		{
-			// [FADE IN LUDWIG]
-			"unskippable": true,
-			"begin": [20, 16]
-		},
-
-		{
-			// And what might this peasant be doing in my sight?
-			"begin": [21, 20]
+			"begin": [18, 5],
+			"startMusicFade": "bgm1"
 		},
 
 		{
 			// Viewer's just helping fill out some captions--		
-			"begin": [23, 10]
+			"begin": [21, 12]
 		},
 
 		{
 			// Silence.	What makes viewer think 84%-likelihood-HE
 			// should be deemed worthy of such an honor?
-			"begin": [24, 12],
+			"begin": [22, 14],
 			"keys": [
 				{
 					"key": "%",
-					"time": [27, 5]
+					"time": [25, 7]
 				}
 			]	
 		},
@@ -119,18 +93,18 @@
 			// BBBBBBOOOOOOYYYYYYSSSSSS's worthiness.
 			"theBoys": true,
 			"unskippable": true,
-			"begin": [28, 20]
+			"begin": [26, 22]
 
 		},
 
 		{
 			// Hang on. Shut up for a sec.
-			"begin": [33, 23]
+			"begin": [32, 1]
 		},
 
 		{
 			// How come I have no lines in this stupid script?
-			"begin": [34, 13]
+			"begin": [32, 15]
 		},
 
 		{
@@ -138,65 +112,58 @@
 			// [w]atch y[o]ur strea[m]...
 
 			"unskippable": true,
-			"begin": [35, 16],
+			"begin": [33, 18],
 			"keys": [
 				{
 					"key": "e",
-					"time": [39, 8]
+					"time": [37, 10]
 				},
 				{
 					"key": "n",
-					"time": [40, 10]
+					"time": [38, 12]
 				},
 				{
 					"key": "w",
-					"time": [40, 15]
+					"time": [38, 17]
 				},
 				{
 					"key": "o",
-					"time": [41, 1]
+					"time": [39, 3]
 				},
 				{
 					"key": "m",
-					"time": [41, 14]
+					"time": [39, 16]
 				}
 			]	
 		},
 
 		{
 			//[QT SLAPS LUD]
-			"begin": [41, 20],
-
-			"playSound": { "filename": "qtSlap", "time": [42, 0]},
-			"unskippable": true
+			"begin": [39, 23],
+			"playqtslap": [40, 2],
+			"unskippable": true,
+			"autoplay": true
 		},
 
 		{
-			// What was that for? I have a hole in my chest, not my damn heart!
-			"lenient": true,
+			// What was that for? I have a hole in my chest, not my damn 💖!
 			"begin": [42, 1],
-			"heartFlag":[47, 13] 
+			"heartFlag":[45, 15] 
 		},
 
 		{
 			// Ehh, free will is a hoax, anyway.
-			"begin": [47, 15]
+			"begin": [45, 17],
 		},
 
 		{
 			// Speaking of which, viewer. This next task -- your last task. Let's just say...
-			"begin": [48, 23]
-		},
-
-		{
-			// BANG. 
-			// You're doomed. Farewell.
+			"begin": [47, 1],
+			"shake": [53,0],
+			"endMusicFade": true,
 			"unskippable": true,
-			"begin": [52, 4],
 			"autoplay": true
-		}
-
-
+		},
 	]
 
 }

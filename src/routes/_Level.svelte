@@ -3,6 +3,7 @@
 
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
+	import { setScreenshake } from '$lib/screenshake';
 	import { setNextMap } from '$lib/stores';
 
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
@@ -174,6 +175,7 @@
 	logic.on('lose', () => {
 		if ($isFocused) {
 			playAudio('wronghit');
+			setScreenshake();
 		}
 	});
 
@@ -185,7 +187,7 @@
 <svelte:window bind:innerWidth={innerW} bind:innerHeight={innerH} />
 
 <main class:running>
-	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay />
+	<video src={videoUrl} bind:this={videoElem} on:play={start} autoplay disablePictureInPicture />
 
 	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 bottom-fill" />
 	<div class:fadeout={win} class:fadein={videoHasLoaded} class="opacity0 marker" />
@@ -259,6 +261,7 @@
 		align-items: center;
 		position: absolute;
 		transform: translateX(calc(var(--unit) * 25));
+		transition: transform 0.0333s linear;
 		bottom: 0;
 		height: 100%;
 		font-size: calc(var(--unit) * 4);

@@ -7,9 +7,10 @@
 		stopMusicInstant
 	} from '$lib/audio';
 	import { isFocused } from '$lib/isFocused';
+	import { setScreenshake2 } from '$lib/screenshake';
 
-	const PRESS_MARGIN_END = 0.2;
-	const PRESS_MARGIN_START = 0.2;
+	const PRESS_MARGIN_END = 0.3;
+	const PRESS_MARGIN_START = 0.4;
 
 	import { currentMapId, setNextMap } from '$lib/stores';
 
@@ -83,20 +84,32 @@
 			requestAnimationFrame(loop);
 
 			if (
+				currentSection.shake &&
+				!didshake &&
+				videoElem.currentTime > parseTimmyTimestamp(currentSection.shake)
+			) {
+				didshake = true;
+				setScreenshake2();
+			}
+			if (
 				currentSection.keys &&
 				currentSection.keys.length &&
 				keyIndex < currentSection.keys.length
 			) {
-				console.log(
-					videoElem.currentTime,
-					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
-				);
 				if (
 					videoElem.currentTime >=
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
 				) {
 					lose();
 				}
+			}
+
+			if (
+				currentSection.heartFlag &&
+				!heartWon &&
+				videoElem.currentTime > parseTimmyTimestamp(currentSection.heartFlag) + 0.5
+			) {
+				lose();
 			}
 
 			if (
@@ -126,7 +139,32 @@
 		URL.revokeObjectURL(video);
 	});
 
+	let heartBuffer = '';
+	let heartWon = false;
+	let didshake = false;
+
+	const validHeartPhrases = [
+		'heart',
+		'sparkling_heart',
+		'sparklingheart',
+		'<3',
+		',3',
+		'<#',
+		',#',
+		'💖',
+		'❤️',
+		'💗',
+		'💓',
+		'💝',
+		'💞',
+		'wtf',
+		'killyourself',
+		'love',
+		'wuv'
+	];
+
 	function onKeyDown(event: KeyboardEvent) {
+		if (event.ctrlKey || event.altKey || event.metaKey) return;
 		if (lost) return;
 
 		if (event.key === ' ' && !hasPressedSpace) {
@@ -161,13 +199,31 @@
 				done = true;
 			}
 		}
+		if (event.key === ' ') return;
+
+		if (currentSection.heartFlag && event.key.length === 1) {
+			heartBuffer += event.key.toLowerCase().trim();
+
+			const found = validHeartPhrases.find((phrase) => heartBuffer.includes(phrase));
+			if (found) {
+				heartWon = true;
+			}
+		}
 
 		if (
 			currentSection.keys &&
 			currentSection.keys.length &&
-			keyIndex < currentSection.keys.length
+			keyIndex < currentSection.keys.length &&
+			event.key.length === 1
 		) {
-			if (event.key === currentSection.keys[keyIndex].key) {
+			console.log(currentSection.keys[keyIndex].key, event.key);
+			if (
+				currentSection.keys[keyIndex].key === '%'
+					? // hardcoded
+					  ['%', '5'].includes(event.key)
+					: // regular
+					  event.key === currentSection.keys[keyIndex].key
+			) {
 				// check timing information
 				let startAllowed =
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) - PRESS_MARGIN_START;
@@ -224,7 +280,7 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-<video src={video} bind:this={videoElem} on:play={play} />
+<video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
 {#if done && !hasPressedSpace && !currentSection.autoplay}
 	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
 		{@html currentSection.continueText ?? '(Press space to continue)'}

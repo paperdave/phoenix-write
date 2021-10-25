@@ -9,6 +9,7 @@
 	import { currentMapId } from '$lib/stores';
 	import { loadRequiredAudio } from '$lib/audio';
 	import { browser } from '$app/env';
+	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
 
 	const mapPromise = getMapList();
 
@@ -48,6 +49,17 @@
 					</li>
 				{/each}
 			{/await}
+
+			<button
+				on:click={() => {
+					setScreenshake();
+				}}>shakey</button
+			>
+			<button
+				on:click={() => {
+					setScreenshake2();
+				}}>shakey2</button
+			>
 		</main>
 	{:else}
 		<LevelLoader key={$currentMapId} />

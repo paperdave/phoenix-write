@@ -12,11 +12,11 @@ export interface WordFlags {
 	// specifies a checkpoint
 	checkpoint?: boolean;
 	// list of ignored input keys
-	allowedCharacters: string[];
-
-	// specify end of this word, used for the typing line
+	allowedCharacters?: string[];
+	// shake factor
+	shake?: number;
+	// specify end of this word, used for input logic
 	endTime?: number | TimmyTimestamp;
-
 	////// VISUAL FLARE
 	// do not show this flare
 	none?: boolean;
@@ -26,6 +26,10 @@ export interface WordFlags {
 	angle?: number;
 	// z-order: defaults to 0
 	zOrder?: number;
+	// rapper starts here
+	rapperStartsHere: boolean;
+	// rapper ends here
+	rapperEndsHere: boolean;
 }
 
 export interface MapMeta {
@@ -62,8 +66,6 @@ export interface CutsceneSubsection {
 	autoplay?: boolean;
 	// OPTIONAL: keys to be pressed during this
 	keys?: CutsceneKey[];
-	// OPTIONAL: is the keypressing "lenient"?
-	lenient?: boolean;
 	// OPTIONAL: override continue text, include () in your string
 	continueText?: string;
 	// OPTIONAL: override the advance sound effect. this is after you advance THIS section
@@ -83,6 +85,10 @@ export interface CutsceneSubsection {
 	theBoys?: boolean;
 	// OPTIONAL: isBussinB
 	isBussinB: boolean;
+	// OPTIONAL
+	heartFlag: TimmyTimestamp;
+	// OPTIONAL
+	shake: TimmyTimestamp;
 }
 
 export interface CutsceneKey {
@@ -90,8 +96,6 @@ export interface CutsceneKey {
 	key: string;
 	// when to press it relative to entire video
 	time: TimmyTimestamp;
-	// OPTIONAL: is this lenient
-	lenient?: boolean;
 }
 
 //

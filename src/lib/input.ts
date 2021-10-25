@@ -47,6 +47,7 @@ export class LevelLogic extends EventEmitter {
 	}
 
 	handleKeyPress = (event: KeyboardEvent) => {
+		if (event.key === ' ') return;
 		if (!this.canPlay) return;
 		if (event.ctrlKey || event.altKey || event.metaKey || event.key.length > 1) {
 			return;
