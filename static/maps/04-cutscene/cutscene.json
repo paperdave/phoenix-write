@@ -8,16 +8,16 @@
 			// seemed relevant to the prompt.
 			"begin": [0, 0],
 			"unskippable": true,
-			// "keys": [
-			// 	{
-			// 		"key": "s",
-			// 		"time": [6, 10]
-			// 	},
-			// 	{
-			// 		"key": "o",
-			// 		"time": [7, 7]
-			// 	}
-			// ]
+			"keys": [
+				{
+					"key": "s",
+					"time": [6, 10]
+				},
+				{
+					"key": "o",
+					"time": [7, 7]
+				}
+			]
 		},
 
 		{
@@ -31,20 +31,20 @@
 			// Buckle up, viewer, 'cause we still got a long way to--
 			"unskippable": true,
 			"begin": [8, 19],
-			// "keys": [
-			// 	{
-			// 		"key": "a",
-			// 		"time": [11, 8]
-			// 	},
-			// 	{
-			// 		"key": "s",
-			// 		"time": [11, 10]
-			// 	},
-			// 	{
-			// 		"key": "s",
-			// 		"time": [11, 20]
-			// 	}
-			// ]				
+			"keys": [
+				{
+					"key": "a",
+					"time": [11, 8]
+				},
+				{
+					"key": "s",
+					"time": [11, 10]
+				},
+				{
+					"key": "s",
+					"time": [11, 20]
+				}
+			]				
 		},
 
 
@@ -166,15 +166,36 @@
 		{
 			//[QT SLAPS LUD]
 			"begin": [41, 20],
-			"qtSlap": [42, 0],
+
+			"playSound": { "filename": "qtSlap", "time": [42, 0]},
 			"unskippable": true
 		},
 
 		{
-			// What was that for?
+			// What was that for? I have a hole in my chest, not my damn heart!
+			"lenient": true,
 			"begin": [42, 1],
 			"heartFlag":[47, 13] 
+		},
+
+		{
+			// Ehh, free will is a hoax, anyway.
+			"begin": [47, 15]
+		},
+
+		{
+			// Speaking of which, viewer. This next task -- your last task. Let's just say...
+			"begin": [48, 23]
+		},
+
+		{
+			// BANG. 
+			// You're doomed. Farewell.
+			"unskippable": true,
+			"begin": [52, 4],
+			"autoplay": true
 		}
+
 
 	]
 
