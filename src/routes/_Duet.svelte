@@ -523,6 +523,6 @@
 	}
 
 	.mangoing .text .gangster {
-		font-size: calc(var(--unit) * 6.5);
+		font-size: calc(var(--unit) * 5.5);
 	}
 </style>

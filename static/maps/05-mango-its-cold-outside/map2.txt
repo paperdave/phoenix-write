@@ -193,59 +193,59 @@ ane.: [1, 13, 9] {sanity}
 -                                                           : [1, 13, 10]
 -: [1, 14, 0]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -                                                           : [1, 23, 0]
 
-[ba] : [1, 24, 2] { sanity }
--by : [1, 25, 8] { sanity }
-[i]ts: [1, 25, 12] { sanity }
-c[o]o[o]o[o]o[o]o[o]o[o]o[o]o[o]o[l]d: [1, 25, 20] { sanity }
 
-ba: [1, 28, 2] { sanity }
--[by]: [1, 28, 11] { sanity }
-its: [1, 28, 15] { sanity }
-[cold]: [1, 28, 23] { sanity }
-out: [1, 29, 10] { sanity }
--[s]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]d[e]: [1, 29, 23] { sanity }
--: [1, 34, 1] { sanity}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[ba] : [2, 24, 22] { sanity }
+-by : [2, 25, 8] { sanity }
+[i]ts: [2, 25, 12] { sanity }
+c[o]o[o]o[o]o[o]o[o]o[o]o[o]o[o]o[l]d: [2, 25, 20] { sanity }
+
+ba: [2, 28, 2] { sanity }
+-[by]: [2, 28, 11] { sanity }
+its: [2, 28, 15] { sanity }
+[cold]: [2, 28, 23] { sanity }
+out: [2, 29, 10] { sanity }
+-[s]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]d[e]: [2, 29, 23] { sanity }
+-: [2, 34, 1] { sanity}
