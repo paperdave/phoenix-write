@@ -37,6 +37,7 @@
 						dom.style.transform = `translate(calc(var(--unit) * ${
 							shakeX / 10
 						}),calc(var(--unit) * ${shakeY / 10}))`;
+
 						if (window.dfsajhjsdfa) {
 							dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
 						}
