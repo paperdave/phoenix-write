@@ -1,19 +1,32 @@
 
+
+
 BETTER WORD WHITELIST
+- accidentally smashing too many of the same letter should be ok
+- accidentally typing the current next letter in a word, or the current next word's first letter should be ok
 
 MAP:
+
+	{ hitsound: "filename" } <-- this is ESSENTIAL
+	i'll make the default hit sounds for stuff right now
+
 	sometimes a mistake respawns me to the middle of a word and i don't know where in the word i am because the entire word is green
 
 	please make the hue of the green for the bar = the hue from the green of the correct hit marks
 
 CUTSCENE:
 
+SOME visual feedback on the correct hits. i'm willing to calculate all the positions for you and hardcode them into the dialogue, it just looks so damn evident that it's a video
 
+(i was wrong about forcing viewer to fail the first time, we shouldn't do that)
+
+the fadeout of the song at end of first level somehow overlays two instances of the audio on top of each other
 
 captions of the clip are off by a few frames in the second cutscene
 
 timing in the first clip seems odd now (webm issue?), with glitches towards the very end
 I think it's erroneously applying your ". . ." slowdown where it shouldn't be applied
+no, that's not it... The frames are just generally jittering back and forth on the cutscenes
 
 
 i think if our goal is to be truly foddian, we should try to minimize the gap between the A and B sections
