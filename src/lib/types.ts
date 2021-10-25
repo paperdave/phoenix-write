@@ -27,9 +27,9 @@ export interface WordFlags {
 	// z-order: defaults to 0
 	zOrder?: number;
 	// rapper starts here
-	rapperStartsHere: boolean;
+	replacingQTCinderellaTheRapperLudwigHiredOnFiverOneYearAgoStartsRappingHere?: boolean;
 	// rapper ends here
-	rapperEndsHere: boolean;
+	replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere?: boolean;
 }
 
 export interface MapMeta {

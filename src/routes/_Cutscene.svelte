@@ -23,6 +23,11 @@
 
 	let lost = false;
 
+	const boysString = 'bbbbbbooooooyyyyyysssssss';
+
+	let boysIndex = 0;
+	let boysWon = false;
+
 	function dependOn(...args: unknown[]) {}
 	function unassociate<T>(arg: T) {
 		return arg;
@@ -30,7 +35,7 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 0;
+	let currentSectionI = 9;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
@@ -216,7 +221,6 @@
 			keyIndex < currentSection.keys.length &&
 			event.key.length === 1
 		) {
-			console.log(currentSection.keys[keyIndex].key, event.key);
 			if (
 				currentSection.keys[keyIndex].key === '%'
 					? // hardcoded
@@ -240,6 +244,17 @@
 				}
 			} else {
 				lose();
+			}
+		}
+
+		if (currentSection.theBoys && !boysWon) {
+			let requiredKey = boysString.charAt(boysIndex);
+			if (event.key === requiredKey) {
+				boysIndex++;
+				if (boysIndex === boysString.length) {
+					boysWon = true;
+					playAudio('correctpluck');
+				}
 			}
 		}
 	}
@@ -291,6 +306,14 @@
 	<div class="fade-to-white" in:fade={{ duration: 500 }} />
 {/if}
 
+{#if currentSection.theBoys}
+	<div class="THEBOYS">
+		{#each boysString as char, i}
+			<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
+		{/each}
+	</div>
+{/if}
+
 <style>
 	video {
 		position: absolute;
@@ -318,5 +341,42 @@
 		width: 100%;
 		height: 100%;
 		background: white;
+	}
+	.THEBOYS {
+		position: absolute;
+		top: calc(var(--unit) * 43);
+		left: calc(var(--unit) * 10.75);
+		font-size: calc(var(--unit) * 3.5);
+		letter-spacing: calc(var(--unit) * 0.25);
+		color: rgba(255, 255, 255, 0.5);
+		animation: appearboys 1s linear both;
+	}
+	.THEBOYS span {
+		display: inline-block;
+	}
+	.hit {
+		color: white;
+		animation: BOUNCER 0.3s ease-out both;
+	}
+
+	@keyframes appearboys {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	@keyframes BOUNCER {
+		0% {
+			transform: translateY(0);
+		}
+		50% {
+			transform: translateY(-10px);
+		}
+		100% {
+			transform: translateY(0);
+		}
 	}
 </style>
