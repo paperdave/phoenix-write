@@ -77,6 +77,7 @@
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;
 				keyResults = genKeyResults();
+				playAudio('fall');
 			} else {
 				requestAnimationFrame(loop);
 			}
@@ -86,9 +87,6 @@
 
 	logic.on('win', () => {
 		win = true;
-		// setTimeout(() => {
-		// 	setNextMap(level);
-		// }, 1000);
 	});
 
 	function updateFrame() {
@@ -175,7 +173,7 @@
 
 	logic.on('lose', () => {
 		if ($isFocused) {
-			playAudio('lose');
+			playAudio('wronghit');
 		}
 	});
 

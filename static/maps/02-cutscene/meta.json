@@ -2,5 +2,6 @@
   "name": "Daaamn, That Shit Bussin'",
   "type": "cutscene",
   "background": "black",
+  "backgroundImage": "1",
   "disabled": false
 }

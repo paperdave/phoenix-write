@@ -2,5 +2,6 @@
   "name": "Reddit Recap",
   "type": "map",
   "background": "white",
+  "backgroundImage": "0",
   "disabled": false
 }

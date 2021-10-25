@@ -117,7 +117,8 @@ export function loadRestAudio() {
 		'b7',
 		'b8',
 		'doomedfarewell',
-		'lose',
+		'fall',
+		'wronghit',
 		'boyscorrect',
 		'correctpluck',
 		'questionmark'
