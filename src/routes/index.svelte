@@ -74,7 +74,9 @@
 		<main
 			on:click={clickStart}
 			on:contextmenu={() => {
-				$currentMapId = '06-mango-its-cold-outside';
+				getMapList().then(() => {
+					$currentMapId = '05-mango-its-cold-outside';
+				});
 			}}
 		>
 			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
