@@ -4,7 +4,7 @@ real: [7, 01]
 -ly: [7, 09]
 cant: [7, 13]
 [st]: [7, 21]
--aaaaaaaaaaaay: [8, 02] {sanity}
+-[aaaaaaaaaaaa]y: [8, 02] {lenient}
 
 
 
@@ -13,10 +13,10 @@ cant: [7, 13]
 
 -:  [10, 18] {sanity}
 i: [11, 0]
-[g]ot: [11, 6]
+got: [11, 6]
 to: [11, 14]
 go a: [11, 18]
--waaaaaaaaaaaay: [12, 7] {sanity}
+-[wayyyyyyyyyyyy]: [12, 7] {lenient}
 
 
 
@@ -26,7 +26,7 @@ this: [15, 6] {sanity}
 eve: [15, 11]
 -ning: [15, 19]
 has: [15, 23]
-beeeeeeeeeeeen: [16, 12] {sanity}
+[beeeeeeeeeeee]n: [16, 12] {sanity}
 
 
 
@@ -36,7 +36,7 @@ so: [18, 3] {sanity}
 
 ve: [18, 15]
 -ry: [19, 4]
-niiiiiice: [19, 12]
+[niii]ce: [19, 12]
 
 -: [20, 18] {sanity}
 
@@ -48,9 +48,9 @@ my: [23, 17]
 mo: [23, 21] {sanity}
 -ther: [24, 6]
 will: [24, 10]
-start: [24, 23]
-to: [25, 12] {sanity}
-wor: [26, 0] {sanity}
+[s]tart: [24, 23]
+[t]o: [25, 12] {sanity}
+[w]or: [26, 0] {sanity}
 -ry: [26, 9] {sanity}
 
 
@@ -60,10 +60,10 @@ fa: [28, 2] {sanity}
 -ther: [28, 9] {sanity}
 will: [28, 17]
 be: [28, 22] {sanity}
-pa: [29, 3]
+[p]a: [29, 3]
 -cing: [29, 10]
 the: [29, 15]
-floor: [29, 21] {sanity}
+[f]loor: [29, 21] {sanity}
 
     : [30, 16] {sanity}
 
@@ -72,10 +72,10 @@ floor: [29, 21] {sanity}
 real: [32, 7] {sanity}
 -ly: [32, 17]
 id: [32, 21] 
-bet: [33, 7]
--ter: [33, 14] 
+[b]et: [33, 7]
+-[t]er: [33, 14] 
 
-s: [34, 02]
+[s]: [34, 02]
 -cur: [34, 9]
 -ry: [34, 17]
 
@@ -89,7 +89,7 @@ a: [37, 10]
 half: [37, 14]
 a: [37, 21]
 drink: [38, 3]
-[m]ore: [38, 8] {sanity}
+more: [38, 8] {sanity}
 
 
 
@@ -144,10 +144,10 @@ its: [57, 9]
 hard: [57, 12] { sanity }
 to: [57, 20]
 say: [58, 2]
-noo: [58, 16]
-noo: [59, 4]
+[n]oo: [58, 16]
+[n]oo: [59, 4]
 
-no,: [59, 16]
+[n]o,: [59, 16]
 
 sir.: [1, 0, 0]
 
@@ -158,7 +158,7 @@ least: [1, 1, 19] {sanity}
 im: [1, 2, 4]
 gon: [1, 2, 8]
 -na: [1, 2, 15]
-say: [1, 2, 19] {sanity}
+[s]ay: [1, 2, 19] {sanity}
 that: [1, 3, 4]
 i: [1, 3, 10]
 tried.: [1, 3, 16] {sanity}
@@ -167,11 +167,11 @@ tried.: [1, 3, 16] {sanity}
 
 
 
-i: [1, 5, 18] {sanity}
-real: [1, 6, 0]
+[i]: [1, 5, 18] {sanity}
+[r]eal: [1, 6, 0]
 -ly: [1, 6, 7]
-cant: [1, 6, 11]
-staaaaaaaaaaaaaaaay: [1, 7, 1]
+[c]ant: [1, 6, 11]
+st[aaaaaaaaaaaaaaaa]y: [1, 7, 1]
 
 
 
@@ -199,7 +199,7 @@ out-: [1, 11, 19]
 -: [1, 15, 11] 
 [P]LAY : [1, 15, 17]
 [C]HU : [1, 15, 22] { shake: 0.25 }
-A[N]D : [1, 16, 6]
+AND : [1, 16, 6]
 [LOO]OSE : [1, 16, 12] 
 [M]A: [1,17,0]
 -N : [1, 17, 5] { shake: 0.25 }
@@ -224,7 +224,7 @@ USED : [1, 22, 8]
 TO : [1, 22, 14]
 [LOVE] : [1, 22, 19]
 [MAN]- : [1, 23, 6]
-goooooooooooooooo : [1, 23, 21] {replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere}
+[g]oooooooooooooooo : [1, 23, 21] {replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere}
 
 
 
@@ -237,7 +237,7 @@ the : [1, 26, 20]
 an : [1, 27, 1]
 -swer : [1, 27, 7]
 is : [1, 27, 13]
-NO. : [1, 28, 1]
+[NO]. : [1, 28, 1]
 -: [1, 28, 07] { sanity }
 
 
@@ -246,11 +246,11 @@ NO. : [1, 28, 1]
 
 
 this : [1, 31, 0]
-wel- : [1, 31, 6]
+[w]el- : [1, 31, 6]
 come : [1, 31, 13]
-has : [1, 31, 18]
+[h]as : [1, 31, 18]
 
-beeeeeeeeeeeen : [1, 32, 7]
+[b]eeeeeeeeeeeen : [1, 32, 7]
 
 
 
@@ -258,7 +258,7 @@ beeeeeeeeeeeen : [1, 32, 7]
 [s]o : [1, 33, 21] { sanity }
 [n]ice : [1, 34, 10]  { sanity }
 and : [1, 34, 23]
-waaaaaaaaaaaarm : [1, 35, 6]
+[w]aaaaaaaaaaaarm : [1, 35, 6]
 
 
 
@@ -268,11 +268,11 @@ waaaaaaaaaaaarm : [1, 35, 6]
 
 
 my: [1, 39, 12]
-sis: [1, 39, 16] { sanity }
+[s]is: [1, 39, 16] { sanity }
 -ter : [1, 40, 1]
 will : [1, 40, 5]
-be : [1, 40, 18]
-sus : [1, 41, 3]
+[b]e : [1, 40, 18]
+[s]us : [1, 41, 3]
 
 -pi : [1, 41, 18]
 -cious : [1, 42, 1]
@@ -281,13 +281,13 @@ sus : [1, 41, 3]
 
 
 my : [1, 43, 17]
-bro : [1, 43, 21] { sanity }
+[b]ro : [1, 43, 21] { sanity }
 -ther : [1, 44, 3]
 will : [1, 44,8]
 be : [1, 44, 17]
-there : [1, 44, 22]
-at : [1, 45, 6]
-the : [1, 45, 9]
+[t]here : [1, 44, 22]
+[a]t : [1, 45, 6]
+[t]he : [1, 45, 9]
 door : [1, 45, 16] { sanity }
 
 
@@ -297,11 +297,11 @@ door : [1, 45, 16] { sanity }
 
 
 my : [1, 47, 20]
-mai : [1, 48, 2]
+[m]ai : [1, 48, 2]
 -dens : [1, 48, 9]
-aunt's : [1, 48, 16]
-mind : [1, 49, 4]
-is : [1, 49, 15]
+[a]unt's : [1, 48, 16]
+[m]ind : [1, 49, 4]
+[i]s : [1, 49, 15]
 
 vi : [1, 50, 4]
 -cious : [1, 50, 9] { sanity }
@@ -312,12 +312,12 @@ vi : [1, 50, 4]
 
 well : [1, 52, 3]
 
-may : [1, 52, 7]
+[m]ay : [1, 52, 7]
 
 -be : [1, 52, 16]
-just : [1, 52, 19]
+[j]ust : [1, 52, 19]
 a : [1, 53, 3]
-ci : [1, 53, 8]
+[c]i : [1, 53, 8]
 -ga : [1, 53, 17]
 -rette : [1, 53, 21]
 more : [1, 54, 5] { sanity }
@@ -330,8 +330,8 @@ more : [1, 54, 5] { sanity }
 ive : [1, 56, 10] { sanity }
 got : [1, 56, 13]
 to : [1, 56, 20]
-get : [1, 57, 1]
-home : [1, 57, 14]
+[g]et : [1, 57, 1]
+[h]ome : [1, 57, 14]
 
 
 
@@ -342,10 +342,10 @@ home : [1, 57, 14]
 s: [2, 00, 00]
 -ay : [2, 00, 5]
 -: [2, 00, 9]
-lend : [2, 00, 17]
-me : [2, 1, 2]
-a : [2, 1, 8]
-c: [2, 1, 14]
+[l]end : [2, 00, 17]
+[m]e : [2, 1, 2]
+[a] : [2, 1, 8]
+[c]: [2, 1, 14]
 -oat : [2, 1, 20]
 -: [2, 2, 2] { sanity }
 
@@ -360,7 +360,7 @@ youve: [2, 4, 16]
 real: [2, 4, 23]
 -ly: [2, 5, 7]
 been: [2, 5, 11]
-[graaaaaa]nd: [2, 5, 23] { sanity }
+[gra]aaaaad: [2, 5, 23] { sanity }
 
 
 
@@ -379,9 +379,9 @@ been: [2, 5, 11]
 
 theres: [2, 13, 4]
 
-[b]ound: [2, 13, 9]
+bound: [2, 13, 9]
 to: [2, 13, 17]
-[b]e: [2, 13, 21] { sanity }
+be: [2, 13, 21] { sanity }
 [t]alk: [2, 14, 9]
 [t]o: [2, 14, 21]
 -[m]or: [2, 15, 11] 
@@ -390,35 +390,76 @@ to: [2, 13, 17]
 
 
 at : [2, 17, 9]
-[l]east : [2, 17, 14]
+least : [2, 17, 14]
 there : [2, 17, 22]
 will : [2, 18, 1]
 be : [2, 18, 10]
-plen : [2, 18, 15]
--ty : [2, 18, 23]
-im : [2, 19, 3]
--plied : [2, 19, 10] { sanity }
+[p]len : [2, 18, 15]
+-[t]y : [2, 18, 23]
+[i]m : [2, 19, 3]
+-[p]lied : [2, 19, 10] { sanity }
 
 
 
 
 -: [2, 20, 3] { sanity }
 i : [2, 21, 12]
-real : [2, 21, 19]
+[r]eal : [2, 21, 19]
 -ly : [2, 22, 1]
-cant : [2, 22, 6]
+[c]ant : [2, 22, 6]
 s : [2, 22, 15]
--taaaaaaaaaaaaaaay : [2, 22, 20]
+-t[aaaaaaaaaaaa]y : [2, 22, 20]
 
 ba : [2, 24, 22] { sanity }
 -[by] : [ 2, 25, 8] { sanity }
 its: [2, 25, 12] { sanity }
-[c]o[o]o[o]o[o]o[o]o[o]o[o]o[o]o[o]l[d]: [2, 25, 20] { sanity }
+[c]: [2, 25, 20] { sanity }
+o: [2, 25, 23]
+[o]: [2, 26, 2]
+o: [2, 26, 5]
+[o]: [2, 26, 8]
+o: [2, 26, 11]
+[o]: [2, 26, 14]
+o: [2, 26, 17]
+[o]: [2, 26, 20]
+o: [2, 26, 23]
+[o]: [2, 27, 2]
+o: [2, 27, 5]
+[o]: [2, 27, 8]
+o: [2, 27, 11]
+[o]: [2, 27, 14]
+o: [2, 27, 17]
+[o]: [2, 27, 20]
+ld: [2, 27, 23]
 
 [ba]: [2, 28, 2] { sanity }
 -by: [2, 28, 11] { sanity }
 [i]ts: [2, 28, 15] { sanity }
 cold: [2, 28, 23] { sanity }
 [out]: [2, 29, 10] { sanity }
--s[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[i]i[d]e: [2, 29, 23] { sanity }
--: [2, 34, 1] { sanity}
+-s: [2, 29, 23] { sanity }
+[i]: [2, 30, 3]
+i: [2, 30, 7]
+[i]: [2, 30, 11]
+i: [2, 30, 15]
+[i]: [2, 30, 19]
+i: [2, 30, 23]
+[i]: [2, 31, 3]
+i: [2, 31, 7]
+[i]: [2, 31, 11]
+i: [2, 31, 15]
+[i]: [2, 31, 19]
+i: [2, 31, 23]
+[i]: [2, 32, 3]
+i: [2, 32, 7]
+[i]: [2, 32, 11]
+i: [2, 32, 15]
+[i]: [2, 32, 19]
+i: [2, 32, 23]
+[i]: [2, 33, 3]
+i: [2, 33, 7]
+[i]: [2, 33, 11]
+i: [2, 33, 15]
+[i]: [2, 33, 19]
+i: [2, 33, 23]
+de: [2, 34, 1] { sanity }
