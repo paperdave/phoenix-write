@@ -26,43 +26,49 @@ function parseSection(section: string): MapWord[] {
 }
 
 function parseWord(word: string): MapWord {
-	let [text, ...rest] = word.split(':');
-	let [, startTimeText, rest2] = rest
-		.join(':')
-		.trim()
-		.match(/^([ \t,\[\]0-9\.]+)(\s+{.*})?\s*$/);
-	const startTime = parseTimmyTimestamp(JSON5.parse(startTimeText.replace(/\b0+([0-9]+)/g, '$1')));
-	const flags = rest2 ? parseFlags(rest2) : {};
-	const missingLetters = [];
-	const isWordJoiner = text.startsWith('-');
-	if (isWordJoiner) {
-		text = text.slice(1);
-	}
-	let actualIndex = 0;
-	let isMissing = false;
-	for (let i = 0; i < text.length; i++) {
-		if (text[i] === '[' || text[i] === ']') {
-			isMissing = !isMissing;
-			continue;
-		} else if (isMissing) {
-			missingLetters.push(actualIndex);
+	try {
+		let [text, ...rest] = word.split(':');
+		let [, startTimeText, rest2] = rest
+			.join(':')
+			.trim()
+			.match(/^([ \t,\[\]0-9\.]+)(\s+{.*})?\s*$/);
+		const startTime = parseTimmyTimestamp(
+			JSON5.parse(startTimeText.replace(/\b0+([0-9]+)/g, '$1'))
+		);
+		const flags = rest2 ? parseFlags(rest2) : {};
+		const missingLetters = [];
+		const isWordJoiner = text.startsWith('-');
+		if (isWordJoiner) {
+			text = text.slice(1);
 		}
-		actualIndex++;
+		let actualIndex = 0;
+		let isMissing = false;
+		for (let i = 0; i < text.length; i++) {
+			if (text[i] === '[' || text[i] === ']') {
+				isMissing = !isMissing;
+				continue;
+			} else if (isMissing) {
+				missingLetters.push(actualIndex);
+			}
+			actualIndex++;
+		}
+		if (flags.replacingQTCinderellaTheRapperLudwigHiredOnFiverOneYearAgoStartsRappingHere) {
+			isRapper = true;
+		} else if (flags.replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere) {
+			isRapper = false;
+		}
+		return {
+			text: text.replace(/\[|\]/g, ''),
+			missingLetters,
+			start: startTime,
+			isSectionStart: false,
+			isWordJoiner,
+			flags,
+			isRapperStyle: isRapper
+		};
+	} catch (error) {
+		console.log('failed to parse the following:' + word);
 	}
-	if (flags.replacingQTCinderellaTheRapperLudwigHiredOnFiverOneYearAgoStartsRappingHere) {
-		isRapper = true;
-	} else if (flags.replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere) {
-		isRapper = false;
-	}
-	return {
-		text: text.replace(/\[|\]/g, ''),
-		missingLetters,
-		start: startTime,
-		isSectionStart: false,
-		isWordJoiner,
-		flags,
-		isRapperStyle: isRapper
-	};
 }
 
 function parseFlags(flags: string) {

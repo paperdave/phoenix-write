@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { loadRestAudio, playAudio, stopFallingAudio } from '$lib/audio';
+	import { playAudio, stopFallingAudio } from '$lib/audio';
 
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
@@ -9,7 +9,6 @@
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
-	import Flares from './_LevelFlares.svelte';
 	import TopcornerStuff from './_TopcornerStuff.svelte';
 
 	export let level: LoadedLevel;
@@ -241,7 +240,6 @@
 		</div>
 	</div>
 
-	<Flares {level} {logic} {currentWordI} {keyResults} {win} />
 	<TopcornerStuff />
 </main>
 
