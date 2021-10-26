@@ -224,6 +224,13 @@ ane.: [1, 13, 9] {sanity}
 
 
 
+-: [1, 23, 21]
+Ba: [1, 24, 11]
+by,: [1, 24, 16]
+it's: [1, 24, 20]
+cold: [1, 24, 23]
+out: [1, 25, 11]
+-side: [1, 25, 18]
 
 
 
@@ -231,6 +238,54 @@ ane.: [1, 13, 9] {sanity}
 
 
 
+but: [1, 28, 07] { sanity }
+ba: [1, 28, 14]
+-by: [1, 28, 13]
+it's: [1, 29, 4]
+cold: [1, 29, 12] 
+out: [1, 30, 5 ]
+side.: [1, 30, 12]
+
+
+
+
+How: [1, 31, 23]
+luc: [1, 32, 14]
+-ky: [1, 32, 22]
+that: [1, 33, 2]
+you: [1, 33, 8]
+[d]ropped: [1, 33, 21] {sanity}
+[i]n.: [1, 34, 10] {sanity}
+
+
+-:[1, 34, 23] {sanity}
+
+Loo: [1, 35, 19] 
+-k out: [1, 36, 11] 
+the: [1, 37, 4]
+win: [1, 37, 13]
+do: [1, 37, 22] 
+-w at: [1, 38, 14]
+that: [1, 39, 2] 
+
+storm. : [1, 39, 16] { sanity }
+
+
+-: [1, 40, 18] { sanity }
+
+Go: [1, 41, 12]
+sh,: [1, 42, 1]
+your: [] lips look delicious.
+Waves upon a tropical shore.
+Ooh, your lips are delicious.
+Never such a blizzard before.
+
+Baby, you'd freeze out there.
+It's up to your knees out there.
+I feel when I touch your hair
+how can you do this thing to me?
+Think of my lifel ong sorrow
+if you got pneumonia and died
 
 
 
