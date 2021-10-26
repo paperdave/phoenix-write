@@ -32,7 +32,7 @@
 		changing = true;
 		reset = setTimeout(() => {
 			changing = false;
-		}, 250);
+		}, 400);
 	}
 
 	const ok = totalRewound.subscribe(handleChange);
@@ -43,7 +43,8 @@
 </script>
 
 <main class:changing>
-	{formatTime($totalRewound)}
+	{formatTime($totalRewound)} <br />
+	<small>rewound</small>
 </main>
 
 <style>
@@ -58,10 +59,18 @@
 			color 1s cubic-bezier(0.55, 0.055, 0.675, 0.19);
 		-webkit-text-stroke: calc(var(--unit) * 0.1) black;
 	}
+	small {
+		font-size: calc(var(--unit) * 1);
+		-webkit-text-stroke: calc(var(--unit) * 0.05) black;
+		position: absolute;
+		top: calc(var(--unit) * 2);
+		right: calc(var(--unit) * 0.2);
+		text-align: right;
+	}
 	.changing {
 		transition: transform 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19),
 			color 0.2s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-		transform: scale(2.5);
+		transform: scale(3.5);
 		color: red;
 	}
 </style>
