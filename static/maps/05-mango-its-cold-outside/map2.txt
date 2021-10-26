@@ -275,7 +275,6 @@ storm. : [1, 39, 16] { sanity }
 
 Go: [1, 41, 12]
 sh,: [1, 42, 1]
-<<<<<<< HEAD
 your: [1, 42, 4] 
 lips: [1, 42, 9] 
 look: [1, 42, 20] 
@@ -362,7 +361,7 @@ there.: [2, 3, 21]
 
 
 [I] : [2, 5, 23] { sanity }
-[f]eel :[2, 6, 10]
+[f]eel : [2, 6, 10]
 [w]hen :
 [I] :
 [t]ouch : [2, 7, 12] {sanity}
@@ -387,10 +386,10 @@ there.: [2, 3, 21]
 
 Think: [2, 15, 5]
 [o]: [2, 15, 20] { sanity }
-[m]y: 
+#[m]y: 
 [l]ife:  [2, 16, 12] { sanity }
--[l]ong 
-[s]orrow
+#-[l]ong 
+#[s]orrow
 
 
 
