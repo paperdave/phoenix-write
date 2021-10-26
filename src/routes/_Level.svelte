@@ -63,11 +63,20 @@
 		$totalOffset = $totalOffset + offset;
 	});
 
-	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
-		if (!tooLate) {
+	let showTooEarly = false;
+	let showTooLate = false;
+
+	logic.on('lose', async ({ tooLate, tooEarly, wordIndex, letterIndex, mistype }) => {
+		if (!tooLate && !tooEarly) {
 			keyResults[wordIndex][letterIndex] = mistype;
 		}
 
+		if (tooLate) {
+			showTooLate = true;
+		}
+		if (tooEarly) {
+			showTooEarly = true;
+		}
 		logic.canPlay = false;
 
 		videoElem.pause();
@@ -99,6 +108,8 @@
 				keyResults = genKeyResults();
 				stopFallingAudio();
 				playAudio('fall');
+				showTooEarly = false;
+				showTooLate = false;
 			} else {
 				requestAnimationFrame(loop);
 			}

@@ -78,7 +78,7 @@
 		if (logic.whoStarts === 'qt') {
 			keyResultsQT[logic.currentWordQt][0] = true;
 		} else {
-			keyResultsLud[logic.currentWordLud][0] = true;
+			keyResultsLud[logic.currentWordLud + 1][0] = true;
 		}
 	});
 
@@ -109,8 +109,11 @@
 		}
 	});
 
-	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype, who }) => {
-		if (!tooLate) {
+	let showTooEarly = false;
+	let showTooLate = false;
+
+	logic.on('lose', async ({ tooLate, tooEarly, wordIndex, letterIndex, mistype, who }) => {
+		if (!tooLate && !tooEarly) {
 			if (who === 'lud') {
 				keyResultsLud[wordIndex][letterIndex] = mistype;
 			} else {
@@ -118,6 +121,12 @@
 			}
 		}
 
+		if (tooLate) {
+			showTooLate = true;
+		}
+		if (tooEarly) {
+			showTooEarly = true;
+		}
 		logic.canPlay = false;
 
 		videoElem.pause();
@@ -152,6 +161,8 @@
 				resetKeyResults();
 				stopFallingAudio();
 				playAudio('fall');
+				showTooEarly = false;
+				showTooLate = false;
 			} else {
 				requestAnimationFrame(loop);
 			}
