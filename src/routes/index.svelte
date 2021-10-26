@@ -5,13 +5,33 @@
 <script lang="ts">
 	import LevelLoader from './_LevelLoader.svelte';
 	import Container from './_Container.svelte';
-	import { getMapList } from '$lib/map-registry';
+	import { getMap, getMapList } from '$lib/map-registry';
 	import { currentMapId } from '$lib/stores';
 	import { loadRequiredAudio } from '$lib/audio';
 	import { browser } from '$app/env';
-	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
+	import { fade } from 'svelte/transition';
 
 	const mapPromise = getMapList();
+	let dofade = false;
+	let mapListLoaded = false;
+	mapPromise.then(() => {
+		mapListLoaded = true;
+		getMap('00-intro-cutscene').then(() => {
+			console.log('map loaded');
+		});
+	});
+
+	async function clickStart() {
+		if (!mapListLoaded) {
+			await mapPromise;
+		}
+
+		dofade = true;
+
+		setTimeout(() => {
+			$currentMapId = '00-intro-cutscene';
+		}, 1000);
+	}
 
 	if (browser) {
 		loadRequiredAudio();
@@ -33,35 +53,37 @@
 <Container>
 	{#if $currentMapId === null}
 		<main>
-			<h1>Pheonix, Write! beta</h1>
-			{#await mapPromise}
-				<li>loading map listing</li>
-			{:then mapList}
-				{#each mapList as meta}
-					<li>
-						<a
-							href="#level"
-							on:click={(e) => {
-								e.preventDefault();
-								$currentMapId = meta.key;
-							}}>{meta.name}</a
-						>
-					</li>
-				{/each}
-			{/await}
-
-			<button
-				on:click={() => {
-					setScreenshake();
-				}}>shakey</button
-			>
-			<button
-				on:click={() => {
-					setScreenshake2();
-				}}>shakey2</button
-			>
+			<img
+				src="./openingscreen.png"
+				alt="Pheonix, WRITE!"
+				on:click={clickStart}
+				on:contextmenu={() => {
+					$currentMapId = '06-mango-its-cold-outside';
+				}}
+			/>
 		</main>
+		{#if dofade}
+			<div class="white" in:fade={{ duration: 1000 }} />
+		{/if}
 	{:else}
 		<LevelLoader key={$currentMapId} />
 	{/if}
 </Container>
+
+<style>
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.white {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: white;
+	}
+</style>

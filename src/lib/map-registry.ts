@@ -3,8 +3,24 @@ import { canPlayVP9 } from './compatibility';
 import { parseMap } from './map-parser';
 import type { Cutscene, CutsceneSubsection, LoadedDuet, LoadedMap, MapMeta } from './types';
 
+function defer<T>(): {
+	promise: Promise<T>;
+	resolve: (value?: T | PromiseLike<T>) => void;
+	reject: (reason?: any) => void;
+} {
+	let resolve: (value?: T | PromiseLike<T>) => void;
+	let reject: (reason?: any) => void;
+	const promise = new Promise<T>((res, rej) => {
+		resolve = res;
+		reject = rej;
+	});
+	return { promise, resolve, reject };
+}
+
 const levelMetadata = new Map<string, MapMeta>();
 const loadedLevels = new Map<string, LoadedMap>();
+const promiseThingy = new Map<string, Promise<LoadedMap>>();
+const promiseThingy2 = new Map<string, Promise<MapMeta>>();
 
 async function fetchLevelMetadata() {
 	const response = await fetch('./maps.json');
@@ -80,16 +96,28 @@ async function fetchLevel(meta: MapMeta) {
 }
 
 function getMeta(id: string): Promise<MapMeta> {
+	if (promiseThingy2.has('meta')) {
+		const meta = promiseThingy2.get('meta');
+		return meta.then(() => {
+			return levelMetadata.get(id);
+		});
+	}
 	if (levelMetadata.size > 0) {
 		return Promise.resolve(levelMetadata.get(id));
 	} else {
-		return fetchLevelMetadata().then((x) => {
+		const { promise, resolve } = defer<MapMeta>();
+		promiseThingy2.set('meta', promise);
+
+		fetchLevelMetadata().then((x) => {
 			Object.entries(x.maps).forEach(([key, value]) => {
 				(value as MapMeta).key = key;
 				levelMetadata.set(key, value as MapMeta);
 			});
-			return levelMetadata.get(id);
+			resolve(levelMetadata.get(id));
+			promiseThingy2.delete('meta');
 		});
+
+		return promise;
 	}
 }
 
@@ -98,9 +126,20 @@ export async function getMap(id: string): Promise<LoadedMap> {
 		return loadedLevels.get(id);
 	}
 
+	if (promiseThingy.has(id)) {
+		return promiseThingy.get(id);
+	}
+
+	const { promise, resolve, reject } = defer<LoadedMap>();
+	promiseThingy.set(id, promise);
+
 	const meta = await getMeta(id);
 	const level = await fetchLevel(meta);
 	loadedLevels.set(id, level);
+
+	resolve(level);
+	promiseThingy.delete(id);
+
 	return level;
 }
 
