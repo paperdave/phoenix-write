@@ -162,8 +162,8 @@ export class DuetLevelLogic extends EventEmitter {
 				}
 
 				// get latest word
-				const latestLudWord = this.map.wordsLud[this.rewoundWordLud];
-				const latestQtWord = this.map.wordsQt[this.rewoundWordQt];
+				const latestLudWord = this.rewoundWordLud > 0 && this.map.wordsLud[this.rewoundWordLud];
+				const latestQtWord = this.rewoundWordQt > 0 && this.map.wordsQt[this.rewoundWordQt];
 
 				whoIsLatest = latestLudWord
 					? latestQtWord
@@ -171,7 +171,11 @@ export class DuetLevelLogic extends EventEmitter {
 							? 'lud'
 							: 'qt'
 						: 'lud'
+					: latestQtWord
+					? 'qt'
 					: 'WHO';
+
+				this.whoStarts = whoIsLatest;
 
 				if (whoIsLatest === 'lud') {
 					if (
@@ -184,7 +188,7 @@ export class DuetLevelLogic extends EventEmitter {
 						}
 					}
 					this.rewoundWordLud--;
-				} else {
+				} else if (whoIsLatest === 'qt') {
 					if (
 						this.mapKeyPressesQt[this.rewoundWordQt].letterIndex === 0 &&
 						!this.mapKeyPressesQt[this.rewoundWordQt].underlyingWord.isWordJoiner
@@ -195,10 +199,13 @@ export class DuetLevelLogic extends EventEmitter {
 						}
 					}
 					this.rewoundWordQt--;
+				} else {
+					break;
 				}
-
-				this.whoStarts = whoIsLatest;
 			}
+			console.log(
+				`rewound to qt=${this.rewoundWordQt}, lud=${this.rewoundWordLud}. who start ${this.whoStarts}`
+			);
 		});
 	}
 

@@ -15,6 +15,7 @@
 	import { LoadedDuet, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
+	import TopcornerStuff from './_TopcornerStuff.svelte';
 
 	export let level: LoadedDuet;
 	console.log(level);
@@ -74,6 +75,11 @@
 		videoElem.play();
 		resetKeyResults();
 		running = true;
+		if (logic.whoStarts === 'qt') {
+			keyResultsQT[logic.currentWordQt][0] = true;
+		} else {
+			keyResultsLud[logic.currentWordLud][0] = true;
+		}
 	});
 
 	logic.on('lud', ({ key, wordIndex, letterIndex, offset }) => {
@@ -127,7 +133,10 @@
 			playAudio('falling');
 		}
 
-		let rewindPosition = level.wordsQt[0].start;
+		let rewindPosition =
+			logic.whoStarts === 'qt'
+				? logic.mapKeyPressesQt[logic.rewoundWordQt].underlyingWord.start
+				: logic.mapKeyPressesLud[logic.rewoundWordLud].underlyingWord.start;
 		let lastTime = performance.now();
 		let speed = 0.5;
 
@@ -404,6 +413,8 @@
 			{/each}
 		</div>
 	</div>
+
+	<TopcornerStuff />
 </main>
 
 <style>
