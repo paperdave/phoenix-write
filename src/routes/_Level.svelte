@@ -4,12 +4,13 @@
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake } from '$lib/screenshake';
-	import { setNextMap } from '$lib/stores';
+	import { setNextMap, totalRewound } from '$lib/stores';
 
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
 	import Flares from './_LevelFlares.svelte';
+	import TopcornerStuff from './_TopcornerStuff.svelte';
 
 	export let level: LoadedLevel;
 
@@ -84,7 +85,9 @@
 		requestAnimationFrame(function loop(now) {
 			let dt = (now - lastTime) / 1000;
 			speed = Math.min(2, speed + dt * 0.1);
+			let oldTime = videoElem.currentTime;
 			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
+			$totalRewound += oldTime - videoElem.currentTime;
 			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;
@@ -230,6 +233,7 @@
 	</div>
 
 	<Flares {level} {logic} {currentWordI} {keyResults} {win} />
+	<TopcornerStuff />
 </main>
 
 <style>

@@ -3,13 +3,17 @@
 
 	export let color = 'white';
 	export let imageId: string | undefined;
+
+	export let isDone = false;
 </script>
 
 <main style="background:{color}" out:fade={{ delay: 200, duration: 100 }}>
 	{#if imageId}
 		<img src="./loadingframes/load{imageId}.png" alt="stuff" />
 	{/if}
-	<p in:fade={{ delay: 50, duration: 100 }}>LOADING</p>
+	{#if !isDone}
+		<p in:fade={{ delay: 200, duration: 100 }}>LOADING</p>
+	{/if}
 </main>
 
 <style>

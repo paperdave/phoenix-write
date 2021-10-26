@@ -21,3 +21,7 @@ export function addToRewoundTime(n: number) {
 export function resetRewoundTime() {
 	totalRewound.set(0);
 }
+
+export const totalFails = writable(0);
+
+export const startTime = writable(0);

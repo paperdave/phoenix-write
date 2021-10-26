@@ -4,12 +4,16 @@
 
  -->
 <script lang="ts">
+	import { playAudio } from '$lib/audio';
+
 	import { DuetLevelLogic } from '$lib/duet_fork';
-	import { setScreenshake, setScreenshake2, setScreenshakeVariable } from '$lib/screenshake';
+	import { isFocused } from '$lib/isFocused';
+	import { setScreenshake, setScreenshakeVariable } from '$lib/screenshake';
 
 	import { setNextMap } from '$lib/stores';
 
 	import { LoadedDuet, parseTimmyTimestamp } from '$lib/types';
+	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
 
 	export let level: LoadedDuet;
@@ -28,18 +32,20 @@
 
 	const logic = new DuetLevelLogic(level);
 
-	// function genKeyResults() {
-	// 	console.log('genkeyresults', logic.currentWord);
-	// 	return level.words.map((x) =>
-	// 		x.missingLetters.map((i) => {
-	// 			let index = logic.mapKeyPresses.findIndex(
-	// 				(y) => y.underlyingWord === x && y.key === x.text[i]
-	// 			);
-	// 			return index < logic.currentWord ? true : null;
-	// 		})
-	// 	);
-	// }
-	// let keyResults: (null | boolean | string)[][] = genKeyResults();
+	let keyResultsQT: (null | boolean | string)[][] = [];
+	let keyResultsLud: (null | boolean | string)[][] = [];
+
+	function resetKeyResults() {
+		keyResultsQT = level.wordsQt.map((word) => {
+			return word.missingLetters.map((i) => null);
+		});
+
+		keyResultsLud = level.wordsQt.map((word) => {
+			return word.missingLetters.map((i) => null);
+		});
+	}
+
+	resetKeyResults();
 
 	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
@@ -53,69 +59,66 @@
 
 	let win = false;
 
-	// logic.on('start', () => {
-	// 	videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
-	// 	videoElem.play();
-	// 	keyResults = genKeyResults();
-	// 	running = true;
-	// });
+	logic.on('start', () => {
+		// videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
+		videoElem.play();
+		resetKeyResults();
+		running = true;
+	});
 
 	// logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
 	// 	keyResults[wordIndex][letterIndex] = true;
 	// });
 
-	// logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
-	// 	if (!tooLate) {
-	// 		keyResults[wordIndex][letterIndex] = mistype;
-	// 	}
+	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
+		if (!tooLate) {
+			keyResults[wordIndex][letterIndex] = mistype;
+		}
 
-	// 	logic.canPlay = false;
+		logic.canPlay = false;
 
-	// 	videoElem.pause();
-	// 	running = false;
+		videoElem.pause();
+		running = false;
 
-	// 	if ($isFocused) {
-	// 		playAudio('screwup');
-	// 	}
+		if ($isFocused) {
+			playAudio('screwup');
+		}
 
-	// 	await delay(300);
+		await delay(300);
 
-	// 	if ($isFocused) {
-	// 		playAudio('falling');
-	// 	}
+		if ($isFocused) {
+			playAudio('falling');
+		}
 
-	// 	let rewindPosition = logic.mapKeyPresses[logic.rewoundWord].underlyingWord.start;
-	// 	let lastTime = performance.now();
-	// 	let speed = 0.5;
+		// let rewindPosition = logic.mapKeyPresses[logic.rewoundWord].underlyingWord.start;
+		// let lastTime = performance.now();
+		// let speed = 0.5;
 
-	// 	requestAnimationFrame(function loop(now) {
-	// 		let dt = (now - lastTime) / 1000;
-	// 		speed = Math.min(2, speed + dt * 0.1);
-	// 		videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
-	// 		if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
-	// 			videoElem.currentTime = rewindPosition;
-	// 			logic.canPlay = true;
-	// 			keyResults = genKeyResults();
-	// 			stopFallingAudio();
-	// 			playAudio('fall');
-	// 		} else {
-	// 			requestAnimationFrame(loop);
-	// 		}
-	// 		updateFrame();
-	// 	});
-	// });
+		// requestAnimationFrame(function loop(now) {
+		// 	let dt = (now - lastTime) / 1000;
+		// 	speed = Math.min(2, speed + dt * 0.1);
+		// 	videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
+		// 	if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
+		// 		videoElem.currentTime = rewindPosition;
+		// 		logic.canPlay = true;
+		// 		keyResults = genKeyResults();
+		// 		stopFallingAudio();
+		// 		playAudio('fall');
+		// 	} else {
+		// 		requestAnimationFrame(loop);
+		// 	}
+		// 	updateFrame();
+		// });
+	});
 
-	// logic.on('win', () => {
-	// 	win = true;
-	// });
+	logic.on('win', () => {
+		win = true;
+	});
 
 	const MANGOSTART = 73.2;
 	const MANGOEND = 83.5;
 
 	function updateFrame1() {
-		// gave up on var names here. this does screenshake related code
-		window.dfsajhjsdfa = true;
-
 		let videoTime = videoElem.currentTime;
 
 		batman = videoTime > 74.38588166666666 && videoTime < 81.83;
@@ -261,7 +264,7 @@
 			if (isIntroduction) {
 				if (videoElem.currentTime >= level.wordsQt[0].start - 0.05) {
 					isIntroduction = false;
-					if (logic.currentWord === 0) {
+					if (logic.currentWordQt === 0) {
 						videoElem.pause();
 					}
 				}
@@ -272,18 +275,18 @@
 		});
 	}
 
-	// $: if (!$isFocused) {
-	// 	videoElem.pause();
-	// 	logic.emit('lose', { tooLate: true });
-	// 	running = false;
-	// }
+	$: if (!$isFocused) {
+		videoElem.pause();
+		logic.emit('lose', { tooLate: true });
+		running = false;
+	}
 
-	// logic.on('lose', () => {
-	// 	if ($isFocused) {
-	// 		playAudio('screwup');
-	// 		setScreenshake();
-	// 	}
-	// });
+	logic.on('lose', () => {
+		if ($isFocused) {
+			playAudio('screwup');
+			setScreenshake();
+		}
+	});
 
 	let innerW = 0;
 	let innerH = 0;
@@ -299,7 +302,6 @@
 		on:play={start}
 		autoplay
 		disablePictureInPicture
-		controls
 		class:batman
 	/>
 

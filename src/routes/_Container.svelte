@@ -38,9 +38,7 @@
 							shakeX / 10
 						}),calc(var(--unit) * ${shakeY / 10}))`;
 
-						if (window.dfsajhjsdfa) {
-							dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
-						}
+						// dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
 					}
 				} else {
 					// shakeX = 0;
