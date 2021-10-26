@@ -4,7 +4,7 @@
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake } from '$lib/screenshake';
-	import { setNextMap, totalKeyPresses, totalOffset, totalRewound } from '$lib/stores';
+	import { setNextMap, startTime, totalKeyPresses, totalOffset, totalRewound } from '$lib/stores';
 
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
@@ -215,6 +215,10 @@
 	let innerW = 0;
 	let innerH = 0;
 	$: innerW * innerH && updateFrame();
+
+	if ($startTime === 0) {
+		$startTime = Date.now();
+	}
 </script>
 
 <svelte:window bind:innerWidth={innerW} bind:innerHeight={innerH} />

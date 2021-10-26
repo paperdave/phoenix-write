@@ -18,6 +18,7 @@
 	import { parseTimmyTimestamp } from '$lib/types';
 	import { onDestroy } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
+	import Stats from './STATS.svelte';
 
 	export let cutscene: LoadedCutscene;
 
@@ -65,6 +66,8 @@
 		return arg;
 	}
 
+	let STATSEEE = false;
+
 	let videoElem: HTMLVideoElement;
 
 	let currentSectionI = 0;
@@ -95,10 +98,16 @@
 			}
 		}
 		if (!currentSection) {
-			setNextMap(cutscene);
+			if ($currentMapId === '06-endingscene') {
+				STATSEEE = true;
+			} else {
+				setNextMap(cutscene);
+			}
 		}
 	}
 
+	if ($currentMapId === '06-endingscene') {
+	}
 	$: done = (dependOn(videoElem, currentSectionI), false);
 	$: hasPressedSpace = (dependOn(videoElem, currentSectionI), false);
 	$: keyIndex = (dependOn(videoElem, currentSectionI), 0);
@@ -106,6 +115,10 @@
 	function play() {
 		let running = true;
 		function stopHandler() {
+			if ($currentMapId === '06-endingscene') {
+				STATSEEE = true;
+			}
+
 			running = false;
 			videoElem.removeEventListener('pause', stopHandler);
 
@@ -280,7 +293,9 @@
 			event.key.length === 1
 		) {
 			if (
-				currentSection.keys[keyIndex].key === '%'
+				currentSection.keys[keyIndex].key === '💖'
+					? true
+					: currentSection.keys[keyIndex].key === '%'
 					? // hardcoded
 					  ['%', '5'].includes(event.key)
 					: // regular
@@ -371,42 +386,59 @@
 			}, 1500);
 		}
 	}
+
+	if ($currentMapId === '06-endingscene') {
+		window.a1 = new Image();
+		window.a1.src = `./scoreboard/bad.png`;
+		window.a2 = new Image();
+		window.a2.src = `./scoreboard/better.png`;
+		window.a3 = new Image();
+		window.a3.src = `./scoreboard/best.png`;
+		window.a4 = new Image();
+		window.a4.src = `./scoreboard/statsbg.png`;
+		window.a5 = new Image();
+		window.a5.src = `./scoreboard/statseval.png`;
+	}
 </script>
 
 <svelte:window on:keydown={onKeyDown} />
 
-<video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
-{#if done && !hasPressedSpace}
-	<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
-		{@html currentSection.continueText ?? '(Press space to continue)'}
-	</div>
-{/if}
-
-{#if isFadeToWhite}
-	<div class="fade-to-white" transition:fade={{ duration: 500 }} />
-{/if}
-
-{#if currentSection && currentSection.theBoys}
-	<div class="THEBOYS">
-		{#each boysString as char, i}
-			<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
-		{/each}
-	</div>
-{/if}
-
-{#if currentSection?.keys}
-	{#each currentSection.keys as key, i}
-		<div
-			class:ki_correct={keyIndex > i}
-			class:ki_fail={lost && keyIndex === i}
-			class="keyinstance"
-			style="--kx:{key.pos[0]};--ky:{key.pos[1]}"
-		>
-			<div class="tx">
-				{key.key}
-			</div>
+{#if !STATSEEE}
+	<video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
+	{#if done && !hasPressedSpace}
+		<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
+			{@html currentSection.continueText ?? '(Press space to continue)'}
 		</div>
-	{/each}
+	{/if}
+
+	{#if isFadeToWhite}
+		<div class="fade-to-white" transition:fade={{ duration: 500 }} />
+	{/if}
+
+	{#if currentSection && currentSection.theBoys}
+		<div class="THEBOYS">
+			{#each boysString as char, i}
+				<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
+			{/each}
+		</div>
+	{/if}
+
+	{#if currentSection?.keys}
+		{#each currentSection.keys as key, i}
+			<div
+				class:ki_correct={keyIndex > i}
+				class:ki_fail={lost && keyIndex === i}
+				class="keyinstance"
+				style="--kx:{key.pos[0]};--ky:{key.pos[1]}"
+			>
+				<div class="tx">
+					{key.key}
+				</div>
+			</div>
+		{/each}
+	{/if}
+{:else}
+	<Stats />
 {/if}
 
 <style>
