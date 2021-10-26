@@ -275,6 +275,7 @@ storm. : [1, 39, 16] { sanity }
 
 Go: [1, 41, 12]
 sh,: [1, 42, 1]
+<<<<<<< HEAD
 your: [1, 42, 4] 
 lips: [1, 42, 9] 
 look: [1, 42, 20] 
@@ -391,7 +392,6 @@ Think: [2, 15, 5]
 -[l]ong 
 [s]orrow
 
-if you got pneumonia and died
 
 
 
