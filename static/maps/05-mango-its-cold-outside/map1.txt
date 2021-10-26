@@ -171,7 +171,7 @@ tried.: [1, 3, 16] {sanity}
 [r]eal: [1, 6, 0]
 -ly: [1, 6, 7]
 [c]ant: [1, 6, 11]
-st[aaaaaaaaaaaaaaaa]y: [1, 7, 1]
+st[aaaaaaaaaaaaaaaa]y: [1, 7, 1] {lenient}
 
 
 
@@ -408,7 +408,7 @@ i : [2, 21, 12]
 -ly : [2, 22, 1]
 [c]ant : [2, 22, 6]
 s : [2, 22, 15]
--t[aaaaaaaaaaaa]y : [2, 22, 20]
+-t[aaaaaaaaaaaa]y : [2, 22, 20] {lenient}
 
 ba : [2, 24, 22] { sanity }
 -[by] : [ 2, 25, 8] { sanity }

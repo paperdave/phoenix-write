@@ -68,6 +68,7 @@ export class DuetLevelLogic extends EventEmitter {
 					event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWordQt].key.toLowerCase()
 				) {
 					this.gameStarted = true;
+					console.log('qt', this.currentWordLud, this.currentWordQt);
 					this.currentWordQt = this.rewoundWordQt + 1;
 					this.currentWordLud = this.rewoundWordLud;
 					this.popKeyPresses();
@@ -83,6 +84,7 @@ export class DuetLevelLogic extends EventEmitter {
 					event.key.toLowerCase() === this.mapKeyPressesLud[this.rewoundWordLud].key.toLowerCase()
 				) {
 					this.gameStarted = true;
+					console.log('lud', this.currentWordLud, this.currentWordQt);
 					this.currentWordLud = this.rewoundWordLud + 1;
 					this.currentWordQt = this.rewoundWordQt;
 					this.popKeyPresses();
@@ -136,7 +138,9 @@ export class DuetLevelLogic extends EventEmitter {
 					start: word.start - PRESS_MARGIN_START,
 					end:
 						parseTimmyTimestamp(
-							word.flags.endTime ?? word.start + word.text.length * LETTER_EXTRA_TIME
+							word.flags.lenient
+								? map.wordsQt[w + 1].start
+								: word.flags.endTime ?? word.start + word.text.length * LETTER_EXTRA_TIME
 						) + PRESS_MARGIN_END,
 					wordIndex: w,
 					letterIndex: i,
@@ -156,14 +160,17 @@ export class DuetLevelLogic extends EventEmitter {
 
 			let whoIsLatest = 'qt';
 
+			debugger;
+
 			while (wordsRewound < WORD_PENALTY) {
 				if (this.rewoundWordQt === 0) {
+					this.whoStarts = 'qt';
 					break;
 				}
 
 				// get latest word
-				const latestLudWord = this.rewoundWordLud > 0 && this.map.wordsLud[this.rewoundWordLud];
-				const latestQtWord = this.rewoundWordQt > 0 && this.map.wordsQt[this.rewoundWordQt];
+				const latestLudWord = this.rewoundWordLud > 0 && this.mapKeyPressesLud[this.rewoundWordLud];
+				const latestQtWord = this.rewoundWordQt > 0 && this.mapKeyPressesQt[this.rewoundWordQt];
 
 				whoIsLatest = latestLudWord
 					? latestQtWord
@@ -175,8 +182,6 @@ export class DuetLevelLogic extends EventEmitter {
 					? 'qt'
 					: 'WHO';
 
-				this.whoStarts = whoIsLatest;
-
 				if (whoIsLatest === 'lud') {
 					if (
 						this.mapKeyPressesLud[this.rewoundWordLud].letterIndex === 0 &&
@@ -184,6 +189,8 @@ export class DuetLevelLogic extends EventEmitter {
 					) {
 						wordsRewound++;
 						if (wordsRewound >= WORD_PENALTY) {
+							this.whoStarts = 'lud';
+							this.rewoundWordQt++;
 							break;
 						}
 					}
@@ -195,6 +202,7 @@ export class DuetLevelLogic extends EventEmitter {
 					) {
 						wordsRewound++;
 						if (wordsRewound >= WORD_PENALTY) {
+							this.whoStarts = 'qt';
 							break;
 						}
 					}
@@ -203,9 +211,6 @@ export class DuetLevelLogic extends EventEmitter {
 					break;
 				}
 			}
-			console.log(
-				`rewound to qt=${this.rewoundWordQt}, lud=${this.rewoundWordLud}. who start ${this.whoStarts}`
-			);
 		});
 	}
 

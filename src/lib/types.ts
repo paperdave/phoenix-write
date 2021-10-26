@@ -17,19 +17,24 @@ export interface WordFlags {
 	shake?: number;
 	// specify end of this word, used for input logic
 	endTime?: number | TimmyTimestamp;
-	////// VISUAL FLARE
-	// do not show this flare
-	none?: boolean;
-	// adds a new line after the flare
-	newline?: boolean;
-	// angle which the flare enters the screen
-	angle?: number;
-	// z-order: defaults to 0
-	zOrder?: number;
+	// ////// VISUAL FLARE
+	// // do not show this flare
+	// none?: boolean;
+	// // adds a new line after the flare
+	// newline?: boolean;
+	// // angle which the flare enters the screen
+	// angle?: number;
+	// // z-order: defaults to 0
+	// zOrder?: number;
+
+	// the following only work in duet mode
+
 	// rapper starts here
 	replacingQTCinderellaTheRapperLudwigHiredOnFiverOneYearAgoStartsRappingHere?: boolean;
 	// rapper ends here
 	replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere?: boolean;
+	// only valid in qt's part in the duet. place this on the spam lines
+	lenient?: boolean;
 }
 
 export interface MapMeta {
