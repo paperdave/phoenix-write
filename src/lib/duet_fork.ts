@@ -25,7 +25,9 @@ export interface DuetMapKeyPress {
 }
 
 export class DuetLevelLogic extends EventEmitter {
-	rewoundWord = 0;
+	whoStarts = 'qt';
+	rewoundWordQt = 0;
+	rewoundWordLud = 0;
 	canPlay = true;
 	keypressList = new Set<DuetKeyPress>();
 	startTime = 0;
@@ -61,18 +63,34 @@ export class DuetLevelLogic extends EventEmitter {
 			return;
 		}
 		if (!this.gameStarted) {
-			console.log('!game started');
-			if (event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWord].key.toLowerCase()) {
-				console.log('!fire');
-				this.gameStarted = true;
-				// this.currentWord = this.rewoundWord + 1;
-				this.popKeyPresses();
-				this.emit('start');
-				this.emit('key', {
-					key: event.key,
-					wordIndex: 0,
-					letterIndex: 0
-				});
+			if (this.whoStarts === 'qt') {
+				if (
+					event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWordQt].key.toLowerCase()
+				) {
+					this.gameStarted = true;
+					this.currentWordQt = this.rewoundWordQt + 1;
+					this.popKeyPresses();
+					this.emit('start');
+					this.emit('qt', {
+						key: event.key,
+						wordIndex: 0,
+						letterIndex: 0
+					});
+				}
+			} else {
+				if (
+					event.key.toLowerCase() === this.mapKeyPressesLud[this.rewoundWordLud].key.toLowerCase()
+				) {
+					this.gameStarted = true;
+					this.currentWordLud = this.rewoundWordLud + 1;
+					this.popKeyPresses();
+					this.emit('start');
+					this.emit('lud', {
+						key: event.key,
+						wordIndex: 0,
+						letterIndex: 0
+					});
+				}
 			}
 		} else {
 			this.keypressList.add({
@@ -222,7 +240,7 @@ export class DuetLevelLogic extends EventEmitter {
 					key: key.key,
 					wordIndex: mapKey.wordIndex,
 					letterIndex: mapKey.letterIndex,
-					offset: keyTime - mapKey.start
+					offset: keyTime - mapKey.start + PRESS_MARGIN_START
 				});
 				this.currentWordLud++;
 			}
@@ -236,7 +254,7 @@ export class DuetLevelLogic extends EventEmitter {
 					key: key.key,
 					wordIndex: mapKey.wordIndex,
 					letterIndex: mapKey.letterIndex,
-					offset: keyTime - mapKey.start
+					offset: keyTime - mapKey.start + PRESS_MARGIN_START
 				});
 				this.currentWordQt++;
 			}

@@ -24,17 +24,17 @@
 	const logic = new LevelLogic(level);
 
 	function genKeyResults() {
-		console.log('genkeyresults', logic.currentWord);
+		console.log(logic.rewoundWord);
 		return level.words.map((x) =>
 			x.missingLetters.map((i) => {
 				let index = logic.mapKeyPresses.findIndex(
 					(y) => y.underlyingWord === x && y.key === x.text[i]
 				);
-				return index < logic.currentWord ? true : null;
+				return index < logic.rewoundWord ? true : null;
 			})
 		);
 	}
-	let keyResults: (null | boolean | string)[][] = genKeyResults();
+	let keyResults: (null | boolean | number | string)[][] = genKeyResults();
 
 	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
@@ -55,7 +55,10 @@
 	});
 
 	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-		keyResults[wordIndex][letterIndex] = true;
+		const maxoffset = 0.65;
+		// green = 0 offset, orange = maxoffset
+		let hue = Math.abs(offset / maxoffset) * -120 + 120;
+		keyResults[wordIndex][letterIndex] = hue;
 	});
 
 	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
@@ -219,8 +222,9 @@
 						{#if word.missingLetters.includes(j)}
 							<span
 								class="underline"
-								class:success={keyResults[i][j] === true}
+								class:success={keyResults[i][j] === true || typeof keyResults[i][j] === 'number'}
 								class:failed={typeof keyResults[i][j] === 'string'}
+								style="--huevalue:{keyResults[i][j]}"
 								>{typeof keyResults[i][j] === 'string' ? keyResults[i][j] : letter}</span
 							>
 						{:else}
@@ -307,8 +311,18 @@
 		animation: pop 0.2s ease-out;
 	}
 	.success::after {
-		background-color: #0f0;
+		background-color: hsl(calc(var(--huevalue) * 1deg), 100%, 50%);
+		animation: fadeaway 0.2s 0.5s linear both;
 	}
+	@keyframes fadeaway {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
 	@keyframes pop {
 		0% {
 			transform: translateY(0);

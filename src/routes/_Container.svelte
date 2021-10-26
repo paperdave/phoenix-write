@@ -19,14 +19,13 @@
 
 	let cancelShake;
 
-	function doShake(shakeIntensity: number, decay1: number, decay: number) {
+	function doShake(shakeIntensity: number, decay1: number, decay: number, c: boolean) {
 		if (cancelShake) cancelShake();
 		let shakeX = 0;
 		let shakeY = 0;
 		let shakeVar = 1;
 		cancelShake = () => (shakeVar = 0);
 		function render() {
-			console.log('x', shakeVar);
 			if (shakeVar >= 0.0001) {
 				shakeVar *= decay1 - decay * shakeVar;
 
@@ -37,10 +36,12 @@
 						dom.style.transform = `translate(calc(var(--unit) * ${
 							shakeX / 10
 						}),calc(var(--unit) * ${shakeY / 10}))`;
-
-						// dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
+						if (c) {
+							dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
+						}
 					}
 				} else {
+					dom.style.filter = ``;
 					// shakeX = 0;
 					// shakeY = 0;
 					// if (dom) dom.style.removeProperty('transform');

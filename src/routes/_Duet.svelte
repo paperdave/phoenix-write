@@ -66,9 +66,12 @@
 		running = true;
 	});
 
-	// logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-	// 	keyResults[wordIndex][letterIndex] = true;
-	// });
+	logic.on('lud', ({ key, wordIndex, letterIndex, offset }) => {
+		keyResultsLud[wordIndex][letterIndex] = true;
+	});
+	logic.on('qt', ({ key, wordIndex, letterIndex, offset }) => {
+		keyResultsLud[wordIndex][letterIndex] = true;
+	});
 
 	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
 		if (!tooLate) {
