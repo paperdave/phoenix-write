@@ -226,35 +226,62 @@ TO : [1, 22, 14]
 [MAN]- : [1, 23, 6]
 goooooooooooooooo : [1, 23, 21] {replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere}
 
+
+
+
+
+
+
+
 the : [1, 26, 20]
 an : [1, 27, 1]
 -swer : [1, 27, 7]
 is : [1, 27, 13]
 NO. : [1, 28, 1]
--: [1, 28, 08] { sanity }
+-: [1, 28, 07] { sanity }
+
+
+
+
 
 
 this : [1, 31, 0]
 wel- : [1, 31, 6]
 come : [1, 31, 13]
 has : [1, 31, 18]
+
 beeeeeeeeeeeen : [1, 32, 7]
-so : [1, 33, 20]
-nice : [1, 34, 10]
+
+
+
+
+[s]o : [1, 33, 21] { sanity }
+[n]ice : [1, 34, 10]  { sanity }
 and : [1, 34, 23]
 waaaaaaaaaaaarm : [1, 35, 6]
--: [1, 37, 15]
 
-sis: [1, 39, 16]
+
+
+
+
+
+
+
+my [1, 39, 12]
+sis: [1, 39, 16] { sanity }
 -ter : [1, 40, 1]
 will : [1, 40, 5]
 be : [1, 40, 18]
 sus : [1, 41, 3]
+
 -pi : [1, 41, 18]
 -cious : [1, 42, 1]
 -: [1, 42, 13]
+
+
+
 my : [1, 43, 17]
-bro : [1, 43, 21]
+bro : [1, 43, 21] { sanity }
 -ther : [1, 44, 3]
 will : [1, 44,8]
 be : [1, 44, 17]
@@ -263,30 +290,54 @@ at : [1, 45, 6]
 the : [1, 45, 9]
 door : [1, 45, 16] { sanity }
 
+
+
+
+
+
+
 my : [1, 47, 20]
 mai : [1, 48, 2]
 -dens : [1, 48, 9]
-ant : [1, 48, 16]
+aunt's : [1, 48, 16]
 mind : [1, 49, 4]
 is : [1, 49, 15]
+
 vi : [1, 50, 4]
--cious : [1, 50, 9]
+-cious : [1, 50, 9] { sanity }
+ 
+
+
+
 
 well : [1, 52, 3]
+
 may : [1, 52, 7]
+
 -be : [1, 52, 16]
 just : [1, 52, 19]
 a : [1, 53, 3]
 ci : [1, 53, 8]
 -ga : [1, 53, 17]
 -rette : [1, 53, 21]
-more : [1, 54, 5]
+more : [1, 54, 5] { sanity }
 
-ive : [1, 56, 10]
+
+
+
+
+
+ive : [1, 56, 10] { sanity }
 got : [1, 56, 13]
 to : [1, 56, 20]
 get : [1, 57, 1]
 home : [1, 57, 14]
+
+
+
+
+
+
 
 s: [2, 00, 00]
 -ay : [2, 00, 5]
@@ -296,33 +347,49 @@ me : [2, 1, 2]
 a : [2, 1, 8]
 c: [2, 1, 14]
 -oat : [2, 1, 20]
--: [2, 2, 2]
+-: [2, 2, 2] { sanity }
+
+
+
+
+
+
 
 
 youve: [2, 4, 16]
 real: [2, 4, 23]
 -ly: [2, 5, 7]
 been: [2, 5, 11]
-graaaaaaaaand: [2, 5, 23]
+[graaaaaa]nd: [2, 5, 23] { sanity }
 
-but: [2, 7, 12]
-dont: [2, 8, 2]
-you: [2, 8, 15]
-s: [2, 8, 20]
+
+
+[b]ut: [2, 7, 12] {sanity}
+
+[d]ont: [2, 8, 2] {sanity}
+[y]ou: [2, 8, 15]
+[s]: [2, 8, 20]
 -eeeeeeeeeeeeee?: [2, 9, 3]
 
+
+
+
+
+
+
 theres: [2, 13, 4]
-bound: [2, 13, 9]
+
+[b]ound: [2, 13, 9]
 to: [2, 13, 17]
-be: [2, 13, 21]
-talk: [2, 14, 9]
-to: [2, 14, 21]
--mor: [2, 15, 11]
--row: [2, 15, 20]
+[b]e: [2, 13, 21] { sanity }
+[t]alk: [2, 14, 9]
+[t]o: [2, 14, 21]
+-[m]or: [2, 15, 11] 
+-row: [2, 15, 20] { sanity }
 -: [2, 16, 12] { sanity }
 
 at : [2, 17, 9]
-least : [2, 17, 14]
+[l]east : [2, 17, 14]
 there : [2, 17, 22]
 will : [2, 18, 1]
 be : [2, 18, 10]

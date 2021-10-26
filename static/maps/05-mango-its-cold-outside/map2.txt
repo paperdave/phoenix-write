@@ -275,16 +275,122 @@ storm. : [1, 39, 16] { sanity }
 
 Go: [1, 41, 12]
 sh,: [1, 42, 1]
-your: [] lips look delicious.
-Waves upon a tropical shore.
-Ooh, your lips are delicious.
-Never such a blizzard before.
+your: [1, 42, 4] 
+lips: [1, 42, 9] 
+look: [1, 42, 20] 
+de: [1, 43, 8]
+-li: [1, 43, 16]
 
-Baby, you'd freeze out there.
-It's up to your knees out there.
-I feel when I touch your hair
-how can you do this thing to me?
-Think of my lifel ong sorrow
+-cious.: [1, 43, 21] { sanity }
+
+
+
+
+
+
+Wave: [1, 45, 16]  { sanity } 
+-s u: [1, 46, 5]
+-po: [1, 46, 10]
+-n a: [1, 46, 18] 
+tro: [1, 47, 00]
+-pi: [1, 47, 7]
+-cal: [1, 47, 13]
+shore.: [1, 47, 18]
+
+
+
+
+
+
+Ooh,: [1, 49, 21] 
+
+your: [1, 50, 9] { sanity }
+
+lips: [1, 50, 17] 
+are: [1, 51, 6] 
+de: [1, 51, 19]
+-li: [1, 52, 2]
+
+
+-cious.: [1, 52, 9]
+
+
+
+
+
+
+
+Ne: [1, 54, 5] { sanity }
+-ver: [1, 54, 20] 
+su:  [1, 54, 23]
+-ch a: [1, 55, 7] 
+bli: [1, 55, 13]
+zzard: [1, 55, 20]
+be: [1, 56, 1]
+fore.: [1, 56, 10]  { sanity }
+
+
+
+
+
+Ba: [1, 57, 16]
+by,: [1, 58, 0]
+you'd: [1, 58, 6]
+freeze: [1, 58, 14]
+out: [1, 59, 3]
+there.: [1, 59, 11]
+-:[2, 00, 00]
+
+
+
+
+
+
+
+It's: [2, 2, 2] {sanity}
+up: [2, 2,7] 
+to: [2, 2, 12]
+your: [2, 2, 15]
+kn: [2, 2, 20]
+ees: [2, 3, 2]
+out: [2, 3, 13]
+there.: [2, 3, 21]
+
+
+
+
+
+[I] : [2, 5, 23] { sanity }
+[f]eel :[2, 6, 10]
+[w]hen :
+[I] :
+[t]ouch : [2, 7, 12] {sanity}
+[y]our :
+[h]air: [2, 8, 2] {sanity}
+
+
+
+[h]ow: [2, 9, 11]
+[c]an: [2, 10, 4]
+[y]ou: [2, 10, 17]
+[d]o: [2, 11, 2]
+[t]his: [2, 11, 13]
+[t]hing: [2, 12, 6]
+[t]o: [2, 12, 20]
+
+[m]e?: [2, 13, 7]
+
+
+-: [ [2, 13, 21] { sanity }]
+
+
+Think: [2, 15, 5]
+[o]: [2, 15, 20] { sanity }
+[m]y: 
+[l]ife:  [2, 16, 12] { sanity }
+-[l]ong 
+[s]orrow
+
 if you got pneumonia and died
 
 
