@@ -275,17 +275,17 @@ storm. : [1, 39, 16] { sanity }
 
 Go: [1, 41, 12]
 sh,: [1, 42, 1]
-your: [] lips look delicious.
-Waves upon a tropical shore.
-Ooh, your lips are delicious.
-Never such a blizzard before.
+# your: [] lips look delicious.
+# Waves upon a tropical shore.
+# Ooh, your lips are delicious.
+# Never such a blizzard before.
 
-Baby, you'd freeze out there.
-It's up to your knees out there.
-I feel when I touch your hair
-how can you do this thing to me?
-Think of my lifel ong sorrow
-if you got pneumonia and died
+# Baby, you'd freeze out there.
+# It's up to your knees out there.
+# I feel when I touch your hair
+# how can you do this thing to me?
+# Think of my lifel ong sorrow
+# if you got pneumonia and died
 
 
 
