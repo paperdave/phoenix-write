@@ -579,7 +579,7 @@
 		}
 	}
 	.failed {
-		color: #f00;
+		color: #f00 !important;
 		animation: pop 0.2s ease-out;
 	}
 	.marker {
