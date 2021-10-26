@@ -21,10 +21,26 @@
 		});
 	});
 
+	let fontLoadedPromise = new Promise<void>((resolve) => {
+		setTimeout(function again() {
+			if (document.fonts.check('12px Carlito')) {
+				resolve();
+			} else {
+				setTimeout(again, 100);
+			}
+		});
+	});
+
+	let clicked = false;
 	async function clickStart() {
+		let t = setTimeout(() => {
+			clicked = true;
+		}, 250);
+		await fontLoadedPromise;
 		if (!mapListLoaded) {
 			await mapPromise;
 		}
+		clearTimeout(t);
 
 		dofade = true;
 
@@ -34,7 +50,9 @@
 	}
 
 	if (browser) {
-		loadRequiredAudio();
+		setTimeout(() => {
+			loadRequiredAudio();
+		}, 100);
 
 		// global in case some garbage collector throws the images away
 		(window as any).globalImages = [0, 1, 2, 3, 4].map((n) => {
@@ -51,32 +69,41 @@
 </script>
 
 <Container>
+	<p style="opacity:0;position:absolute;font-family:Carlito">h</p>
 	{#if $currentMapId === null}
-		<main>
-			<img
-				src="./openingscreen.png"
-				alt="Pheonix, WRITE!"
-				on:click={clickStart}
-				on:contextmenu={() => {
-					$currentMapId = '06-mango-its-cold-outside';
-				}}
-			/>
+		<main
+			on:click={clickStart}
+			on:contextmenu={() => {
+				$currentMapId = '06-mango-its-cold-outside';
+			}}
+		>
+			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
+			{#if dofade}
+				<div class="white" in:fade={{ duration: 1000 }} />
+			{/if}
 		</main>
-		{#if dofade}
-			<div class="white" in:fade={{ duration: 1000 }} />
-		{/if}
 	{:else}
 		<LevelLoader key={$currentMapId} />
 	{/if}
 </Container>
 
 <style>
-	img {
+	main {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
+		background-color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	img {
+		width: calc(var(--unit) * 21.458);
+	}
+	.clicked {
+		opacity: 0.7;
 	}
 	.white {
 		position: absolute;
@@ -85,5 +112,6 @@
 		width: 100%;
 		height: 100%;
 		background: white;
+		z-index: 100;
 	}
 </style>
