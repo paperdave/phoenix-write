@@ -9,8 +9,8 @@
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
 
-	const PRESS_MARGIN_END = 0.2;
-	const PRESS_MARGIN_START = 0.2;
+	const PRESS_MARGIN_END = 0.18;
+	const PRESS_MARGIN_START = 0.18;
 
 	import { currentMapId, setNextMap } from '$lib/stores';
 
@@ -108,6 +108,12 @@
 		function stopHandler() {
 			running = false;
 			videoElem.removeEventListener('pause', stopHandler);
+
+			if (currentSection.theBoys && !boysWon) {
+				lose(videoElem.currentTime);
+				done = false;
+				return;
+			}
 		}
 
 		videoElem.addEventListener('pause', stopHandler);
@@ -328,6 +334,8 @@
 	let isFadeToWhite = false;
 
 	export function lose(time?: number) {
+		setScreenshake();
+
 		lost = true;
 		videoElem.pause();
 
@@ -384,6 +392,21 @@
 			<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
 		{/each}
 	</div>
+{/if}
+
+{#if currentSection?.keys}
+	{#each currentSection.keys as key, i}
+		<div
+			class:ki_correct={keyIndex > i}
+			class:ki_fail={lost && keyIndex === i}
+			class="keyinstance"
+			style="--kx:{key.pos[0]};--ky:{key.pos[1]}"
+		>
+			<div class="tx">
+				{key.key}
+			</div>
+		</div>
+	{/each}
 {/if}
 
 <style>
@@ -449,6 +472,72 @@
 		}
 		100% {
 			transform: translateY(0);
+		}
+	}
+
+	.keyinstance {
+		position: absolute;
+		left: calc(var(--unit) * (var(--kx) / 19.2 - 1.5));
+		top: calc(var(--unit) * ((9 / 16) * (var(--ky) / 10.8) - 1.65));
+		width: calc(var(--unit) * 2.75);
+		height: calc(var(--unit) * 2.75);
+		border: calc(var(--unit) * 0.3) solid red;
+		color: red;
+		border-radius: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: calc(var(--unit) * 3.5);
+		opacity: 0;
+	}
+	.tx {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		transform: translateY(calc(var(--unit) * -0.4));
+	}
+
+	.ki_correct {
+		color: transparent;
+		border-color: #0f0;
+		animation: correctscale 0.3s ease-out both;
+	}
+	@keyframes correctscale {
+		0% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		100% {
+			transform: scale(3);
+			opacity: 0;
+		}
+	}
+
+	.ki_fail {
+		color: #f00;
+		border-color: #f00;
+		background-color: rgba(0, 0, 0, 0.5);
+		animation: wrongscale 2s cubic-bezier(0.19, 1, 0.22, 1) both;
+		opacity: 1;
+	}
+
+	@keyframes wrongscale {
+		0% {
+			transform: scale(1);
+			opacity: 1;
+		}
+		50% {
+			opacity: 1;
+			transform: scale(2.5);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(1);
 		}
 	}
 </style>
