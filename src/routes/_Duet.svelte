@@ -4,7 +4,7 @@
 
  -->
 <script lang="ts">
-	import { playAudio } from '$lib/audio';
+	import { playAudio, stopFallingAudio } from '$lib/audio';
 
 	import { DuetLevelLogic } from '$lib/duet_fork';
 	import { isFocused } from '$lib/isFocused';
@@ -90,7 +90,7 @@
 		}
 	});
 	logic.on('qt', ({ key, wordIndex, letterIndex, offset }) => {
-		if (offset) {
+		if (offset !== undefined) {
 			const maxoffset = 0.3;
 			// green = 0 offset, orange = maxoffset
 			let hue = Math.min(Math.abs(offset / maxoffset), 1) * -90 + 120;
@@ -103,10 +103,13 @@
 		}
 	});
 
-	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
-		return;
+	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype, who }) => {
 		if (!tooLate) {
-			keyResults[wordIndex][letterIndex] = mistype;
+			if (who === 'lud') {
+				keyResultsLud[wordIndex][letterIndex] = mistype;
+			} else {
+				keyResultsQT[wordIndex][letterIndex] = mistype;
+			}
 		}
 
 		logic.canPlay = false;
@@ -124,25 +127,25 @@
 			playAudio('falling');
 		}
 
-		// let rewindPosition = logic.mapKeyPresses[logic.rewoundWord].underlyingWord.start;
-		// let lastTime = performance.now();
-		// let speed = 0.5;
+		let rewindPosition = level.wordsQt[0].start;
+		let lastTime = performance.now();
+		let speed = 0.5;
 
-		// requestAnimationFrame(function loop(now) {
-		// 	let dt = (now - lastTime) / 1000;
-		// 	speed = Math.min(2, speed + dt * 0.1);
-		// 	videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
-		// 	if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
-		// 		videoElem.currentTime = rewindPosition;
-		// 		logic.canPlay = true;
-		// 		keyResults = genKeyResults();
-		// 		stopFallingAudio();
-		// 		playAudio('fall');
-		// 	} else {
-		// 		requestAnimationFrame(loop);
-		// 	}
-		// 	updateFrame();
-		// });
+		requestAnimationFrame(function loop(now) {
+			let dt = (now - lastTime) / 1000;
+			speed = Math.min(2, speed + dt * 0.1);
+			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
+			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
+				videoElem.currentTime = rewindPosition;
+				logic.canPlay = true;
+				resetKeyResults();
+				stopFallingAudio();
+				playAudio('fall');
+			} else {
+				requestAnimationFrame(loop);
+			}
+			updateFrame();
+		});
 	});
 
 	logic.on('win', () => {
@@ -476,6 +479,10 @@
 	}
 	.space {
 		margin-right: 2px;
+	}
+	.success {
+		color: #fff;
+		animation: pop 0.2s ease-out;
 	}
 	.success::after {
 		background-color: hsl(calc(var(--huevalue) * 1deg), 100%, 50%);

@@ -69,6 +69,7 @@ export class DuetLevelLogic extends EventEmitter {
 				) {
 					this.gameStarted = true;
 					this.currentWordQt = this.rewoundWordQt + 1;
+					this.currentWordLud = this.rewoundWordLud;
 					this.popKeyPresses();
 					this.emit('start');
 					this.emit('qt', {
@@ -83,6 +84,7 @@ export class DuetLevelLogic extends EventEmitter {
 				) {
 					this.gameStarted = true;
 					this.currentWordLud = this.rewoundWordLud + 1;
+					this.currentWordQt = this.rewoundWordQt;
 					this.popKeyPresses();
 					this.emit('start');
 					this.emit('lud', {
@@ -147,28 +149,56 @@ export class DuetLevelLogic extends EventEmitter {
 		}
 		this.on('lose', () => {
 			this.gameStarted = false;
-			// let wordsRewound = 0;
-			// this.rewoundWord = this.currentWord - 6;
-			// while (wordsRewound < WORD_PENALTY) {
-			// 	this.rewoundWord--;
-			// 	console.log(
-			// 		this.rewoundWord,
-			// 		this.mapKeyPresses[this.rewoundWord].underlyingWord.text[
-			// 			this.mapKeyPresses[this.rewoundWord].underlyingWord.missingLetters[0]
-			// 		].toLowerCase(),
-			// 		this.mapKeyPresses[this.rewoundWord].key.toLowerCase()
-			// 	);
-			// 	if (this.rewoundWord === 0) break;
-			// 	if (
-			// 		this.mapKeyPresses[this.rewoundWord].letterIndex === 0 &&
-			// 		!this.mapKeyPresses[this.rewoundWord].underlyingWord.isWordJoiner
-			// 	) {
-			// 		wordsRewound++;
-			// 		if (wordsRewound >= WORD_PENALTY) {
-			// 			break;
-			// 		}
-			// 	}
-			// }
+			let wordsRewound = 0;
+
+			this.rewoundWordLud = this.currentWordLud;
+			this.rewoundWordQt = this.currentWordQt;
+
+			let whoIsLatest = 'qt';
+
+			while (wordsRewound < WORD_PENALTY) {
+				if (this.rewoundWordQt === 0) {
+					break;
+				}
+
+				// get latest word
+				const latestLudWord = this.map.wordsLud[this.rewoundWordLud];
+				const latestQtWord = this.map.wordsQt[this.rewoundWordQt];
+
+				whoIsLatest = latestLudWord
+					? latestQtWord
+						? latestLudWord.start > latestQtWord.start
+							? 'lud'
+							: 'qt'
+						: 'lud'
+					: 'WHO';
+
+				if (whoIsLatest === 'lud') {
+					if (
+						this.mapKeyPressesLud[this.rewoundWordLud].letterIndex === 0 &&
+						!this.mapKeyPressesLud[this.rewoundWordLud].underlyingWord.isWordJoiner
+					) {
+						wordsRewound++;
+						if (wordsRewound >= WORD_PENALTY) {
+							break;
+						}
+					}
+					this.rewoundWordLud--;
+				} else {
+					if (
+						this.mapKeyPressesQt[this.rewoundWordQt].letterIndex === 0 &&
+						!this.mapKeyPressesQt[this.rewoundWordQt].underlyingWord.isWordJoiner
+					) {
+						wordsRewound++;
+						if (wordsRewound >= WORD_PENALTY) {
+							break;
+						}
+					}
+					this.rewoundWordQt--;
+				}
+
+				this.whoStarts = whoIsLatest;
+			}
 		});
 	}
 
@@ -211,12 +241,35 @@ export class DuetLevelLogic extends EventEmitter {
 			let lud = this.ludTickKey(key);
 			let qt = this.qtTickKey(key);
 
-			if (
-				(lud === 'failure' && qt === 'failure') ||
-				(lud === 'failure' && qt === null) ||
-				(lud === null && qt === 'failure')
-			) {
-				this.emit('lose');
+			if (lud === 'failure' && qt === 'failure') {
+				// fight over which ones sooner
+				const ludWord = this.mapKeyPressesLud[this.currentWordLud];
+				const qtWord = this.mapKeyPressesQt[this.currentWordQt];
+				if (ludWord.start < qtWord.start) {
+					qt = null;
+				} else {
+					lud = null;
+				}
+			}
+			if (lud === 'failure' && qt === null) {
+				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
+				this.emit('lose', {
+					tooLate: false,
+					wordIndex: mapKey.wordIndex,
+					letterIndex: mapKey.letterIndex,
+					mistype: key.key,
+					who: 'lud'
+				});
+			}
+			if (lud === null && qt === 'failure') {
+				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+				this.emit('lose', {
+					tooLate: false,
+					wordIndex: mapKey.wordIndex,
+					letterIndex: mapKey.letterIndex,
+					mistype: key.key,
+					who: 'qt'
+				});
 			}
 
 			if (lud === 'success' && qt === 'success') {
