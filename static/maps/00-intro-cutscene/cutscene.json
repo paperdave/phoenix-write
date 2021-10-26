@@ -64,12 +64,13 @@
 
 		{
 			// Let's do this!
-			"stopMusic": true,
 			"autoplay": true,
+			"endMusic": true,
 			"begin": [17, 21]
 		},
 		{
 			// [Fades to white]
+
 			"begin": [19, 2],
 			"autoplay": true
 		}
