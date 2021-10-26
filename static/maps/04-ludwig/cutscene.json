@@ -47,15 +47,16 @@
 					"key": "s",
 					"time": [9, 22],
 					"pos": [1027,802]
-				}
-			]				
-		},
+				},
+
+			]				,
+			"overrideSFX": "questionmark"		},
 		
 		{
 			// Did you hear something?
 			// It sounded like a... slight winny.
 			"begin": [13, 1],
-			"overrideSFX": "questionmark",
+
 			"endMusic": true
 		},
 		
