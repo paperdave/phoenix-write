@@ -14,7 +14,7 @@ export function registerAudio(audio: string) {
 	audioMap.set(
 		audio,
 		new Howl({
-			src: [`sfx/${audio}.mp3`, `sfx/${audio}.webm`],
+			src: [`sfx/${audio}.webm`, `sfx/${audio}.mp3`],
 			preload: true,
 			volume: 0,
 			loop: false,
