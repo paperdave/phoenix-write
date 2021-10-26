@@ -8,6 +8,6 @@ export function setScreenshake() {
 export function setScreenshake2() {
 	shakeeventemitter.emit('shake2');
 }
-export function setScreenshakeVariable(v: number) {
-	shakeeventemitter.emit('shake3', v);
+export function setScreenshakeVariable(v: number, b?: boolean) {
+	shakeeventemitter.emit('shake3', v, b);
 }

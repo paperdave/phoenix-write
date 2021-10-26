@@ -4,7 +4,7 @@
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake } from '$lib/screenshake';
-	import { setNextMap, totalRewound } from '$lib/stores';
+	import { setNextMap, totalKeyPresses, totalOffset, totalRewound } from '$lib/stores';
 
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
@@ -50,15 +50,19 @@
 	logic.on('start', () => {
 		videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
 		videoElem.play();
+		logic.rewoundWord++;
 		keyResults = genKeyResults();
 		running = true;
 	});
 
 	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-		const maxoffset = 0.65;
+		const maxoffset = 0.3;
 		// green = 0 offset, orange = maxoffset
-		let hue = Math.abs(offset / maxoffset) * -120 + 120;
+		let hue = Math.min(Math.abs(offset / maxoffset), 1) * -90 + 120;
 		keyResults[wordIndex][letterIndex] = hue;
+
+		$totalKeyPresses = $totalKeyPresses + 1;
+		$totalOffset = $totalOffset + offset;
 	});
 
 	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {

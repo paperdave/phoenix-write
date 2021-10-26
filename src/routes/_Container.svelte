@@ -19,7 +19,7 @@
 
 	let cancelShake;
 
-	function doShake(shakeIntensity: number, decay1: number, decay: number, c: boolean) {
+	function doShake(shakeIntensity: number, decay1: number, decay: number, c?: boolean) {
 		if (cancelShake) cancelShake();
 		let shakeX = 0;
 		let shakeY = 0;
@@ -58,8 +58,8 @@
 	function handleShake2() {
 		doShake(65, 0.99, 0.1);
 	}
-	function handleShake3(v: number) {
-		doShake(v * 15, 0.97, 0.22);
+	function handleShake3(v: number, b: boolean) {
+		doShake(v * 15, 0.97, 0.22, b);
 	}
 	shakeeventemitter.on('shake', handleShake);
 	shakeeventemitter.on('shake2', handleShake2);
