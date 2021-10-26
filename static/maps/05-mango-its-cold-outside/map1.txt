@@ -36,7 +36,7 @@ so: [18, 3] {sanity}
 
 ve: [18, 15]
 -ry: [19, 4]
-[niii]ce: [19, 12]
+[niii]ce: [19, 12] {lenient}
 
 -: [20, 18] {sanity}
 
