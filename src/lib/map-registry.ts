@@ -68,8 +68,14 @@ async function fetchLevel(meta: MapMeta) {
 			type: 'duet',
 			key,
 			meta,
-			wordsLud: parseMap(results[0]).words,
-			wordsQt: parseMap(results[1]).words,
+			wordsLud: parseMap(results[0]).words.map((x) => {
+				x.start = x.start + 14 / 24;
+				return x;
+			}),
+			wordsQt: parseMap(results[1]).words.map((x) => {
+				x.start = x.start + 14 / 24;
+				return x;
+			}),
 			video: results[2]
 		} as LoadedDuet;
 	} else if (meta.type === 'cutscene') {
