@@ -168,9 +168,7 @@
 		{
 			// What was that for? I have a hole in my chest, not my damn 💖!
 			"begin": [40, 16],
-			"heartFlag":[45, 15],
-			"unskippable": [true],
-			"coords": [1381, 871.5],
+			"unskippable": true,
 			"keys":
 			[
 				{
