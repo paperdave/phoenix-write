@@ -17,10 +17,13 @@
 
 	let mapList = getMapListNoPromise();
 
-	$: loadingPromise = getMap(key).then(async (x) => {
-		await delay(10);
-		return x;
-	});
+	$: loadingPromise = getMap(key);
+	$: isDone = loadingPromise && (false as boolean);
+	$: delayPromise = loadingPromise
+		.then(() => delay(40))
+		.then(() => {
+			isDone = true;
+		});
 	$: {
 		loadingPromise.then(async () => {
 			let nextMap = mapList[mapList.findIndex((x) => x.key === key) + 1];
@@ -36,7 +39,7 @@
 
 <main style="background:{color}">
 	{#await loadingPromise}
-		<LoadingScreen {color} {imageId} />
+		<!-- <LoadingScreen {color} {imageId} /> -->
 	{:then loadedMap}
 		{#if loadedMap.type === 'map'}
 			<Level level={loadedMap} />
@@ -45,6 +48,9 @@
 		{:else if loadedMap.type === 'duet'}
 			<Duet level={loadedMap} />
 		{/if}
+	{/await}
+	{#await delayPromise}
+		<LoadingScreen {isDone} {color} {imageId} />
 	{/await}
 </main>
 

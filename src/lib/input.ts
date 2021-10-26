@@ -109,13 +109,6 @@ export class LevelLogic extends EventEmitter {
 			this.rewoundWord = this.currentWord;
 			while (wordsRewound < WORD_PENALTY) {
 				this.rewoundWord--;
-				console.log(
-					this.rewoundWord,
-					this.mapKeyPresses[this.rewoundWord].underlyingWord.text[
-						this.mapKeyPresses[this.rewoundWord].underlyingWord.missingLetters[0]
-					].toLowerCase(),
-					this.mapKeyPresses[this.rewoundWord].key.toLowerCase()
-				);
 				if (this.rewoundWord === 0) break;
 				if (
 					this.mapKeyPresses[this.rewoundWord].letterIndex === 0 &&
@@ -171,12 +164,19 @@ export class LevelLogic extends EventEmitter {
 						}
 					}
 
+					let offset =
+						mapKey.letterIndex !== 0
+							? keyTime < mapKey.end - PRESS_MARGIN_END
+								? 0
+								: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
+							: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
+
 					this.currentWord++;
 					this.emit('key', {
 						key: key.key,
 						wordIndex: mapKey.wordIndex,
 						letterIndex: mapKey.letterIndex,
-						offset: keyTime - mapKey.start
+						offset: offset
 					});
 				} else {
 					this.emit('lose', {

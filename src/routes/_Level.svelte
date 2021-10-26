@@ -4,12 +4,13 @@
 	import { LevelLogic } from '$lib/input';
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake } from '$lib/screenshake';
-	import { setNextMap } from '$lib/stores';
+	import { setNextMap, totalKeyPresses, totalOffset, totalRewound } from '$lib/stores';
 
 	import { LoadedLevel, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
 	import { onDestroy } from 'svelte';
 	import Flares from './_LevelFlares.svelte';
+	import TopcornerStuff from './_TopcornerStuff.svelte';
 
 	export let level: LoadedLevel;
 
@@ -23,17 +24,16 @@
 	const logic = new LevelLogic(level);
 
 	function genKeyResults() {
-		console.log('genkeyresults', logic.currentWord);
 		return level.words.map((x) =>
 			x.missingLetters.map((i) => {
 				let index = logic.mapKeyPresses.findIndex(
 					(y) => y.underlyingWord === x && y.key === x.text[i]
 				);
-				return index < logic.currentWord ? true : null;
+				return index < logic.rewoundWord ? true : null;
 			})
 		);
 	}
-	let keyResults: (null | boolean | string)[][] = genKeyResults();
+	let keyResults: (null | boolean | number | string)[][] = genKeyResults();
 
 	const videoUrl = URL.createObjectURL(level.video);
 	onDestroy(() => {
@@ -49,12 +49,19 @@
 	logic.on('start', () => {
 		videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
 		videoElem.play();
+		logic.rewoundWord++;
 		keyResults = genKeyResults();
 		running = true;
 	});
 
 	logic.on('key', ({ key, wordIndex, letterIndex, offset }) => {
-		keyResults[wordIndex][letterIndex] = true;
+		const maxoffset = 0.3;
+		// green = 0 offset, orange = maxoffset
+		let hue = Math.min(Math.abs(offset / maxoffset), 1) * -90 + 120;
+		keyResults[wordIndex][letterIndex] = hue;
+
+		$totalKeyPresses = $totalKeyPresses + 1;
+		$totalOffset = $totalOffset + offset;
 	});
 
 	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
@@ -84,7 +91,9 @@
 		requestAnimationFrame(function loop(now) {
 			let dt = (now - lastTime) / 1000;
 			speed = Math.min(2, speed + dt * 0.1);
+			let oldTime = videoElem.currentTime;
 			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
+			$totalRewound += oldTime - videoElem.currentTime;
 			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;
@@ -180,6 +189,8 @@
 
 	$: if (!$isFocused) {
 		videoElem.pause();
+	}
+	$: if (!$isFocused && running) {
 		logic.emit('lose', { tooLate: true });
 		running = false;
 	}
@@ -216,8 +227,9 @@
 						{#if word.missingLetters.includes(j)}
 							<span
 								class="underline"
-								class:success={keyResults[i][j] === true}
+								class:success={keyResults[i][j] === true || typeof keyResults[i][j] === 'number'}
 								class:failed={typeof keyResults[i][j] === 'string'}
+								style="--huevalue:{keyResults[i][j]}"
 								>{typeof keyResults[i][j] === 'string' ? keyResults[i][j] : letter}</span
 							>
 						{:else}
@@ -230,6 +242,7 @@
 	</div>
 
 	<Flares {level} {logic} {currentWordI} {keyResults} {win} />
+	<TopcornerStuff />
 </main>
 
 <style>
@@ -303,8 +316,18 @@
 		animation: pop 0.2s ease-out;
 	}
 	.success::after {
-		background-color: #0f0;
+		background-color: hsl(calc(var(--huevalue) * 1deg), 100%, 50%);
+		animation: fadeaway 0.2s 0.5s linear both;
 	}
+	@keyframes fadeaway {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
 	@keyframes pop {
 		0% {
 			transform: translateY(0);

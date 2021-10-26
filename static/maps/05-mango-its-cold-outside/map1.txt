@@ -13,7 +13,7 @@ cant: [7, 13]
 
 -:  [10, 18] {sanity}
 i: [11, 0]
-got: [11, 6]
+[g]ot: [11, 6]
 to: [11, 14]
 go a: [11, 18]
 -waaaaaaaaaaaay: [12, 7] {sanity}

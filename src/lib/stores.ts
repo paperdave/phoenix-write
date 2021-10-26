@@ -13,6 +13,10 @@ export function setNextMap(map: LoadedMap | MapMeta) {
 }
 
 export const totalRewound = writable(0);
+export const totalFails = writable(0);
+export const startTime = writable(0);
+export const totalOffset = writable(0);
+export const totalKeyPresses = writable(0);
 
 export function addToRewoundTime(n: number) {
 	totalRewound.update((t) => t + n);
