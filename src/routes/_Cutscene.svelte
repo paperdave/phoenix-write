@@ -9,8 +9,8 @@
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake, setScreenshake2 } from '$lib/screenshake';
 
-	const PRESS_MARGIN_END = 0.15;
-	const PRESS_MARGIN_START = 0.15;
+	const PRESS_MARGIN_END = 0.2;
+	const PRESS_MARGIN_START = 0.2;
 
 	import { currentMapId, setNextMap } from '$lib/stores';
 

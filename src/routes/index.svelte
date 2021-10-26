@@ -75,7 +75,8 @@
 			on:click={clickStart}
 			on:contextmenu={() => {
 				getMapList().then(() => {
-					$currentMapId = '05-mango-its-cold-outside';
+					// $currentMapId = '05-mango-its-cold-outside';
+					$currentMapId = '04-ludwig';
 				});
 			}}
 		>
