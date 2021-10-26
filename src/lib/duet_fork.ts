@@ -160,8 +160,6 @@ export class DuetLevelLogic extends EventEmitter {
 
 			let whoIsLatest = 'qt';
 
-			debugger;
-
 			while (wordsRewound < WORD_PENALTY) {
 				if (this.rewoundWordQt === 0) {
 					this.whoStarts = 'qt';
@@ -253,7 +251,11 @@ export class DuetLevelLogic extends EventEmitter {
 			let lud = this.ludTickKey(key);
 			let qt = this.qtTickKey(key);
 
-			if (lud === 'failure' && qt === 'failure') {
+			if (qt === 'lenientignore') {
+				return;
+			}
+
+			if ((lud === 'failure' || lud === 'early') && (qt === 'failure' || qt === 'early')) {
 				// fight over which ones sooner
 				const ludWord = this.mapKeyPressesLud[this.currentWordLud];
 				const qtWord = this.mapKeyPressesQt[this.currentWordQt];
@@ -263,25 +265,37 @@ export class DuetLevelLogic extends EventEmitter {
 					lud = null;
 				}
 			}
-			if (lud === 'failure' && qt === null) {
+			if ((lud === 'failure' || lud === 'early') && qt === null) {
 				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
-				this.emit('lose', {
-					tooLate: false,
-					wordIndex: mapKey.wordIndex,
-					letterIndex: mapKey.letterIndex,
-					mistype: key.key,
-					who: 'lud'
-				});
+				if (lud === 'early') {
+					this.emit('lose', {
+						tooEarly: true
+					});
+				} else {
+					this.emit('lose', {
+						tooLate: false,
+						wordIndex: mapKey.wordIndex,
+						letterIndex: mapKey.letterIndex,
+						mistype: key.key,
+						who: 'lud'
+					});
+				}
 			}
-			if (lud === null && qt === 'failure') {
+			if (lud === null && (qt === 'failure' || qt === 'early')) {
 				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
-				this.emit('lose', {
-					tooLate: false,
-					wordIndex: mapKey.wordIndex,
-					letterIndex: mapKey.letterIndex,
-					mistype: key.key,
-					who: 'qt'
-				});
+				if (qt === 'early') {
+					this.emit('lose', {
+						tooEarly: true
+					});
+				} else {
+					this.emit('lose', {
+						tooLate: false,
+						wordIndex: mapKey.wordIndex,
+						letterIndex: mapKey.letterIndex,
+						mistype: key.key,
+						who: 'qt'
+					});
+				}
 			}
 
 			if (lud === 'success' && qt === 'success') {
@@ -297,7 +311,7 @@ export class DuetLevelLogic extends EventEmitter {
 			}
 
 			if (
-				(lud === 'success' && qt === 'failure') || //
+				(lud === 'success' && (qt === 'failure' || qt === 'early')) || //
 				(lud === 'success' && qt === null)
 			) {
 				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
@@ -317,7 +331,7 @@ export class DuetLevelLogic extends EventEmitter {
 			}
 
 			if (
-				(lud === 'failure' && qt === 'success') || //
+				((lud === 'failure' || lud === 'early') && qt === 'success') || //
 				(lud === null && qt === 'success')
 			) {
 				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
@@ -339,9 +353,9 @@ export class DuetLevelLogic extends EventEmitter {
 	}
 
 	ludTickKey(key: DuetKeyPress) {
+		const keyTime = (key.time - this.startTime) / 1000;
 		const mapKey = this.mapKeyPressesLud[this.currentWordLud];
 		if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
-			const keyTime = (key.time - this.startTime) / 1000;
 			if (keyTime > mapKey.start && keyTime < mapKey.end) {
 				if (
 					mapKey.underlyingWord.text[mapKey.underlyingWord.missingLetters[0]].toLowerCase() ===
@@ -362,7 +376,20 @@ export class DuetLevelLogic extends EventEmitter {
 					.map((x) => x.toLowerCase())
 					.includes(key.key.toLowerCase())
 			) {
-				return 'failure';
+				if (keyTime > mapKey.start && keyTime < mapKey.end) {
+					if (
+						mapKey.underlyingWord.text[mapKey.underlyingWord.missingLetters[0]].toLowerCase() ===
+						key.key.toLowerCase()
+					) {
+						if (mapKey.underlyingWord.flags.checkpoint) {
+							this.latestCheckpoint = this.currentWordLud;
+						}
+					}
+
+					return 'early';
+				} else {
+					return 'failure';
+				}
 			}
 		}
 		return null;
@@ -370,8 +397,8 @@ export class DuetLevelLogic extends EventEmitter {
 
 	qtTickKey(key: DuetKeyPress) {
 		const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+		const keyTime = (key.time - this.startTime) / 1000;
 		if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
-			const keyTime = (key.time - this.startTime) / 1000;
 			if (keyTime > mapKey.start && keyTime < mapKey.end) {
 				if (
 					mapKey.underlyingWord.text[mapKey.underlyingWord.missingLetters[0]].toLowerCase() ===
@@ -388,11 +415,30 @@ export class DuetLevelLogic extends EventEmitter {
 			}
 		} else {
 			if (
+				this.mapKeyPressesQt[this.currentWordQt - 1].underlyingWord.flags.lenient &&
+				this.mapKeyPressesQt[this.currentWordQt - 1].key === key.key
+			) {
+				return 'lenientignore';
+			}
+			if (
 				!(mapKey.underlyingWord.flags.allowedCharacters || [])
 					.map((x) => x.toLowerCase())
 					.includes(key.key.toLowerCase())
 			) {
-				return 'failure';
+				if (keyTime > mapKey.start && keyTime < mapKey.end) {
+					if (
+						mapKey.underlyingWord.text[mapKey.underlyingWord.missingLetters[0]].toLowerCase() ===
+						key.key.toLowerCase()
+					) {
+						if (mapKey.underlyingWord.flags.checkpoint) {
+							this.latestCheckpoint = this.currentWordQt;
+						}
+					}
+
+					return 'failure';
+				} else {
+					return 'early';
+				}
 			}
 		}
 		return null;

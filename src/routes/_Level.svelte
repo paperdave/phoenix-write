@@ -252,9 +252,38 @@
 	</div>
 
 	<TopcornerStuff />
+
+	{#if showTooEarly}
+		<div class="notice">Early!</div>
+	{/if}
+	{#if showTooLate}
+		<div class="notice">Late!</div>
+	{/if}
 </main>
 
 <style>
+	.notice {
+		position: absolute;
+		bottom: calc(var(--unit) * 15);
+		left: calc(var(--unit) * 25);
+		font-size: calc(var(--unit) * 3);
+		color: red;
+		z-index: 100;
+		transform: translateX(-50%);
+		text-shadow: 0 0 calc(var(--unit) * 1) black;
+		animation: noticemesenpai 0.5s cubic-bezier(0.37, 1.84, 0.47, 1) both;
+	}
+	@keyframes noticemesenpai {
+		0% {
+			transform: translateX(-50%) translateY(0);
+		}
+		50% {
+			transform: translateX(-50%) translateY(calc(var(--unit) * -0.5));
+		}
+		100% {
+			transform: translateX(-50%) translateY(0);
+		}
+	}
 	.running {
 		cursor: none;
 	}
