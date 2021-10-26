@@ -485,21 +485,21 @@
 		white-space: pre;
 		position: relative;
 	}
-	.qt {
-		color: #6ff;
+	.qt .word:not(.gangster) {
+		color: rgb(255, 192, 203);
 	}
 	.underline {
 		position: relative;
 		color: rgba(255, 255, 255, 0.25);
 	}
-	.qt .underline {
-		color: rgba(100, 255, 255, 0.25);
+	.qt .word:not(.gangster) .underline {
+		color: rgba(255, 192, 203, 0.25);
 	}
 	.lud {
-		color: #ff6;
+		color: rgba(192, 251, 255);
 	}
 	.lud .underline {
-		color: rgba(255, 255, 100, 0.25);
+		color: rgba(192, 251, 255, 0.25);
 	}
 	.underline::after {
 		content: '';
