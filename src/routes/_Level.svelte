@@ -24,7 +24,6 @@
 	const logic = new LevelLogic(level);
 
 	function genKeyResults() {
-		console.log(logic.rewoundWord);
 		return level.words.map((x) =>
 			x.missingLetters.map((i) => {
 				let index = logic.mapKeyPresses.findIndex(
@@ -190,6 +189,8 @@
 
 	$: if (!$isFocused) {
 		videoElem.pause();
+	}
+	$: if (!$isFocused && running) {
 		logic.emit('lose', { tooLate: true });
 		running = false;
 	}

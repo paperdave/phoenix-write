@@ -10,7 +10,7 @@
 	import { isFocused } from '$lib/isFocused';
 	import { setScreenshake, setScreenshakeVariable } from '$lib/screenshake';
 
-	import { setNextMap } from '$lib/stores';
+	import { setNextMap, totalKeyPresses, totalOffset } from '$lib/stores';
 
 	import { LoadedDuet, parseTimmyTimestamp } from '$lib/types';
 	import { delay } from '$lib/utils';
@@ -32,17 +32,27 @@
 
 	const logic = new DuetLevelLogic(level);
 
-	let keyResultsQT: (null | boolean | string)[][] = [];
-	let keyResultsLud: (null | boolean | string)[][] = [];
+	let keyResultsQT: (null | boolean | number | string)[][] = [];
+	let keyResultsLud: (null | boolean | number | string)[][] = [];
 
 	function resetKeyResults() {
-		keyResultsQT = level.wordsQt.map((word) => {
-			return word.missingLetters.map((i) => null);
-		});
+		keyResultsLud = level.wordsLud.map((x) =>
+			x.missingLetters.map((i) => {
+				let index = logic.mapKeyPressesLud.findIndex(
+					(y) => y.underlyingWord === x && y.key === x.text[i]
+				);
+				return index < logic.rewoundWordLud ? true : null;
+			})
+		);
 
-		keyResultsLud = level.wordsQt.map((word) => {
-			return word.missingLetters.map((i) => null);
-		});
+		keyResultsQT = level.wordsQt.map((x) =>
+			x.missingLetters.map((i) => {
+				let index = logic.mapKeyPressesQt.findIndex(
+					(y) => y.underlyingWord === x && y.key === x.text[i]
+				);
+				return index < logic.rewoundWordQt ? true : null;
+			})
+		);
 	}
 
 	resetKeyResults();
@@ -67,13 +77,34 @@
 	});
 
 	logic.on('lud', ({ key, wordIndex, letterIndex, offset }) => {
-		keyResultsLud[wordIndex][letterIndex] = true;
+		if (offset) {
+			const maxoffset = 0.3;
+			// green = 0 offset, orange = maxoffset
+			let hue = Math.min(Math.abs(offset / maxoffset), 1) * -90 + 120;
+			keyResultsLud[wordIndex][letterIndex] = hue;
+
+			$totalKeyPresses = $totalKeyPresses + 1;
+			$totalOffset = $totalOffset + offset;
+		} else {
+			keyResultsLud[wordIndex][letterIndex] = true;
+		}
 	});
 	logic.on('qt', ({ key, wordIndex, letterIndex, offset }) => {
-		keyResultsLud[wordIndex][letterIndex] = true;
+		if (offset) {
+			const maxoffset = 0.3;
+			// green = 0 offset, orange = maxoffset
+			let hue = Math.min(Math.abs(offset / maxoffset), 1) * -90 + 120;
+			keyResultsQT[wordIndex][letterIndex] = hue;
+
+			$totalKeyPresses = $totalKeyPresses + 1;
+			$totalOffset = $totalOffset + offset;
+		} else {
+			keyResultsQT[wordIndex][letterIndex] = true;
+		}
 	});
 
 	logic.on('lose', async ({ tooLate, wordIndex, letterIndex, mistype }) => {
+		return;
 		if (!tooLate) {
 			keyResults[wordIndex][letterIndex] = mistype;
 		}
@@ -280,6 +311,8 @@
 
 	$: if (!$isFocused) {
 		videoElem.pause();
+	}
+	$: if (!$isFocused && running) {
 		logic.emit('lose', { tooLate: true });
 		running = false;
 	}
@@ -326,7 +359,14 @@
 					{/if}
 					{#each word.text as letter, j}
 						{#if word.missingLetters.includes(j)}
-							<span class="underline">{letter}</span>
+							<span
+								class="underline"
+								style="--huevalue:{keyResultsQT[i][j]}"
+								class:success={keyResultsQT[i][j] === true ||
+									typeof keyResultsQT[i][j] === 'number'}
+								class:failed={typeof keyResultsQT[i][j] === 'string'}
+								>{typeof keyResultsQT[i][j] === 'string' ? keyResultsQT[i][j] : letter}</span
+							>
 						{:else}
 							<span>{letter}</span>
 						{/if}
@@ -345,7 +385,14 @@
 					{/if}
 					{#each word.text as letter, j}
 						{#if word.missingLetters.includes(j)}
-							<span class="underline">{letter}</span>
+							<span
+								class="underline"
+								style="--huevalue:{keyResultsLud[i][j]}"
+								class:success={keyResultsLud[i][j] === true ||
+									typeof keyResultsLud[i][j] === 'number'}
+								class:failed={typeof keyResultsLud[i][j] === 'string'}
+								>{typeof keyResultsLud[i][j] === 'string' ? keyResultsLud[i][j] : letter}</span
+							>
 						{:else}
 							<span>{letter}</span>
 						{/if}
@@ -430,12 +477,17 @@
 	.space {
 		margin-right: 2px;
 	}
-	.success {
-		color: #fff;
-		animation: pop 0.2s ease-out;
-	}
 	.success::after {
-		background-color: #0f0;
+		background-color: hsl(calc(var(--huevalue) * 1deg), 100%, 50%);
+		animation: fadeaway 0.2s 0.5s linear both;
+	}
+	@keyframes fadeaway {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
 	}
 	@keyframes pop {
 		0% {

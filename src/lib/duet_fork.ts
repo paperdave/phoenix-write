@@ -236,11 +236,17 @@ export class DuetLevelLogic extends EventEmitter {
 				(lud === 'success' && qt === null)
 			) {
 				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
+				let offset =
+					mapKey.letterIndex !== 0
+						? keyTime < mapKey.end - PRESS_MARGIN_END
+							? 0
+							: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
+						: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
 				this.emit('lud', {
 					key: key.key,
 					wordIndex: mapKey.wordIndex,
 					letterIndex: mapKey.letterIndex,
-					offset: keyTime - mapKey.start + PRESS_MARGIN_START
+					offset
 				});
 				this.currentWordLud++;
 			}
@@ -250,11 +256,17 @@ export class DuetLevelLogic extends EventEmitter {
 				(lud === null && qt === 'success')
 			) {
 				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+				let offset =
+					mapKey.letterIndex !== 0
+						? keyTime < mapKey.end - PRESS_MARGIN_END
+							? 0
+							: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
+						: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
 				this.emit('qt', {
 					key: key.key,
 					wordIndex: mapKey.wordIndex,
 					letterIndex: mapKey.letterIndex,
-					offset: keyTime - mapKey.start + PRESS_MARGIN_START
+					offset
 				});
 				this.currentWordQt++;
 			}
