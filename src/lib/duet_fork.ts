@@ -201,6 +201,7 @@ export class DuetLevelLogic extends EventEmitter {
 						wordsRewound++;
 						if (wordsRewound >= WORD_PENALTY) {
 							this.whoStarts = 'qt';
+							this.rewoundWordLud++;
 							break;
 						}
 					}
@@ -233,12 +234,14 @@ export class DuetLevelLogic extends EventEmitter {
 			const currentTime = (performance.now() - this.startTime) / 1000;
 			const mapKey = this.mapKeyPressesLud[this.currentWordLud];
 			if (currentTime > mapKey.end) {
+				console.log('gasdf');
 				this.emit('lose', {
 					tooLate: true
 				});
 			}
 			const mapKey2 = this.mapKeyPressesQt[this.currentWordQt];
 			if (currentTime > mapKey2.end) {
+				console.log('qtlatre');
 				this.emit('lose', {
 					tooLate: true
 				});

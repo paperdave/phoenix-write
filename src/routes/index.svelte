@@ -71,17 +71,7 @@
 <Container>
 	<p style="opacity:0;position:absolute;font-family:Carlito">h</p>
 	{#if $currentMapId === null}
-		<main
-			on:click={clickStart}
-			on:contextmenu={() => {
-				getMapList().then(() => {
-					// $currentMapId = '01-reddit-recap';
-					// $currentMapId = '04-ludwig';
-					// $currentMapId = '05-mango-its-cold-outside';
-					$currentMapId = '06-endingscene';
-				});
-			}}
-		>
+		<main on:click={clickStart}>
 			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
 			{#if dofade}
 				<div class="white" in:fade={{ duration: 1000 }} />
