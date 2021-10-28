@@ -290,7 +290,8 @@
 			currentSection.keys &&
 			currentSection.keys.length &&
 			keyIndex < currentSection.keys.length &&
-			event.key.length === 1
+			event.key.length === 1 &&
+			videoElem.currentTime >= 4
 		) {
 			if (
 				currentSection.keys[keyIndex].key === '💖'
