@@ -359,6 +359,7 @@
 			time ?? parseTimmyTimestamp(currentSection.keys[keyIndex].time) ?? videoElem.currentTime;
 
 		if (currentSection.isBussinB) {
+			stopMusicInstant();
 			playAudio('doomedfarewell');
 			stopMusicInstant();
 			setTimeout(() => {
