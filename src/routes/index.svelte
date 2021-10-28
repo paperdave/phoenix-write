@@ -11,6 +11,16 @@
 	import { browser } from '$app/env';
 	import { fade } from 'svelte/transition';
 
+	const savefile = localStorage.getItem('phoenixwrite_savefile') || '00-intro-cutscene';
+	currentMapId.subscribe((map) => {
+		if (map) {
+			localStorage.setItem(
+				'phoenixwrite_savefile',
+				map === '06-endingscene' ? '00-intro-cutscene' : map
+			);
+		}
+	});
+
 	const mapPromise = getMapList();
 	let dofade = false;
 	let mapListLoaded = false;
@@ -45,7 +55,7 @@
 		dofade = true;
 
 		setTimeout(() => {
-			$currentMapId = '00-intro-cutscene';
+			$currentMapId = savefile;
 		}, 1000);
 	}
 
