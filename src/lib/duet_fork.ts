@@ -400,6 +400,7 @@ export class DuetLevelLogic extends EventEmitter {
 
 	qtTickKey(key: DuetKeyPress) {
 		const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+		if (!mapKey) return null;
 		const keyTime = (key.time - this.startTime) / 1000;
 		if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
 			if (keyTime > mapKey.start && keyTime < mapKey.end) {
