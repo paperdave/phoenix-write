@@ -334,7 +334,7 @@
 	}
 
 	$: {
-		if (!$isFocused) {
+		if (!$isFocused && videoElem) {
 			videoElem.pause();
 			function handleUnpause() {
 				if (document.visibilityState === 'visible') {

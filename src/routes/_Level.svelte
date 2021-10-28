@@ -197,8 +197,16 @@
 		});
 	}
 
-	$: if (!$isFocused) {
+	$: if (!$isFocused && videoElem) {
 		videoElem.pause();
+		if (isIntroduction) {
+			videoHasLoaded = true;
+			videoElem.currentTime = level.words[0].start - 0.05;
+			logic.update(videoElem.currentTime);
+			logic.tick();
+			isIntroduction = false;
+			updateFrame();
+		}
 	}
 	$: if (!$isFocused && running) {
 		logic.emit('lose', { tooLate: true });
