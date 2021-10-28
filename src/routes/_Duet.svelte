@@ -18,7 +18,6 @@
 	import TopcornerStuff from './_TopcornerStuff.svelte';
 
 	export let level: LoadedDuet;
-	console.log(level);
 
 	let isIntroduction = true;
 	let running = false;
@@ -71,15 +70,9 @@
 	let win = false;
 
 	logic.on('start', () => {
-		// videoElem.currentTime = logic.mapKeyPresses[logic.currentWord - 1].underlyingWord.start;
 		videoElem.play();
 		resetKeyResults();
 		running = true;
-		if (logic.whoStarts === 'qt') {
-			keyResultsQT[logic.currentWordQt][0] = true;
-		} else {
-			keyResultsLud[logic.currentWordLud + 1][0] = true;
-		}
 	});
 
 	logic.on('lud', ({ key, wordIndex, letterIndex, offset }) => {

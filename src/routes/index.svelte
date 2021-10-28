@@ -26,9 +26,7 @@
 	let mapListLoaded = false;
 	mapPromise.then(() => {
 		mapListLoaded = true;
-		getMap('00-intro-cutscene').then(() => {
-			console.log('map loaded');
-		});
+		getMap('00-intro-cutscene');
 	});
 
 	let fontLoadedPromise = new Promise<void>((resolve) => {

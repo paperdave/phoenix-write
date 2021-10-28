@@ -51,7 +51,6 @@ export class DuetLevelLogic extends EventEmitter {
 	}
 
 	handleKeyPress = (event: KeyboardEvent) => {
-		console.log(event.key);
 		if (event.key === ' ') return;
 		if (!this.canPlay) return;
 		if (event.ctrlKey || event.altKey || event.metaKey || event.key.length > 1) {
@@ -68,14 +67,13 @@ export class DuetLevelLogic extends EventEmitter {
 					event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWordQt].key.toLowerCase()
 				) {
 					this.gameStarted = true;
-					console.log('qt', this.currentWordLud, this.currentWordQt);
 					this.currentWordQt = this.rewoundWordQt + 1;
 					this.currentWordLud = this.rewoundWordLud;
 					this.popKeyPresses();
 					this.emit('start');
 					this.emit('qt', {
 						key: event.key,
-						wordIndex: 0,
+						wordIndex: this.rewoundWordQt,
 						letterIndex: 0
 					});
 				}
@@ -84,14 +82,13 @@ export class DuetLevelLogic extends EventEmitter {
 					event.key.toLowerCase() === this.mapKeyPressesLud[this.rewoundWordLud].key.toLowerCase()
 				) {
 					this.gameStarted = true;
-					console.log('lud', this.currentWordLud, this.currentWordQt);
 					this.currentWordLud = this.rewoundWordLud + 1;
 					this.currentWordQt = this.rewoundWordQt;
 					this.popKeyPresses();
 					this.emit('start');
 					this.emit('lud', {
 						key: event.key,
-						wordIndex: 0,
+						wordIndex: this.rewoundWordLud,
 						letterIndex: 0
 					});
 				}
@@ -234,14 +231,12 @@ export class DuetLevelLogic extends EventEmitter {
 			const currentTime = (performance.now() - this.startTime) / 1000;
 			const mapKey = this.mapKeyPressesLud[this.currentWordLud];
 			if (currentTime > mapKey.end) {
-				console.log('gasdf');
 				this.emit('lose', {
 					tooLate: true
 				});
 			}
 			const mapKey2 = this.mapKeyPressesQt[this.currentWordQt];
 			if (currentTime > mapKey2.end) {
-				console.log('qtlatre');
 				this.emit('lose', {
 					tooLate: true
 				});
