@@ -268,7 +268,7 @@ and : [1, 34, 23]
 
 
 
-[m]y: [1, 39, 12]
+my: [1, 39, 12]
 [s]is: [1, 39, 16] { sanity }
 -ter : [1, 40, 1]
 will : [1, 40, 5]
@@ -368,10 +368,10 @@ been: [2, 5, 11]
 
 
 
-[b]ut: [2, 7, 12] {sanity}
+but: [2, 7, 12] {sanity}
 
-[d]ont: [2, 8, 2] {sanity}
-[y]ou: [2, 8, 15]
+dont: [2, 8, 2] {sanity}
+you: [2, 8, 15]
 [s]: [2, 8, 20]
 -[eeeeeeeeeeeeee]?: [2, 9, 3] {lenient}
 

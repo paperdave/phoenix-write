@@ -56,7 +56,7 @@ Beau: [26, 0] {sanity}
 [w]hat's: [27, 1]
 [y]our: [27, 13]
 [h]u: [28, 2] {sanity}
--[rr]y?: [28, 9] {sanity}
+-rry?: [28, 9] {sanity}
 
 
 -: [28, 22] {sanity}
@@ -362,8 +362,8 @@ I : [2, 5, 23] { sanity }
 [w]hen : [2, 7, 0]
 [I] : [2, 7, 5]
 [t]ouch : [2, 7, 12] {sanity}
-[y]our : [2, 7, 21]
-[h]air: [2, 8, 2] {sanity}
+your : [2, 7, 21]
+hair: [2, 8, 2] {sanity}
 
 
 
