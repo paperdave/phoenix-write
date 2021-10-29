@@ -55,8 +55,8 @@ Beau: [26, 0] {sanity}
 -ful,: [26, 13]
 [w]hat's: [27, 1]
 [y]our: [27, 13]
-[h]ur: [28, 2] {sanity}
--ry?: [28, 9] {sanity}
+[h]u: [28, 2] {sanity}
+-[rr]y?: [28, 9] {sanity, lenient}
 
 
 -: [28, 22] {sanity}
@@ -79,8 +79,8 @@ Beau: [34, 3]
 -ful,: [34, 22]
 [p]lease: [35, 11] {sanity}
 [d]on't: [36, 0]
-[h]ur: [36, 12] {sanity}
--ry.: [36, 20] {sanity}
+[h]u: [36, 12] {sanity}
+-[rr]y.: [36, 20] {sanity, lenient}
 
 
 
@@ -182,14 +182,14 @@ out. : [1, 8, 21]
 
 
 
-"The : [1, 11, 14] {sanity}
+The : [1, 11, 14] {sanity}
 vari: [1, 11, 21] {sanity}
 -a: [1, 12, 6] {sanity}
 -tions: [1, 12, 11]
 are: [1, 12, 18]
 in: [1, 12,22.5]
 -s: [1, 13, 2]
--ane.": [1, 13, 9] {sanity}
+-ane.: [1, 13, 9] {sanity}
 -                                                           : [1, 13, 10]
 -: [1, 14, 0]
 -                                                           : [1, 23, 0]
