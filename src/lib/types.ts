@@ -13,6 +13,8 @@ export interface WordFlags {
 	checkpoint?: boolean;
 	// list of ignored input keys
 	allowedCharacters?: string[];
+	// A string containing every NON-keypress between the previous keypress and this one.
+	forgivenessString?: string;
 	// shake factor
 	shake?: number;
 	// specify end of this word, used for input logic
@@ -120,10 +122,14 @@ export interface ParsedMap {
 }
 
 export interface MapWord {
+	// What the word is.
 	text: string;
+	// How many letters need to be pressed within this word.
 	missingLetters: number[];
+	// The time at which this word begins to be uttered.
 	start: number;
 	isSectionStart: boolean;
+	// Does this word connect to the last word?
 	isWordJoiner: boolean;
 	isRapperStyle?: boolean;
 	flags: WordFlags;

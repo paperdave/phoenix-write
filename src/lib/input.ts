@@ -15,12 +15,19 @@ export interface KeyPress {
 }
 
 export interface MapKeyPress {
+	// This keypress is the [index]th key to press in the current word. 
 	index: number;
+	// The key to press.
 	key: string;
+	// Time before which you pressed this key too early.
 	start: number;
+	// Time after which you pressed this key too late.
 	end: number;
+	// This keypress is part of the [wordIndex]th word in the whole map.
 	wordIndex: number;
+	// The index within the underlyingWord at which this keypress appears.
 	letterIndex: number;
+	// The word this keypress is a part of.
 	underlyingWord: MapWord;
 }
 
@@ -149,9 +156,38 @@ export class LevelLogic extends EventEmitter {
 				});
 			}
 		}
+
 		while (keypresses.length > 0) {
 			const key = keypresses.shift();
 			const mapKey = this.mapKeyPresses[this.currentWord];
+
+			// Check if the forgivenessString has been initialized yet
+			if(typeof mapKey.underlyingWord.flags.forgivenessString === typeof undefined)
+				// Populate the forgivenessString. First, make sure this isn't the first word.
+				if(this.currentWord)
+				{
+					// Substring every character after the last keypress to the end of last word.
+					let nonPressesAfterLastKeypress = "";
+					const mapKeyLast = this.mapKeyPresses[this.currentWord - 1];
+					// Make sure the previous keypress didn't END the last word
+					if(mapKeyLast.underlyingWord.text.length > mapKeyLast.letterIndex + 1)
+					{
+						nonPressesAfterLastKeypress = mapKeyLast.underlyingWord.text.substring( mapKeyLast.letterIndex + 1 );
+					}
+					// Next, substring every character BEFORE this keypress.
+					let nonPressesBeforeCurrentKeypress = "";
+					if(mapKey.letterIndex > 0)
+					{
+						nonPressesBeforeCurrentKeypress = mapKey.underlyingWord.text.substring(0, mapKeyLast.letterIndex - 1);
+					}
+					mapKey.underlyingWord.flags.forgivenessString = nonPressesAfterLastKeypress + nonPressesBeforeCurrentKeypress;
+				}
+				// Now just make add the first letter of forgivenessString to the whitelist.
+				if(mapKey.underlyingWord.flags.forgivenessString.length)
+					mapKey.underlyingWord.flags.allowedCharacters = [mapKey.underlyingWord.flags.forgivenessString[0]];
+
+
+
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
 				const keyTime = (key.time - this.startTime) / 1000;
 				if (keyTime > mapKey.start && keyTime < mapKey.end) {
@@ -191,12 +227,22 @@ export class LevelLogic extends EventEmitter {
 						.map((x) => x.toLowerCase())
 						.includes(key.key.toLowerCase())
 				) {
+					// Destroy the forgiveness string so it repopulates.
+					mapKey.underlyingWord.flags.forgivenessString = undefined;
+					
 					this.emit('lose', {
 						mistype: key.key,
 						wordIndex: mapKey.wordIndex,
 						letterIndex: mapKey.letterIndex
 					});
 				}
+				else
+				{
+					// Remove the first letter from the forgivenessString if there are any left
+					if(mapKey.underlyingWord.flags.forgivenessString.length)
+						mapKey.underlyingWord.flags.forgivenessString = mapKey.underlyingWord.flags.forgivenessString.substring(1);
+				}
+
 			}
 		}
 	}
