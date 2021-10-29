@@ -80,7 +80,7 @@ Beau: [34, 3]
 [p]lease: [35, 11] {sanity}
 [d]on't: [36, 0]
 [h]u: [36, 12] {sanity}
--[rr]y.: [36, 20] {sanity, lenient}
+-[rr]y.: [36, 20] {sanity}
 
 
 
