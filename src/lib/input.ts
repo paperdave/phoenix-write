@@ -168,7 +168,18 @@ export class LevelLogic extends EventEmitter {
 				{
 					// Substring every character after the last keypress to the end of last word.
 					let nonPressesAfterLastKeypress = "";
-					const mapKeyLast = this.mapKeyPresses[this.currentWord - 1];
+
+					var mapKeyLast = this.mapKeyPresses[this.currentWord - 1];
+					// Populate mapKeyLast with the most recent word that wasn't whitespace only.
+					for(let x = 1; x < this.currentWord; x++)
+					{
+						if(this.mapKeyPresses[this.currentWord - x].underlyingWord.text.replace(/\s/g, '').length)
+						{
+							mapKeyLast = this.mapKeyPresses[this.currentWord - x];
+							break;
+						}
+					}
+
 					// Make sure the previous keypress didn't END the last word
 					if(mapKeyLast.underlyingWord.text.length > mapKeyLast.letterIndex + 1)
 					{
@@ -182,10 +193,9 @@ export class LevelLogic extends EventEmitter {
 					}
 					mapKey.underlyingWord.flags.forgivenessString = nonPressesAfterLastKeypress + nonPressesBeforeCurrentKeypress;
 				}
-				// Now just make add the first letter of forgivenessString to the whitelist.
+				// Now just add the first letter of forgivenessString to the whitelist.
 				if(mapKey.underlyingWord.flags.forgivenessString.length)
 					mapKey.underlyingWord.flags.allowedCharacters = [mapKey.underlyingWord.flags.forgivenessString[0]];
-
 
 
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
@@ -229,7 +239,7 @@ export class LevelLogic extends EventEmitter {
 				) {
 					// Destroy the forgiveness string so it repopulates.
 					mapKey.underlyingWord.flags.forgivenessString = undefined;
-					
+
 					this.emit('lose', {
 						mistype: key.key,
 						wordIndex: mapKey.wordIndex,
