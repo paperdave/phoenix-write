@@ -151,8 +151,6 @@ export class LevelLogic extends EventEmitter {
 			const currentTime = (performance.now() - this.startTime) / 1000;
 			const mapKey = this.mapKeyPresses[this.currentWord];
 			if (currentTime > mapKey.end) {
-					// Destroy the forgiveness string so it repopulates.
-					mapKey.underlyingWord.flags.forgivenessString = undefined;
 					this.emit('lose', {
 					tooLate: true
 				});
@@ -187,6 +185,11 @@ export class LevelLogic extends EventEmitter {
 					{
 						nonPressesAfterLastKeypress = mapKeyLast.underlyingWord.text.substring( mapKeyLast.letterIndex + 1 );
 					}
+					else
+					{
+						// TODO: ACCOUNT FOR WORD JOINERS RE: https://discord.com/channels/@me/630573892054024202/903499738312241184
+					}
+
 					// Next, substring every character BEFORE this keypress.
 					let nonPressesBeforeCurrentKeypress = "";
 					if(mapKey.letterIndex > 0)
@@ -198,6 +201,7 @@ export class LevelLogic extends EventEmitter {
 				// Now just add the first letter of forgivenessString to the whitelist.
 				if(mapKey.underlyingWord.flags.forgivenessString.length)
 					mapKey.underlyingWord.flags.allowedCharacters = [mapKey.underlyingWord.flags.forgivenessString[0]];
+
 
 
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
@@ -242,8 +246,9 @@ export class LevelLogic extends EventEmitter {
 						.map((x) => x.toLowerCase())
 						.includes(key.key.toLowerCase())
 				) {
-					// Destroy the forgiveness string so it repopulates.
-					mapKey.underlyingWord.flags.forgivenessString = undefined;
+					// Destroy the forgiveness strings so they repopulate.
+					for(let x = 0; x < this.mapKeyPresses.length; x++)
+						this.mapKeyPresses[x].underlyingWord.flags.forgivenessString = undefined;
 
 					this.emit('lose', {
 						mistype: key.key,
