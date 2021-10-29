@@ -56,7 +56,7 @@ Beau: [26, 0] {sanity}
 [w]hat's: [27, 1]
 [y]our: [27, 13]
 [h]u: [28, 2] {sanity}
--[rr]y?: [28, 9] {sanity, lenient}
+-[rr]y?: [28, 9] {sanity}
 
 
 -: [28, 22] {sanity}
@@ -80,7 +80,7 @@ Beau: [34, 3]
 [p]lease: [35, 11] {sanity}
 [d]on't: [36, 0]
 [h]u: [36, 12] {sanity}
--[rr]y.: [36, 20] {sanity, lenient}
+- [rr]y.: [36, 20] {sanity}
 
 
 
@@ -152,7 +152,7 @@ I : [1, 0, 6]
 [m]ove : [1, 0, 17]
 [i]n : [1, 1, 6]
 [c]: [1, 1, 14] { sanity }
--loser? : [1, 1, 19] {sanity}
+-loser? : [1, 1, 19] { sanity }
 
 
 
