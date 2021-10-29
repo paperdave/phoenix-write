@@ -167,8 +167,8 @@
 		win = true;
 	});
 
-	const MANGOSTART = 73.2;
-	const MANGOEND = 83.5;
+	const MANGOSTART = 73.2 + 14 / 24;
+	const MANGOEND = 83.5 + 14 / 24;
 
 	function updateFrame1() {
 		let videoTime = videoElem.currentTime;

@@ -3,7 +3,7 @@ import EventEmitter from 'eventemitter3';
 import type { LoadedDuet, LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
-export const WORD_PENALTY = 6;
+export const WORD_PENALTY = 7;
 
 export const PRESS_MARGIN_START = 0.3;
 export const PRESS_MARGIN_END = 0.65;
