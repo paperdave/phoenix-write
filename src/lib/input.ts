@@ -151,7 +151,9 @@ export class LevelLogic extends EventEmitter {
 			const currentTime = (performance.now() - this.startTime) / 1000;
 			const mapKey = this.mapKeyPresses[this.currentWord];
 			if (currentTime > mapKey.end) {
-				this.emit('lose', {
+					// Destroy the forgiveness string so it repopulates.
+					mapKey.underlyingWord.flags.forgivenessString = undefined;
+					this.emit('lose', {
 					tooLate: true
 				});
 			}
@@ -225,6 +227,9 @@ export class LevelLogic extends EventEmitter {
 						offset: offset
 					});
 				} else {
+					// Destroy the forgiveness string so it repopulates.
+					mapKey.underlyingWord.flags.forgivenessString = undefined;
+					
 					this.emit('lose', {
 						mistype: key.key,
 						wordIndex: mapKey.wordIndex,
