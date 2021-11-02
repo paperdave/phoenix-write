@@ -37,6 +37,7 @@
 	}
 
 	p {
+		position: absolute;
 		display: inline-block;
 		font-size: calc(var(--unit) * 5);
 		color: #fff;

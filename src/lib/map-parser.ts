@@ -38,7 +38,6 @@ function parseWord(word: string): MapWord {
 		const flags = rest2 ? parseFlags(rest2) : {};
 		const missingLetters = [];
 		const isWordJoiner = text.startsWith('-');
-		console.log(text, isWordJoiner);
 		if (isWordJoiner) {
 			text = text.slice(1);
 		}

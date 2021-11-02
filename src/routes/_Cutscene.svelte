@@ -70,7 +70,7 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 0;
+	let currentSectionI = 16;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
