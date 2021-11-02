@@ -22,6 +22,40 @@ export function parseMap(map: string): ParsedMap {
 function parseSection(section: string): MapWord[] {
 	const words = section.split('\n').map(parseWord);
 	words[0].isSectionStart = true;
+
+	// Um, hate to say it, but I have to make this code hella ugly so that words know about joiners that came before.
+	// Basically, we're packing every previous word WITHOUT MISSING LETTERS into a new flag.
+
+	for(let x = 1; x < words.length; x++)
+	{
+
+
+		let finalString = "";
+		let distanceSearchedBackwards = 1;
+		
+		// Step backwards as long as index remains above 0, and words have no missing letters.
+		while( x - distanceSearchedBackwards > 0	
+		&& !words[x - distanceSearchedBackwards].missingLetters.length )
+		{
+			// We're adding all the in-between words that don't have any missing letters.
+			finalString = words[x - distanceSearchedBackwards].text.replace(/\s/g, '') + finalString;
+			distanceSearchedBackwards++;
+		}
+
+		// At this point in the code, x - distanceSearchedBackwards yields the first index with missing letters
+		// as long as the index itself is still greater than 0. (Condition 2 is unsatisfied above, but condition 1 IS still satisfied.)
+		if( x - distanceSearchedBackwards > 0)
+		{
+			// In this case, we need to add every letter AFTER the last missing letter to the beginning of finalString.
+			let lastIndex = words[x - distanceSearchedBackwards].missingLetters.length - 1;
+			let firstWordWithMissingLetterFound = words[x - distanceSearchedBackwards].text
+			let remainder = firstWordWithMissingLetterFound.substring(words[x - distanceSearchedBackwards].missingLetters[lastIndex] + 1);
+			finalString = remainder + finalString;
+		}
+		words[x].flags.wordsRightBeforeThisOneWithoutMissingLetters = finalString;
+		console.log(finalString + " is the final string for word " + words[x].text);
+	}
+
 	return words;
 }
 
@@ -58,6 +92,7 @@ function parseWord(word: string): MapWord {
 		} else if (flags.replacingTheRapperLudwigHiredOnFiverOneYearAgoQTCinderellaResumesSingingHere) {
 			isRapper = false;
 		}
+		
 		return {
 			text: text.replace(/\[|\]/g, ''),
 			missingLetters,
