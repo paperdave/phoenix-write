@@ -163,46 +163,29 @@ export class LevelLogic extends EventEmitter {
 
 			// Check if the forgivenessString has been initialized yet
 			if(typeof mapKey.underlyingWord.flags.forgivenessString === typeof undefined)
+			{
 				// Populate the forgivenessString. First, make sure this isn't the first word.
 				if(this.currentWord)
 				{
-					// Substring every character after the last keypress to the end of last word.
-					let nonPressesAfterLastKeypress = "";
-
-					var mapKeyLast = this.mapKeyPresses[this.currentWord - 1];
-					// Populate mapKeyLast with the most recent word that wasn't whitespace only.
-					for(let x = 1; x < this.currentWord; x++)
-					{
-						if(this.mapKeyPresses[this.currentWord - x].underlyingWord.text.replace(/\s/g, '').length)
-						{
-							mapKeyLast = this.mapKeyPresses[this.currentWord - x];
-							break;
-						}
-					}
-
-					// Make sure the previous keypress didn't END the last word
-					if(mapKeyLast.underlyingWord.text.length > mapKeyLast.letterIndex + 1)
-					{
-						nonPressesAfterLastKeypress = mapKeyLast.underlyingWord.text.substring( mapKeyLast.letterIndex + 1 );
-					}
-					else
-					{
-						// TODO: ACCOUNT FOR WORD JOINERS RE: https://discord.com/channels/@me/630573892054024202/903499738312241184
-					}
-
-					// Next, substring every character BEFORE this keypress.
+					// Substring every character BEFORE this keypress.
 					let nonPressesBeforeCurrentKeypress = "";
 					if(mapKey.letterIndex > 0)
 					{
-						nonPressesBeforeCurrentKeypress = mapKey.underlyingWord.text.substring(0, mapKeyLast.letterIndex - 1);
+						nonPressesBeforeCurrentKeypress = mapKey.underlyingWord.text.substring(0, mapKey.letterIndex - 1);
 					}
-					mapKey.underlyingWord.flags.forgivenessString = nonPressesAfterLastKeypress + nonPressesBeforeCurrentKeypress;
+					// Add that bit to the in between flag we loaded in map-parser.ts's parseSection.
+					let nonPressWords = "";
+					if(typeof(mapKey.underlyingWord.flags.wordsRightBeforeThisOneWithoutMissingLetters) != 'undefined')
+						nonPressWords = mapKey.underlyingWord.flags.wordsRightBeforeThisOneWithoutMissingLetters;
+					mapKey.underlyingWord.flags.forgivenessString = nonPressWords + nonPressesBeforeCurrentKeypress;
+					console.log(mapKey.underlyingWord.flags.forgivenessString + " is the current forgiveness.");
 				}
-				// Now just add the first letter of forgivenessString to the whitelist.
-				if(mapKey.underlyingWord.flags.forgivenessString.length)
-					mapKey.underlyingWord.flags.allowedCharacters = [mapKey.underlyingWord.flags.forgivenessString[0]];
-
-
+			}
+			// Now just add the first letter of forgivenessString to the whitelist.
+			if(mapKey.underlyingWord.flags.forgivenessString.length)
+			{
+				mapKey.underlyingWord.flags.allowedCharacters = [mapKey.underlyingWord.flags.forgivenessString[0]];
+			}
 
 			if (key.key.toLowerCase() === mapKey.key.toLowerCase()) {
 				const keyTime = (key.time - this.startTime) / 1000;
@@ -232,7 +215,8 @@ export class LevelLogic extends EventEmitter {
 					});
 				} else {
 					// Destroy the forgiveness string so it repopulates.
-					mapKey.underlyingWord.flags.forgivenessString = undefined;
+					for(let x = 0; x < this.mapKeyPresses.length; x++)
+						this.mapKeyPresses[x].underlyingWord.flags.forgivenessString = undefined;
 					
 					this.emit('lose', {
 						mistype: key.key,
@@ -260,7 +244,11 @@ export class LevelLogic extends EventEmitter {
 				{
 					// Remove the first letter from the forgivenessString if there are any left
 					if(mapKey.underlyingWord.flags.forgivenessString.length)
+					{
 						mapKey.underlyingWord.flags.forgivenessString = mapKey.underlyingWord.flags.forgivenessString.substring(1);
+						console.log("The forgiveness string is now " + mapKey.underlyingWord.flags.forgivenessString);
+
+					}
 				}
 
 			}

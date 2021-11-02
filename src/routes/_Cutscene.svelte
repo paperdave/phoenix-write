@@ -89,6 +89,8 @@
 
 			if (currentSectionI === 0) {
 				if (cutscene.subsection[0].startMusic) {
+					// This line erroneously makes music start on bussinB. 
+					// For now I just moved the music to start on the second caption, which works fine story-wise anyway.
 					startMusicInstant(cutscene.subsection[0].startMusic);
 				} else if (cutscene.subsection[0].startMusicFade) {
 					startMusic(cutscene.subsection[0].startMusicFade);

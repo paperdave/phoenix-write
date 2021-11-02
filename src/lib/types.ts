@@ -15,6 +15,8 @@ export interface WordFlags {
 	allowedCharacters?: string[];
 	// A string containing every NON-keypress between the previous keypress and this one.
 	forgivenessString?: string;
+	// A string concatenating every word before this one that didn't have any missing letters.
+	wordsRightBeforeThisOneWithoutMissingLetters?: string;
 	// shake factor
 	shake?: number;
 	// specify end of this word, used for input logic
