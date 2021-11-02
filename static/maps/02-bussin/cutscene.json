@@ -4,7 +4,6 @@
 
 		{
 			// Daaamn, viewer, that shit [b]ussin'!
-			"startMusic": "bgm1",
 			"begin": [0, 0],
 			"overridepause": true,
 			"unskippable": true,
@@ -21,7 +20,8 @@
 		{
 			// Daaamn, viewer, that shit bussin'!
 			// I almost forgot you were half my age.
-			"begin": [4, 10]
+			"begin": [4, 10],	
+			"startMusic": "bgm1"
 		},
 
 		{
