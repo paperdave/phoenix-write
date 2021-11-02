@@ -24,29 +24,30 @@
 		let shakeX = 0;
 		let shakeY = 0;
 		let shakeVar = 1;
-		cancelShake = () => (shakeVar = 0);
+		let mycancel = (cancelShake = () => (shakeVar = 0));
 		function render() {
-			if (shakeVar >= 0.0001) {
-				shakeVar *= decay1 - decay * shakeVar;
+			shakeVar *= decay1 - decay * shakeVar;
 
-				if (shakeVar >= 0.0001) {
-					shakeX = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
-					shakeY = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
-					if (dom) {
-						dom.style.transform = `translate(calc(var(--unit) * ${
-							shakeX / 10
-						}),calc(var(--unit) * ${shakeY / 10}))`;
-						if (c) {
-							dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
-						}
+			if (shakeVar >= 0.001) {
+				shakeX = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
+				shakeY = (Math.random() * 2 - 1) * shakeVar * shakeIntensity;
+				if (dom) {
+					dom.style.transform = `translate(calc(var(--unit) * ${shakeX / 10}),calc(var(--unit) * ${
+						shakeY / 10
+					}))`;
+
+					if (c) {
+						dom.style.filter = `saturate(${shakeVar * 5 + 1})`;
 					}
-				} else {
-					dom.style.filter = ``;
-					// shakeX = 0;
-					// shakeY = 0;
-					// if (dom) dom.style.removeProperty('transform');
 				}
 				requestAnimationFrame(render);
+			} else {
+				if (mycancel === cancelShake) {
+					shakeX = 0;
+					shakeY = 0;
+					dom.style.filter = ``;
+					if (dom) dom.style.removeProperty('transform');
+				}
 			}
 		}
 		render();
