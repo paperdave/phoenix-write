@@ -147,7 +147,7 @@
 			speed = Math.min(2, speed + dt * 0.1);
 			let oldTime = videoElem.currentTime;
 			videoElem.currentTime = Math.max(videoElem.currentTime - dt * speed, rewindPosition);
-			$totalRewound += oldTime - videoElem.currentTime;
+			$totalRewound += Math.max(oldTime - videoElem.currentTime, 0);
 			if (Math.abs(videoElem.currentTime - rewindPosition) < 0.05) {
 				videoElem.currentTime = rewindPosition;
 				logic.canPlay = true;

@@ -69,15 +69,6 @@
 		<p style="text-align: center;font-size:2em">
 			{formatTime($totalRewound)}
 		</p>
-		<br />
-		<div class="details">
-			<p>{$totalFails} Fails</p>
-			<p>{(($totalOffset / $totalFails || 0) / 1000).toFixed(1)}ms avg. delay</p>
-		</div>
-		<div class="details">
-			<p>{formatTime(playtime)} in game</p>
-			<p>{$totalKeyPresses} keypresses</p>
-		</div>
 	</section>
 
 	<div class="heart" in:fade={{ duration: 1000, delay: 6000, easing: (x) => x }}>
