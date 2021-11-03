@@ -24,7 +24,7 @@
 
 		return `${hours}:${minutesLeft}:${secondsLeft}`;
 	}
-	const BETTER_SCORE = 6 * 60;
+	const BETTER_SCORE = 8 * 60;
 	const BEST_SCORE = 90;
 
 	const now = Date.now();

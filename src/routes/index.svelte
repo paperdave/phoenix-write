@@ -80,6 +80,12 @@
 	<p style="opacity:0;position:absolute;font-family:Carlito">h</p>
 	{#if $currentMapId === null}
 		<main on:click={clickStart}>
+			{#if navigator.userAgent.includes('Gecko/')}
+				<p class="warn">
+					<strong>Note</strong>: Firefox has some bugs with the game. For best results, use Edge,
+					Chrome, or Safari.
+				</p>
+			{/if}
 			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
 			{#if dofade}
 				<div class="white" in:fade={{ duration: 1000 }} />
@@ -116,5 +122,20 @@
 		height: 100%;
 		background: white;
 		z-index: 100;
+	}
+	.warn {
+		position: absolute;
+		top: calc(var(--unit) * 0.5);
+		left: calc(var(--unit) * 0.5);
+		color: red;
+		font-size: calc(var(--unit) * 1.5);
+		font-family: monospace;
+		font-weight: normal;
+		z-index: 100;
+		margin: 0;
+		padding: 0;
+	}
+	strong {
+		font-weight: bold;
 	}
 </style>

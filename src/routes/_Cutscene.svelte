@@ -70,7 +70,7 @@
 
 	let videoElem: HTMLVideoElement;
 
-	let currentSectionI = 16;
+	let currentSectionI = 0;
 	$: currentSection = cutscene.subsection[currentSectionI];
 	$: pauseTime = cutscene.subsection[currentSectionI]
 		? cutscene.subsection[currentSectionI].end
@@ -89,7 +89,7 @@
 
 			if (currentSectionI === 0) {
 				if (cutscene.subsection[0].startMusic) {
-					// This line erroneously makes music start on bussinB. 
+					// This line erroneously makes music start on bussinB.
 					// For now I just moved the music to start on the second caption, which works fine story-wise anyway.
 					startMusicInstant(cutscene.subsection[0].startMusic);
 				} else if (cutscene.subsection[0].startMusicFade) {
@@ -407,52 +407,72 @@
 
 <svelte:window on:keydown={onKeyDown} />
 
-{#if !STATSEEE}
-	<video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
-	{#if done && !hasPressedSpace}
-		<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
-			{@html currentSection.continueText ?? '(Press space to continue)'}
-		</div>
-	{/if}
-
-	{#if isFadeToWhite}
-		<div class="fade-to-white" transition:fade={{ duration: 500 }} />
-	{/if}
-
-	{#if currentSection && currentSection.theBoys}
-		<div class="THEBOYS">
-			{#each boysString as char, i}
-				<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
-			{/each}
-		</div>
-	{/if}
-
-	{#if currentSection?.keys}
-		{#each currentSection.keys as key, i}
-			<div
-				class:ki_correct={keyIndex > i}
-				class:ki_fail={lost && keyIndex === i}
-				class="keyinstance"
-				style="--kx:{key.pos[0]};--ky:{key.pos[1]}"
-			>
-				<div class="tx">
-					{key.key}
-				</div>
+<main>
+	{#if !STATSEEE}
+		<video src={video} bind:this={videoElem} on:play={play} disablePictureInPicture />
+		{#if done && !hasPressedSpace}
+			<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
+				{@html currentSection.continueText ?? '(Press space to continue)'}
 			</div>
-		{/each}
+		{/if}
+
+		{#if isFadeToWhite}
+			<div class="fade-to-white" transition:fade={{ duration: 500 }} />
+		{/if}
+
+		{#if currentSection && currentSection.theBoys}
+			<div class="THEBOYS">
+				{#each boysString as char, i}
+					<span class:hit={boysIndex > i}>{char.toUpperCase()}</span>
+				{/each}
+			</div>
+		{/if}
+
+		{#if currentSection?.keys}
+			{#each currentSection.keys as key, i}
+				<div
+					class:ki_correct={keyIndex > i}
+					class:ki_fail={lost && keyIndex === i}
+					class="keyinstance"
+					style="--kx:{key.pos[0]};--ky:{key.pos[1]}"
+				>
+					<div class="tx">
+						{key.key}
+					</div>
+				</div>
+			{/each}
+		{/if}
+	{:else}
+		<Stats />
 	{/if}
-{:else}
-	<Stats />
-{/if}
+</main>
+
+<div class="click-overlay" />
 
 <style>
+	main {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
 	video {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
+	}
+	.click-overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 		cursor: none;
+		z-index: 100;
 	}
 	.bottom {
 		position: absolute;

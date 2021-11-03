@@ -4,6 +4,8 @@ import type { LoadedDuet, LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
 export const WORD_PENALTY = 7;
+export const WORD_PENALTY_2 = 3.5;
+export const WORD_PENALTY_3 = 1.2;
 
 export const PRESS_MARGIN_START = 0.3;
 export const PRESS_MARGIN_END = 0.65;
@@ -40,6 +42,8 @@ export class DuetLevelLogic extends EventEmitter {
 	isIntroGame = true;
 	won = false;
 	latestCheckpoint = 0;
+	wp2 = WORD_PENALTY_2;
+	marker = 0;
 
 	popKeyPresses(): DuetKeyPress[] {
 		const keypresses: DuetKeyPress[] = [];
@@ -62,7 +66,39 @@ export class DuetLevelLogic extends EventEmitter {
 			return;
 		}
 		if (!this.gameStarted) {
-			if (this.whoStarts === 'qt') {
+			let isBothStarting =
+				this.mapKeyPressesLud[this.rewoundWordLud].start ===
+				this.mapKeyPressesQt[this.rewoundWordQt].start;
+
+			if (isBothStarting) {
+				if (
+					event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWordQt].key.toLowerCase()
+				) {
+					this.gameStarted = true;
+					this.currentWordQt = this.rewoundWordQt + 1;
+					this.currentWordLud = this.rewoundWordLud;
+					this.popKeyPresses();
+					this.emit('start');
+					this.emit('qt', {
+						key: event.key,
+						wordIndex: this.rewoundWordQt,
+						letterIndex: 0
+					});
+				} else if (
+					event.key.toLowerCase() === this.mapKeyPressesLud[this.rewoundWordLud].key.toLowerCase()
+				) {
+					this.gameStarted = true;
+					this.currentWordLud = this.rewoundWordLud + 1;
+					this.currentWordQt = this.rewoundWordQt;
+					this.popKeyPresses();
+					this.emit('start');
+					this.emit('lud', {
+						key: event.key,
+						wordIndex: this.rewoundWordLud,
+						letterIndex: 0
+					});
+				}
+			} else if (this.whoStarts === 'qt') {
 				if (
 					event.key.toLowerCase() === this.mapKeyPressesQt[this.rewoundWordQt].key.toLowerCase()
 				) {
@@ -150,14 +186,22 @@ export class DuetLevelLogic extends EventEmitter {
 		}
 		this.on('lose', () => {
 			this.gameStarted = false;
-			let wordsRewound = 0;
+			let wordsToRewind = WORD_PENALTY;
 
 			this.rewoundWordLud = this.currentWordLud;
 			this.rewoundWordQt = this.currentWordQt;
 
+			let start = (this.rewoundWordLud + this.rewoundWordQt) / 2;
+			if (start < this.marker) {
+				wordsToRewind += this.wp2;
+				this.wp2 += WORD_PENALTY_3;
+			} else {
+				this.wp2 = WORD_PENALTY_2;
+			}
+
 			let whoIsLatest = 'qt';
 
-			while (wordsRewound < WORD_PENALTY) {
+			while (wordsToRewind > 0) {
 				if (this.rewoundWordQt === 0) {
 					this.whoStarts = 'qt';
 					break;
@@ -182,8 +226,8 @@ export class DuetLevelLogic extends EventEmitter {
 						this.mapKeyPressesLud[this.rewoundWordLud].letterIndex === 0 &&
 						!this.mapKeyPressesLud[this.rewoundWordLud].underlyingWord.isWordJoiner
 					) {
-						wordsRewound++;
-						if (wordsRewound >= WORD_PENALTY) {
+						wordsToRewind--;
+						if (wordsToRewind === 0) {
 							this.whoStarts = 'lud';
 							this.rewoundWordQt++;
 							break;
@@ -195,8 +239,8 @@ export class DuetLevelLogic extends EventEmitter {
 						this.mapKeyPressesQt[this.rewoundWordQt].letterIndex === 0 &&
 						!this.mapKeyPressesQt[this.rewoundWordQt].underlyingWord.isWordJoiner
 					) {
-						wordsRewound++;
-						if (wordsRewound >= WORD_PENALTY) {
+						wordsToRewind--;
+						if (wordsToRewind === 0) {
 							this.whoStarts = 'qt';
 							this.rewoundWordLud++;
 							break;
@@ -207,6 +251,9 @@ export class DuetLevelLogic extends EventEmitter {
 					break;
 				}
 			}
+
+			let end = (this.rewoundWordLud + this.rewoundWordQt) / 2;
+			this.marker = this.rewoundWordQt === 0 ? 0 : (end + 2 * start) / 3 + 3.5;
 		});
 	}
 

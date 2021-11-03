@@ -155,6 +155,7 @@
 				stopFallingAudio();
 				playAudio('fall');
 				showTooEarly = false;
+				lastssword = 0;
 				showTooLate = false;
 			} else {
 				requestAnimationFrame(loop);
@@ -173,7 +174,7 @@
 	function updateFrame1() {
 		let videoTime = videoElem.currentTime;
 
-		batman = videoTime > 74.38588166666666 && videoTime < 81.83;
+		batman = videoTime > 74.38588166666666 + 14 / 24 && videoTime < 81.83 + 14 / 24;
 
 		if (videoTime < MANGOSTART) {
 			mangoing = false;
@@ -215,7 +216,7 @@
 
 		if (currentWordQT.flags.shake && lastssword !== currentWordQTI) {
 			lastssword = currentWordQTI;
-			setScreenshakeVariable(currentWordQT.flags.shake);
+			setScreenshakeVariable(currentWordQT.flags.shake, currentWordQT.isRapperStyle);
 		}
 
 		const currentWordIndexQT = level.wordsQt.indexOf(currentWordQT);
