@@ -183,7 +183,7 @@ export class DuetLevelLogic extends EventEmitter {
 		});
 		if (browser) {
 			document.addEventListener('keydown', this.handleKeyPress);
-		}
+		}/*
 		this.on('lose', () => {
 			this.gameStarted = false;
 			let wordsToRewind = WORD_PENALTY;
@@ -254,6 +254,67 @@ export class DuetLevelLogic extends EventEmitter {
 
 			let end = (this.rewoundWordLud + this.rewoundWordQt) / 2;
 			this.marker = this.rewoundWordQt === 0 ? 0 : (end + 2 * start) / 3 + 3.5;
+		});*/
+		// For the SECOND TIME, i'm copy pasting this old code from the past because the new code makes everything break
+		this.on('lose', () => {
+			this.gameStarted = false;
+			let wordsRewound = 0;
+
+			this.rewoundWordLud = this.currentWordLud;
+			this.rewoundWordQt = this.currentWordQt;
+
+			let whoIsLatest = 'qt';
+
+			while (wordsRewound < WORD_PENALTY) {
+				if (this.rewoundWordQt === 0) {
+					this.whoStarts = 'qt';
+					break;
+				}
+
+				// get latest word
+				const latestLudWord = this.rewoundWordLud > 0 && this.mapKeyPressesLud[this.rewoundWordLud];
+				const latestQtWord = this.rewoundWordQt > 0 && this.mapKeyPressesQt[this.rewoundWordQt];
+
+				whoIsLatest = latestLudWord
+					? latestQtWord
+						? latestLudWord.start > latestQtWord.start
+							? 'lud'
+							: 'qt'
+						: 'lud'
+					: latestQtWord
+					? 'qt'
+					: 'WHO';
+
+				if (whoIsLatest === 'lud') {
+					if (
+						this.mapKeyPressesLud[this.rewoundWordLud].letterIndex === 0 &&
+						!this.mapKeyPressesLud[this.rewoundWordLud].underlyingWord.isWordJoiner
+					) {
+						wordsRewound++;
+						if (wordsRewound >= WORD_PENALTY) {
+							this.whoStarts = 'lud';
+							this.rewoundWordQt++;
+							break;
+						}
+					}
+					this.rewoundWordLud--;
+				} else if (whoIsLatest === 'qt') {
+					if (
+						this.mapKeyPressesQt[this.rewoundWordQt].letterIndex === 0 &&
+						!this.mapKeyPressesQt[this.rewoundWordQt].underlyingWord.isWordJoiner
+					) {
+						wordsRewound++;
+						if (wordsRewound >= WORD_PENALTY) {
+							this.whoStarts = 'qt';
+							this.rewoundWordLud++;
+							break;
+						}
+					}
+					this.rewoundWordQt--;
+				} else {
+					break;
+				}
+			}
 		});
 	}
 
