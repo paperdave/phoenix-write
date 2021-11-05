@@ -116,16 +116,30 @@ export class LevelLogic extends EventEmitter {
 		}
 
 		this.on('lose', () => {
+
 			this.gameStarted = false;
 			let wordsToRewind = WORD_PENALTY;
 			this.rewoundWord = this.currentWord;
-			console.log(this.currentWord, this.marker);
+			//console.log(this.currentWord, this.marker);
 			if (this.currentWord < this.marker) {
 				wordsToRewind += this.wp2;
 				this.wp2 += WORD_PENALTY_3;
 			} else {
 				this.wp2 = WORD_PENALTY_2;
 			}
+
+			// Clamps penalty to a certain value at certain sections, to avoid having to sit through long gaps of silence.
+			if(this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty != null)
+			{
+				if(wordsToRewind > this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty)
+				{
+					console.log("TOO HIGH PENALTY: " + wordsToRewind);
+					wordsToRewind = this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty;
+					console.log("   BETTER LOW PENALTY: " + wordsToRewind);
+				}
+			}
+
+
 			while (wordsToRewind > 0) {
 				this.rewoundWord--;
 				if (this.rewoundWord === 0) break;
@@ -136,6 +150,7 @@ export class LevelLogic extends EventEmitter {
 					wordsToRewind--;
 				}
 			}
+
 			this.marker =
 				this.rewoundWord === 0 ? 0 : (this.rewoundWord + 2 * this.currentWord) / 3 + 3.5;
 		});
@@ -194,9 +209,9 @@ export class LevelLogic extends EventEmitter {
 							mapKey.underlyingWord.flags.wordsRightBeforeThisOneWithoutMissingLetters;
 					mapKey.underlyingWord.flags.forgivenessString =
 						nonPressWords + nonPressesBeforeCurrentKeypress;
-					console.log(
-						mapKey.underlyingWord.flags.forgivenessString + ' is the current forgiveness.'
-					);
+					//console.log(
+					//	mapKey.underlyingWord.flags.forgivenessString + ' is the current forgiveness.'
+					//);
 				}
 			}
 			// Now just add the first letter of forgivenessString to the whitelist.
