@@ -9,7 +9,7 @@ export type TimmyTimestamp =
 	| [minutes: number, seconds: number, frames: number];
 
 export interface WordFlags {
-	// Forces the penalty on getting this note wrong to be AT MOST that specific penalty.
+	// Forces the penalty on getting this note wrong to be AT MOST that specific penalty. IS THIS HERE TOO??
 	clampPenalty?: number;
 	// specifies a checkpoint
 	checkpoint?: boolean;
