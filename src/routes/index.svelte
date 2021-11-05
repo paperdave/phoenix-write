@@ -82,8 +82,7 @@
 		<main on:click={clickStart}>
 			{#if navigator.userAgent.includes('Gecko/')}
 				<p class="warn">
-					<strong>Note</strong>: Firefox has some bugs with the game. For best results, use Edge,
-					Chrome, or Safari.
+					<strong>Note</strong>: If the game hangs after a cutscene, refresh the page to continue.
 				</p>
 			{/if}
 			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
