@@ -46,6 +46,8 @@
 		
 		{
 			// [Fades to white]			
+			"motherfuckingbugfix": true,
+			"savefile": "03-foddian-game",
 			"begin": [9, 2],
 			"autoplay": true
 		}

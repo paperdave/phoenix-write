@@ -186,6 +186,8 @@
 
 		{
 			// Speaking of which, viewer. This next task -- your last task. Let's just say...
+			"motherfuckingbugfix": true,
+			"savefile": "05-mango-its-cold-outside",
 			"begin": [47, 1],
 			"shake": [53,0],
 			"endMusicFade": true,
