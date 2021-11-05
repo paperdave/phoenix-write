@@ -70,7 +70,8 @@
 		},
 		{
 			// [Fades to white]
-
+			"motherfuckingbugfix": true,
+			"savefile": "01-reddit-recap",
 			"begin": [19, 2],
 			"autoplay": true
 		}
