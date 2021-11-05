@@ -339,7 +339,7 @@
 
 		if (currentSection.theBoys && !boysWon) {
 			let requiredKey = boysString.charAt(boysIndex);
-			if (event.key === requiredKey) {
+			if (event.key.toLowerCase() === requiredKey) {
 				boysIndex++;
 				playAudio(sounds[boysIndex]);
 				if (boysIndex === boysString.length) {
