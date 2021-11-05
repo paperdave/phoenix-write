@@ -108,9 +108,6 @@
 		}
 	}
 
-
-
-
 	if ($currentMapId === '06-endingscene') {
 	}
 	$: done = (dependOn(videoElem, currentSectionI), false);
@@ -144,17 +141,6 @@
 			if (!running) return;
 			requestAnimationFrame(loop);
 
-
-				// Add the bugfix for ending cutscene
-			if(currentSection?.motherfuckingbugfix) 
-			{ 
-				localStorage.setItem(
-				'phoenixwrite_savefile',
-				currentSection?.savefile
-				);
-				console.log("Save state set to" + currentSection?.savefile);
-			}
-			
 			if (
 				currentSection.shake &&
 				!didshake &&
@@ -405,7 +391,6 @@
 		}
 	}
 
-	
 	if ($currentMapId === '06-endingscene') {
 		window.a1 = new Image();
 		window.a1.src = `./scoreboard/bad.png`;

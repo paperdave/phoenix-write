@@ -67,9 +67,6 @@ export interface Cutscene {
 }
 
 export interface CutsceneSubsection {
-	// Bug fix on the eve of final day.
-	motherfuckingbugfix?: boolean;
-	savefile?: string,
 	// timestamp of start section
 	begin: TimmyTimestamp;
 	// OPTIONAL: timestamp of end section
