@@ -3,7 +3,7 @@ import EventEmitter from 'eventemitter3';
 import type { LoadedDuet, LoadedLevel, MapWord } from './types';
 import { parseTimmyTimestamp } from './types';
 
-export const WORD_PENALTY = 7;
+export const WORD_PENALTY = 5;
 export const WORD_PENALTY_2 = 3.5;
 export const WORD_PENALTY_3 = 1.2;
 
@@ -330,132 +330,139 @@ export class DuetLevelLogic extends EventEmitter {
 
 	tick() {
 		const keypresses = this.popKeyPresses();
-		if (this.currentWordLud >= this.mapKeyPressesLud.length && !this.won) {
+		if (this.currentWordQt >= this.mapKeyPressesQt.length && !this.won) {
 			this.emit('win');
 			this.won = true;
 		}
-		if (this.won) return;
-		if (keypresses.length === 0) {
-			const currentTime = (performance.now() - this.startTime) / 1000;
-			const mapKey = this.mapKeyPressesLud[this.currentWordLud];
-			if (currentTime > mapKey.end) {
-				this.emit('lose', {
-					tooLate: true
-				});
-			}
-			const mapKey2 = this.mapKeyPressesQt[this.currentWordQt];
-			if (currentTime > mapKey2.end) {
-				this.emit('lose', {
-					tooLate: true
-				});
-			}
+		if (this.won) 
+		{
+			return;
 		}
-		while (keypresses.length > 0) {
-			const key = keypresses.shift();
-			const keyTime = (key.time - this.startTime) / 1000;
-
-			let lud = this.ludTickKey(key);
-			let qt = this.qtTickKey(key);
-
-			if (qt === 'lenientignore') {
-				return;
-			}
-
-			if ((lud === 'failure' || lud === 'early') && (qt === 'failure' || qt === 'early')) {
-				// fight over which ones sooner
-				const ludWord = this.mapKeyPressesLud[this.currentWordLud];
-				const qtWord = this.mapKeyPressesQt[this.currentWordQt];
-				if (ludWord.start < qtWord.start) {
-					qt = null;
-				} else {
-					lud = null;
+		else
+		{
+			if (keypresses.length === 0) {
+				const currentTime = (performance.now() - this.startTime) / 1000;
+				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
+				if (currentTime > mapKey.end) {
+					this.emit('lose', {
+						tooLate: true
+					});
+				}
+				const mapKey2 = this.mapKeyPressesQt[this.currentWordQt];
+				if (currentTime > mapKey2.end) {
+					this.emit('lose', {
+						tooLate: true
+					});
 				}
 			}
-			if ((lud === 'failure' || lud === 'early') && qt === null) {
-				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
-				if (lud === 'early') {
-					this.emit('lose', {
-						tooEarly: true
-					});
-				} else {
-					this.emit('lose', {
-						tooLate: false,
+			while (keypresses.length > 0) {
+				const key = keypresses.shift();
+				const keyTime = (key.time - this.startTime) / 1000;
+	
+				let lud = this.ludTickKey(key);
+				let qt = this.qtTickKey(key);
+	
+				if (qt === 'lenientignore') {
+					return;
+				}
+	
+				if ((lud === 'failure' || lud === 'early') && (qt === 'failure' || qt === 'early')) {
+					// fight over which ones sooner
+					const ludWord = this.mapKeyPressesLud[this.currentWordLud];
+					const qtWord = this.mapKeyPressesQt[this.currentWordQt];
+					if (ludWord.start < qtWord.start) {
+						qt = null;
+					} else {
+						lud = null;
+					}
+				}
+				if ((lud === 'failure' || lud === 'early') && qt === null) {
+					const mapKey = this.mapKeyPressesLud[this.currentWordLud];
+					if (lud === 'early') {
+						this.emit('lose', {
+							tooEarly: true
+						});
+					} else {
+						this.emit('lose', {
+							tooLate: false,
+							wordIndex: mapKey.wordIndex,
+							letterIndex: mapKey.letterIndex,
+							mistype: key.key,
+							who: 'lud'
+						});
+					}
+				}
+				if (lud === null && (qt === 'failure' || qt === 'early')) {
+					const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+					if (qt === 'early') {
+						this.emit('lose', {
+							tooEarly: true
+						});
+					} else {
+						this.emit('lose', {
+							tooLate: false,
+							wordIndex: mapKey.wordIndex,
+							letterIndex: mapKey.letterIndex,
+							mistype: key.key,
+							who: 'qt'
+						});
+					}
+				}
+	
+				if (lud === 'success' && qt === 'success') {
+					// fight over which ones sooner
+					const ludWord = this.mapKeyPressesLud[this.currentWordLud];
+					const qtWord = this.mapKeyPressesQt[this.currentWordQt];
+					if (ludWord.start < qtWord.start) {
+						qt = null;
+					} else {
+						lud = null;
+					}
+					// now it falls thoogh
+				}
+	
+				if (
+					(lud === 'success' && (qt === 'failure' || qt === 'early')) || //
+					(lud === 'success' && qt === null)
+				) {
+					const mapKey = this.mapKeyPressesLud[this.currentWordLud];
+					let offset =
+						mapKey.letterIndex !== 0
+							? keyTime < mapKey.end - PRESS_MARGIN_END
+								? 0
+								: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
+							: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
+					this.emit('lud', {
+						key: key.key,
 						wordIndex: mapKey.wordIndex,
 						letterIndex: mapKey.letterIndex,
-						mistype: key.key,
-						who: 'lud'
+						offset
 					});
+					this.currentWordLud++;
 				}
-			}
-			if (lud === null && (qt === 'failure' || qt === 'early')) {
-				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
-				if (qt === 'early') {
-					this.emit('lose', {
-						tooEarly: true
-					});
-				} else {
-					this.emit('lose', {
-						tooLate: false,
+	
+				if (
+					((lud === 'failure' || lud === 'early') && qt === 'success') || //
+					(lud === null && qt === 'success')
+				) {
+					const mapKey = this.mapKeyPressesQt[this.currentWordQt];
+					let offset =
+						mapKey.letterIndex !== 0
+							? keyTime < mapKey.end - PRESS_MARGIN_END
+								? 0
+								: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
+							: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
+					this.emit('qt', {
+						key: key.key,
 						wordIndex: mapKey.wordIndex,
 						letterIndex: mapKey.letterIndex,
-						mistype: key.key,
-						who: 'qt'
+						offset
 					});
+					this.currentWordQt++;
 				}
-			}
-
-			if (lud === 'success' && qt === 'success') {
-				// fight over which ones sooner
-				const ludWord = this.mapKeyPressesLud[this.currentWordLud];
-				const qtWord = this.mapKeyPressesQt[this.currentWordQt];
-				if (ludWord.start < qtWord.start) {
-					qt = null;
-				} else {
-					lud = null;
-				}
-				// now it falls thoogh
-			}
-
-			if (
-				(lud === 'success' && (qt === 'failure' || qt === 'early')) || //
-				(lud === 'success' && qt === null)
-			) {
-				const mapKey = this.mapKeyPressesLud[this.currentWordLud];
-				let offset =
-					mapKey.letterIndex !== 0
-						? keyTime < mapKey.end - PRESS_MARGIN_END
-							? 0
-							: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
-						: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
-				this.emit('lud', {
-					key: key.key,
-					wordIndex: mapKey.wordIndex,
-					letterIndex: mapKey.letterIndex,
-					offset
-				});
-				this.currentWordLud++;
-			}
-
-			if (
-				((lud === 'failure' || lud === 'early') && qt === 'success') || //
-				(lud === null && qt === 'success')
-			) {
-				const mapKey = this.mapKeyPressesQt[this.currentWordQt];
-				let offset =
-					mapKey.letterIndex !== 0
-						? keyTime < mapKey.end - PRESS_MARGIN_END
-							? 0
-							: Math.abs(mapKey.end - PRESS_MARGIN_END - keyTime)
-						: Math.abs(mapKey.start + PRESS_MARGIN_START - keyTime);
-				this.emit('qt', {
-					key: key.key,
-					wordIndex: mapKey.wordIndex,
-					letterIndex: mapKey.letterIndex,
-					offset
-				});
-				this.currentWordQt++;
 			}
 		}
+
 	}
 
 	ludTickKey(key: DuetKeyPress) {

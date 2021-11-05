@@ -394,9 +394,9 @@ my: [2, 16, 1]
 
 
 
-[i]f:  [2, 19, 10] { sanity }
-you: [2, 19, 23]
-caught: [2, 20, 2]
+if:  [2, 19, 10] { sanity }
+[y]ou: [2, 19, 23]
+[c]aught: [2, 20, 2]
 [pn]eu: [2, 20, 10]
 -[m]o: [2, 20, 16]
 -[n]ia: [2, 20, 22]
@@ -450,13 +450,4 @@ i: [2, 31, 19] { lenient }
 i: [2, 32, 3] { lenient }
 [i]: [2, 32, 7] { lenient }
 i: [2, 32, 11] { lenient }
-[i]: [2, 32, 15] { lenient }
-i: [2, 32, 19] { lenient }
-[i]: [2, 32, 23] { lenient }
-i: [2, 33, 3] { lenient }
-[i]: [2, 33, 7] { lenient }
-i: [2, 33, 11] { lenient }
-[i]: [2, 33, 15] { lenient }
-i: [2, 33, 19] { lenient }
-[i]: [2, 33, 23] { lenient }
-de!: [2, 34, 1] { sanity }
+[i]de!: [2, 32, 15] { lenient }

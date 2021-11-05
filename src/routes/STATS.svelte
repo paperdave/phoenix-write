@@ -72,7 +72,7 @@
 	</section>
 
 	<div class="heart" in:fade={{ duration: 1000, delay: 6000, easing: (x) => x }}>
-		made with lots of love
+		
 	</div>
 	<img
 		class="sdafdsfa"
@@ -131,9 +131,9 @@
 	}
 	.sdafdsfa {
 		position: absolute;
-		top: calc(var(--unit) * 45);
-		left: calc(var(--unit) * 70);
-		width: calc(var(--unit) * 25);
-		height: calc(var(--unit) * 25 * (183 / 481));
+		top: calc(var(--unit) * 40);
+		left: calc(var(--unit) * 50);
+		width: calc(var(--unit) * 40);
+		height: calc(var(--unit) * 40 * (183 / 481));
 	}
 </style>
