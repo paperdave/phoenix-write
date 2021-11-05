@@ -137,7 +137,7 @@ export class LevelLogic extends EventEmitter {
 					wordsToRewind = this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty;
 					console.log("   BETTER LOW PENALTY: " + wordsToRewind);
 				}
-			}
+			}// IS THIS HERE???
 
 
 			while (wordsToRewind > 0) {
