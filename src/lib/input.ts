@@ -133,9 +133,9 @@ export class LevelLogic extends EventEmitter {
 			{
 				if(wordsToRewind > this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty)
 				{
-					console.log("TOO HIGH PENALTY: " + wordsToRewind);
+					//console.log("TOO HIGH PENALTY: " + wordsToRewind);
 					wordsToRewind = this.mapKeyPresses[this.currentWord].underlyingWord.flags.clampPenalty;
-					console.log("   BETTER LOW PENALTY: " + wordsToRewind);
+					//console.log("   BETTER LOW PENALTY: " + wordsToRewind);
 				}
 			}// IS THIS HERE???
 
