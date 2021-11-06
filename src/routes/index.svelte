@@ -82,7 +82,7 @@
 		<main on:click={clickStart}>
 			{#if navigator.userAgent.includes('Gecko/')}
 				<p class="warn">
-					<strong>Note</strong>: If the game hangs after a cutscene, refresh the page to continue.
+					<strong>Note</strong>: Please use Google Chrome for the recommended experience. (Unless your computer is shit.)
 				</p>
 			{/if}
 			<img class:clicked src="./openingscreen.png" alt="Pheonix, WRITE!" />
