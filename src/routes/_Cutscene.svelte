@@ -216,10 +216,10 @@
 			let offs = .6/cutscene.fps;
 			// Okay, the offs has to switch to 3 on the last pause state or else the next video won't load.
 			// By the way, pretty sure the delay of 1 was A LIIIITLE too small, causing the hang sometimes.
-			// Setting it to 1.5 makes the hang happen almost never.
+			// Setting it to 1.6 makes the hang happen almost never.
 			if(videoElem.currentTime > videoElem.duration-1)
 			{
-				offs = 1.5/cutscene.fps;
+				offs = 1.6/cutscene.fps;
 			}
 
 			if (videoElem.currentTime > pauseTime - offs) {
