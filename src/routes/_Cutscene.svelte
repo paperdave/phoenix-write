@@ -544,7 +544,12 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 
 		{#if currentSection && currentSection.heartFlag && heartLosses > 1 && currentGameTime > timeAtWhichHeartReachedThreshold + delayInMillisecondsUntilHelpMessageAppears && !finallyGotIt}
 			<div class="bottom" in:fly={{ duration: 500, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
-				{@html 'Bro, just press any key at the right time.'}
+				{#if heartLosses == 2}
+					{@html 'Bro, just press any key at the right time.'}
+				{/if}
+				{#if heartLosses > 2}
+					{@html '...Okay, try pressing it a TINY bit earlier.'}
+				{/if}
 			</div>
 		{/if}
 
