@@ -513,7 +513,7 @@
 		top: calc(var(--unit) * 43);
 		left: calc(var(--unit) * 10.75);
 		font-size: calc(var(--unit) * 3.5);
-		letter-spacing: calc(var(--unit) * 0.25);
+		letter-spacing: calc(var(--unit) * 0.17);
 		color: rgba(255, 255, 255, 0.5);
 		animation: appearboys 1s linear both;
 	}
