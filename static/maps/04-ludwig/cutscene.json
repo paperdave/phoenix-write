@@ -57,7 +57,7 @@
 			// Did you hear something?
 			// It sounded like a... slight whinny.
 			"unskippable": true,
-			"begin": [12, 16],
+			"begin": [11, 21],
 			"endMusic": true
 		},
 		
