@@ -212,7 +212,8 @@
 				hasFadedOutMusic = true;
 			}
 
-			if (videoElem.currentTime >= pauseTime - 1 / cutscene.fps) {
+			// Hoolly shit this shit was causing HUGE fucking rounding errors FUCK I'm so glad it's fixed
+			if (videoElem.currentTime >= pauseTime - 0.5 / cutscene.fps) {
 				running = false;
 				done = true;
 				videoElem.pause();
