@@ -17,14 +17,24 @@
 	import type { LoadedCutscene } from '$lib/types';
 	import { parseTimmyTimestamp } from '$lib/types';
 	import { onDestroy } from 'svelte';
+import { now, time_ranges_to_array } from 'svelte/internal';
 	import { fade, fly } from 'svelte/transition';
 	import Stats from './STATS.svelte';
 
 	export let cutscene: LoadedCutscene;
 
+
 	let lost = false;
 
 	let didAutoPlayOnce = false;
+
+	// Number of times player has died to heart.
+	let heartLosses = 0;
+	let threshold = 2;
+	let timeAtWhichHeartReachedThreshold = 0;
+	let currentGameTime = 0;
+	let delayInMillisecondsUntilHelpMessageAppears = 2*1000;
+	let finallyGotIt = false;
 
 	const boysString = 'bbbbbbooooooyyyyyysssssss';
 	const sounds = [
@@ -193,6 +203,13 @@
 				// Basically, heart flag is so close to the pause time that adding PRESS_MARGIN_END makes it wait for a time that never occurs.
 				else
 				{
+					currentGameTime = performance.now();
+					// Keep iterating timeAtWhichHeartReachedThreshold until it reaches it...
+					if(heartLosses < threshold)
+					{
+						timeAtWhichHeartReachedThreshold = performance.now();
+					}
+
 					if (
 					videoElem.currentTime >=
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time)
@@ -353,6 +370,10 @@
 				if (currentTime >= startAllowed && currentTime <= endAllowed) {
 					keyIndex++;
 					playAudio('correctpluck');
+					// If heart, you gotta say they got it and un-show the help text
+					if(currentSection.heartFlag)
+						finallyGotIt = true;
+
 				} else {
 					lose();
 				}
@@ -390,6 +411,18 @@
 	let isFadeToWhite = false;
 
 	export function lose(time?: number) {
+		if(currentSection.heartFlag)
+		{
+			heartLosses++;
+
+			if(heartLosses > threshold)
+			{
+
+				currentGameTime = performance.now();
+				timeAtWhichHeartReachedThreshold = performance.now();
+			}
+		}
+
 		setScreenshake();
 
 		lost = true;
@@ -457,6 +490,12 @@
 
 		{#if isFadeToWhite}
 			<div class="fade-to-white" transition:fade={{ duration: 500 }} />
+		{/if}
+
+		{#if currentSection && currentSection.heartFlag && heartLosses > 1 && currentGameTime > timeAtWhichHeartReachedThreshold + delayInMillisecondsUntilHelpMessageAppears && !finallyGotIt}
+			<div class="bottom" in:fly={{ duration: 500, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
+				{@html 'Bro, just press any key at the right time.'}
+			</div>
 		{/if}
 
 		{#if currentSection && currentSection.theBoys}
@@ -531,6 +570,15 @@
 		width: 100%;
 		height: 100%;
 		background: white;
+	}
+	.HELPERMESSAGE {
+		position: absolute;
+		top: calc(var(--unit) * 43);
+		left: calc(var(--unit) * 10.75);
+		font-size: calc(var(--unit) * 3.5);
+		letter-spacing: calc(var(--unit) * 0.17);
+		color: rgba(255, 255, 255, 0.5);
+		animation: appearboys 1s linear both;
 	}
 	.THEBOYS {
 		position: absolute;
