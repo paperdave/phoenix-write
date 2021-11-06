@@ -47,16 +47,17 @@
 					"key": "s",
 					"time": [9, 22],
 					"pos": [1027,802]
-				},
+				}
 
 			]				,
-			"overrideSFX": "questionmark"		},
+			"overrideSFX": "questionmark"		
+		},
 		
 		{
 			// Did you hear something?
-			// It sounded like a... slight winny.
+			// It sounded like a... slight whinny.
+			"unskippable": true,
 			"begin": [13, 1],
-
 			"endMusic": true
 		},
 		
@@ -74,7 +75,8 @@
 		{
 			// Sigh... yes sir.		
 			"begin": [18, 5],
-			"startMusicFade": "bgm1"
+			"startMusicFade": "bgm1",
+			"unskippable": true
 		},
 
 		{
