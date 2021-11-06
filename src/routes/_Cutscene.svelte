@@ -24,7 +24,11 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 	export let cutscene: LoadedCutscene;
 
 
+	let lastTimeInFrames = 0;
+	let timeBetweenLoopsInFrames = 1;
+	let cutsceneStart = performance.now()/1000;
 	let lost = false;
+	
 
 	let didAutoPlayOnce = false;
 
@@ -228,37 +232,77 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 				stopMusic();
 				hasFadedOutMusic = true;
 			}
+		
 
-			// Hoolly shit 1 frame offset was causing terrible visual errors.
-			let offs = .6/cutscene.fps;
-			// Okay, the offs has to switch to 3 on the last pause state or else the next video won't load.
-			// By the way, pretty sure the delay of 1 was A LIIIITLE too small, causing the hang sometimes.
-			// Setting it to 1.6 makes the hang happen almost never.
-			if(videoElem.currentTime > videoElem.duration-1)
+			//TIMMY TIMESTAMP RETURNS TO SAVE THE DAY
+			let pauseSecond = Math.floor(pauseTime);
+			let pauseFrame = Math.floor((pauseTime - pauseSecond)*cutscene.fps);
+
+			let pauseTimeInFrames = pauseSecond*cutscene.fps + pauseFrame;
+
+			let currentSecond = Math.floor(videoElem.currentTime);
+			let currentFrame = (videoElem.currentTime - currentSecond)*cutscene.fps;
+
+			let currentTimeInFrames = currentSecond*cutscene.fps + currentFrame;
+
+			// Low pass filter this because it acts so fucking weirdly.
+			timeBetweenLoopsInFrames = timeBetweenLoopsInFrames*.9 +  (currentTimeInFrames - lastTimeInFrames)*.1;
+
+			lastTimeInFrames = currentTimeInFrames;
+			// Look, let's assume the NEXT loop is going to take JUST AS LONG as the previous loop took.
+			// If you extrapolate ahead, WILL YOU END UP AT OR BEYOND THE PAUSE FRAME?
+			// If so, PAUSE THE FUCKER.
+			// IF not, Don't pause the fucker.
+
+			let projectedNextLoopTimeInFrames = currentTimeInFrames + timeBetweenLoopsInFrames;
+			console.log(timeBetweenLoopsInFrames);
+			// As long as the video isn't about to end, we can use this smart method of pausing.
+			if(videoElem.currentTime < videoElem.duration-1)
 			{
-				offs = 1.6/cutscene.fps;
-			}
+				// Okay. Now this is very, very easy.
+				if(projectedNextLoopTimeInFrames >= pauseTimeInFrames)
+				{
+					running = doPauseShit();
+				}
 
-			if (videoElem.currentTime > pauseTime - offs) {
-				running = false;
-				done = true;
-				videoElem.pause();
-				unassociate(videoElem).currentTime = pauseTime;
-				if (currentSection.autoplay) {
-					if (
-						currentSection[
-							'hardcoded flag Autoplay Only once. but this flag only is supported on this subsection and it wont work properly on any other sections'
-						]
-					) {
-						if (didAutoPlayOnce) {
-							return;
-						}
-						didAutoPlayOnce = true;
-					}
-					currentSectionI++;
+				// Please, please, PLEASE work.
+
+				// Holy shit, the low pass filtering is what fixed it. Fuck yes.
+			}
+			else
+			{
+				// Weird-ass pausing method reserved for when the cutscene's about to end.
+				// When you don't have this, next video never loads.
+				let offs = 1.6/cutscene.fps;
+				if (videoElem.currentTime >= pauseTime - offs) 
+				{
+					running = doPauseShit();
 				}
 			}
+
 		});
+	}
+
+	function doPauseShit()
+	{
+		let running = false;
+		done = true;
+		videoElem.pause();
+		unassociate(videoElem).currentTime = pauseTime;
+		if (currentSection.autoplay) {
+			if (
+				currentSection[
+					'hardcoded flag Autoplay Only once. but this flag only is supported on this subsection and it wont work properly on any other sections'
+				]
+			) {
+				if (didAutoPlayOnce) {
+					return;
+				}
+				didAutoPlayOnce = true;
+			}
+			currentSectionI++;
+		}
+		return running;
 	}
 
 	const video = URL.createObjectURL(cutscene.video);
@@ -485,6 +529,7 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 		{#if done && !hasPressedSpace}
 			<div class="bottom" in:fly={{ duration: 200, opacity: 0, y: 2 }} out:fade={{ duration: 100 }}>
 				{@html currentSection.continueText ?? '(Press space to continue)'}
+
 			</div>
 		{/if}
 
