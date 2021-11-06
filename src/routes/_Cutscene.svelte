@@ -455,6 +455,8 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 	let isFadeToWhite = false;
 
 	export function lose(time?: number) {
+
+
 		if(currentSection.heartFlag)
 		{
 			heartLosses++;
@@ -502,6 +504,9 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 				done = false;
 				currentSectionI = Math.max(0, currentSectionI - 1);
 				currentSection = cutscene.subsection[currentSectionI];
+				// You gotta reset the times and shit on lose, or else they get negative and shit could get real weird.
+				lastTimeInFrames = currentSection.begin[0]*24 + currentSection.begin[1];
+
 			}, 1500);
 		}
 	}
