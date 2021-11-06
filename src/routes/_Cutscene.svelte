@@ -177,21 +177,30 @@
 				currentSection.keys &&
 				currentSection.keys.length &&
 				keyIndex < currentSection.keys.length
+				
 			) {
-				if (
+				if(!currentSection.heartFlag)
+				{
+					if (
 					videoElem.currentTime >=
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_END
-				) {
-					lose(parseTimmyTimestamp(currentSection.keys[keyIndex].time));
-				}
-			}
+					) 
+					{
+						lose(parseTimmyTimestamp(currentSection.keys[keyIndex].time));
+					}
 
-			if (
-				currentSection.heartFlag &&
-				!heartWon &&
-				videoElem.currentTime > parseTimmyTimestamp(currentSection.heartFlag)
-			) {
-				lose(parseTimmyTimestamp(currentSection.heartFlag));
+				}
+				// Basically, heart flag is so close to the pause time that adding PRESS_MARGIN_END makes it wait for a time that never occurs.
+				else
+				{
+					if (
+					videoElem.currentTime >=
+					parseTimmyTimestamp(currentSection.keys[keyIndex].time)
+					) 
+					{
+						lose(parseTimmyTimestamp(currentSection.keys[keyIndex].time));
+					}
+				}
 			}
 
 			if (
@@ -323,6 +332,11 @@
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) - PRESS_MARGIN_START;
 				let endAllowed =
 					parseTimmyTimestamp(currentSection.keys[keyIndex].time) + PRESS_MARGIN_START;
+
+				// We need to push startAllowed earlier when the fuckin' heart is there.
+				if(currentSection.heartFlag)
+				startAllowed = 
+				parseTimmyTimestamp(currentSection.keys[keyIndex].time) - PRESS_MARGIN_START*2;
 
 				let currentTime = videoElem.currentTime;
 

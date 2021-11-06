@@ -100,7 +100,7 @@ export interface CutsceneSubsection {
 	// OPTIONAL: isBussinB
 	isBussinB: boolean;
 	// OPTIONAL
-	heartFlag: TimmyTimestamp;
+	heartFlag: boolean;
 	// OPTIONAL
 	shake: TimmyTimestamp;
 	// OPTIONAL
