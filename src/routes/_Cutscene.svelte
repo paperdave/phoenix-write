@@ -255,7 +255,7 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 			// IF not, Don't pause the fucker.
 
 			let projectedNextLoopTimeInFrames = currentTimeInFrames + timeBetweenLoopsInFrames;
-			console.log(timeBetweenLoopsInFrames);
+			//console.log(timeBetweenLoopsInFrames);
 			// As long as the video isn't about to end, we can use this smart method of pausing.
 			if(videoElem.currentTime < videoElem.duration-1)
 			{
