@@ -547,8 +547,23 @@ import { now, time_ranges_to_array } from 'svelte/internal';
 				{#if heartLosses == 2}
 					{@html 'Bro, just press any key at the right time.'}
 				{/if}
-				{#if heartLosses > 2}
-					{@html '...Okay, try pressing it a TINY bit earlier.'}
+				{#if heartLosses == 3}
+					{@html '...Okay, press immediately BEFORE the right time.'}
+				{/if}
+				{#if heartLosses == 4}
+					{@html 'C\'mon, you got this! You\'ve come so far.'}
+				{/if}
+				{#if heartLosses == 5}
+					{@html 'This project took over 100 hours of work.'}
+				{/if}
+				{#if heartLosses == 6}
+					{@html 'Sure, there were frustrating moments.'}
+				{/if}
+				{#if heartLosses == 7}
+					{@html 'But I persevered! Just like I know you will.'}
+				{/if}
+				{#if heartLosses > 7}
+					{@html 'Never give up.'}
 				{/if}
 			</div>
 		{/if}
