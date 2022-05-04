@@ -1,3 +1,5 @@
+import { TimeRange, Transform } from "./basic";
+
 export interface LevelData {
   components: ComponentData[];
 }
@@ -13,20 +15,4 @@ export interface ComponentData {
   data: any;
 }
 
-export interface TimeRange {
-  start: number;
-  end: number;
-}
-
-export interface Transform {
-  /** Translate X */
-  x: number;
-  /** Translate Y */
-  y: number;
-  /** Rotation Z (normal rotation) */
-  rz: number;
-  /** Scale X */
-  sx: number;
-  /** Scale Y */
-  sy: number;
-}
+export interface Camera extends Transform {}

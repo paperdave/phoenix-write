@@ -1,4 +1,4 @@
-import { Game } from "./game/game";
+import { CapslawGame } from "./game/CapslawGame";
 import "./style.css";
 import { LevelData } from "./typings/level";
 
@@ -13,7 +13,7 @@ const levelData: LevelData = {
         sx: 1,
         sy: 1,
       },
-      time: { start: 0, end: 1 },
+      time: { start: 0, end: 4 },
       data: {
         key: "A",
         time: 1,
@@ -28,7 +28,7 @@ const levelData: LevelData = {
         sx: 1,
         sy: 1,
       },
-      time: { start: 0.5, end: 1 },
+      time: { start: 0.5, end: 4 },
       data: {
         key: "B",
         time: 1.2,
@@ -38,7 +38,7 @@ const levelData: LevelData = {
 };
 
 async function main() {
-  const game = new Game(levelData, document.querySelector("#app")!);
+  const game = new CapslawGame(levelData, document.body);
   globalThis.game = game;
 }
 
