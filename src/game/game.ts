@@ -20,14 +20,7 @@ export class Game {
   #sortedComponentDataEnd: Immutable<ComponentData>[];
 
   #cameraTransform: Transform;
-  #testTransform: Transform = {
-    x: 0,
-    y: 0,
-    rz: 0,
-    sx: 1,
-    sy: 1,
-  };
-  #unit: number;
+  #unit = 100;
 
   constructor(public level: Immutable<LevelData>, container: HTMLElement) {
     this.#root = document.createElement("capslaw");
@@ -46,10 +39,10 @@ export class Game {
 
     // Sorted component data used to make update calls way faster
     this.#sortedComponentDataStart = [...level.components].sort(
-      (a, b) => a.time[0] - b.time[0]
+      (a, b) => a.time.start - b.time.start
     );
     this.#sortedComponentDataEnd = [...level.components].sort(
-      (a, b) => a.time[1] - b.time[1]
+      (a, b) => a.time.end - b.time.end
     );
 
     this.#visibleEndIndex = this.#sortedComponentDataEnd.length;
@@ -68,34 +61,6 @@ export class Game {
       this.#background.height = this.#background.clientHeight;
       this.updateUnitSize();
       this.drawBackground();
-    });
-
-    window.addEventListener("mousedown", (ev) => {
-      const draw = () => this.drawBackground();
-
-      const xf = ev.button === 0 ? this.#cameraTransform : this.#testTransform;
-      const mode = ev.shiftKey ? "scale" : ev.altKey ? "rotate" : "move";
-
-      function update(ev: MouseEvent) {
-        if (mode === "move") {
-          xf.x += ev.movementX / 100;
-          xf.y += ev.movementY / 100;
-        } else if (mode === "scale") {
-          xf.sx += ev.movementX / 100;
-          xf.sy += ev.movementX / 100;
-        } else if (mode === "rotate") {
-          xf.rz += ev.movementX / 100;
-        }
-        draw();
-      }
-
-      function end(ev: MouseEvent) {
-        window.removeEventListener("mousemove", update);
-        window.removeEventListener("mouseup", end);
-      }
-
-      window.addEventListener("mousemove", update);
-      window.addEventListener("mouseup", end);
     });
   }
 
@@ -135,7 +100,8 @@ export class Game {
     const { width, height } = this.#background;
     const camera = this.#cameraTransform;
 
-    const obj = this.#testTransform;
+    if (camera.sx < 0 || camera.sy < 0) return;
+
     const unit = this.#unit;
 
     const unitX = unit / camera.sx;
@@ -152,8 +118,6 @@ export class Game {
 
     const extendedHeight =
       (Math.abs(Math.sin(camera.rz)) * (width + 5 * unit)) / 2 + height;
-
-    console.log(extendedWidth - width, extendedHeight - height);
 
     for (
       let x =
@@ -176,20 +140,6 @@ export class Game {
       ctx.fillRect(-extendedWidth / 2, y - 1, extendedWidth, 2);
     }
 
-    ctx.resetTransform();
-
-    ctx.fillStyle = "white";
-    ctx.translate(width / 2, height / 2);
-    ctx.rotate(-camera.rz);
-    ctx.translate(-camera.x * unit, -camera.y * unit);
-    ctx.translate(obj.x * unit, obj.y * unit);
-    ctx.rotate(obj.rz);
-    ctx.fillRect(
-      -(unit * obj.sy) / 2 / camera.sx,
-      -(unit * obj.sy) / 2 / camera.sy,
-      (unit * obj.sx) / camera.sx,
-      (unit * obj.sy) / camera.sy
-    );
     ctx.resetTransform();
 
     updateDebug(`
@@ -219,7 +169,7 @@ export class Game {
       for (let i = this.#visibleComponentInstances.length - 1; i >= 0; i--) {
         const component = this.#visibleComponentInstances[i];
 
-        if (component.definition.time[1] < time) {
+        if (component.definition.time.end < time) {
           component.dispose();
           component.root.remove();
           this.#visibleComponentInstances.splice(i, 1);
@@ -234,11 +184,11 @@ export class Game {
           i < this.#sortedComponentDataStart.length;
           i++
         ) {
-          if (this.#sortedComponentDataStart[i].time[0] <= time) {
+          if (this.#sortedComponentDataStart[i].time.start <= time) {
             const component = this.#sortedComponentDataStart[i];
 
             // Only add components that have not already ended
-            if (component.time[1] > time) {
+            if (component.time.end > time) {
               this.createComponent(component);
             } else {
               this.#visibleEndIndex--;
@@ -257,7 +207,7 @@ export class Game {
       for (let i = this.#visibleComponentInstances.length - 1; i >= 0; i--) {
         const component = this.#visibleComponentInstances[i];
 
-        if (component.definition.time[0] > time) {
+        if (component.definition.time.start > time) {
           component.dispose();
           component.root.remove();
           this.#visibleComponentInstances.splice(i, 1);
@@ -275,11 +225,11 @@ export class Game {
           i < this.#sortedComponentDataEnd.length;
           i++
         ) {
-          if (this.#sortedComponentDataEnd[i].time[1] >= time) {
+          if (this.#sortedComponentDataEnd[i].time.end >= time) {
             const component = this.#sortedComponentDataEnd[i];
 
             // Only add components that have not already ended
-            if (component.time[0] <= time) {
+            if (component.time.start <= time) {
               this.createComponent(component);
             } else {
               this.#visibleStartIndex++;

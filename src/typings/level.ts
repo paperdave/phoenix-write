@@ -7,10 +7,15 @@ export interface ComponentData {
   type: string;
   /** Transform for this item. */
   transform: Transform;
-  /** [start time, end time] */
-  time: [number, number];
+  /** When this object is visible */
+  time: TimeRange;
   /** Data for this component */
   data: any;
+}
+
+export interface TimeRange {
+  start: number;
+  end: number;
 }
 
 export interface Transform {

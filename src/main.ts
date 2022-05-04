@@ -13,7 +13,7 @@ const levelData: LevelData = {
         sx: 1,
         sy: 1,
       },
-      time: [0, 3],
+      time: { start: 0, end: 1 },
       data: {
         key: "A",
         time: 1,
@@ -28,7 +28,7 @@ const levelData: LevelData = {
         sx: 1,
         sy: 1,
       },
-      time: [1, 3],
+      time: { start: 0.5, end: 1 },
       data: {
         key: "B",
         time: 1.2,
