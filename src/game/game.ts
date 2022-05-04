@@ -27,6 +27,7 @@ export class Game {
     sx: 1,
     sy: 1,
   };
+  #unit: number;
 
   constructor(public level: Immutable<LevelData>, container: HTMLElement) {
     this.#root = document.createElement("capslaw");
@@ -58,11 +59,14 @@ export class Game {
     this.#background.width = this.#background.clientWidth;
     this.#background.height = this.#background.clientHeight;
 
+    this.updateUnitSize();
+
     this.time = 0;
 
     window.addEventListener("resize", () => {
       this.#background.width = this.#background.clientWidth;
       this.#background.height = this.#background.clientHeight;
+      this.updateUnitSize();
       this.drawBackground();
     });
 
@@ -100,15 +104,80 @@ export class Game {
     this.#visibleComponentInstances.push(componentInstance);
   }
 
+  private updateUnitSize() {
+    const { width } = this.#background;
+    this.#unit = width / BASE_GAME_WIDTH;
+  }
+
+  /** Converts a point on the canvas to a point in the world, using the camera and current unit size. */
+  private screenToWorld(x: number, y: number) {
+    const { x: cx, y: cy, sx, sy, rz } = this.#cameraTransform;
+    const { width, height } = this.#background;
+    const unit = this.#unit;
+
+    // Unit scale + center of canvas conversions.
+    const wx = (x - width / 2) / unit;
+    const wy = (y - height / 2) / unit;
+
+    // Rotate and scale.
+    const rx = wx * sx * Math.cos(rz) - wy * sy * Math.sin(rz);
+    const ry = wx * sx * Math.sin(rz) + wy * sy * Math.cos(rz);
+
+    // Translate.
+    const tx = rx + cx;
+    const ty = ry + cy;
+
+    return { x: tx, y: ty };
+  }
+
   private drawBackground() {
     const ctx = this.#backgroundCtx;
     const { width, height } = this.#background;
     const camera = this.#cameraTransform;
-    const unit = Math.max(width, height) / BASE_GAME_WIDTH;
 
-    const obj: Transform = this.#testTransform;
+    const obj = this.#testTransform;
+    const unit = this.#unit;
+
+    const unitX = unit / camera.sx;
+    const unitY = unit / camera.sy;
 
     ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "#555";
+
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate(-camera.rz);
+
+    const extendedWidth =
+      (Math.abs(Math.sin(camera.rz)) * (height + 5 * unit)) / 2 + width;
+
+    const extendedHeight =
+      (Math.abs(Math.sin(camera.rz)) * (width + 5 * unit)) / 2 + height;
+
+    console.log(extendedWidth - width, extendedHeight - height);
+
+    for (
+      let x =
+        ((extendedWidth / 2 - camera.x * unit) % unitX) -
+        unitX / 2 -
+        extendedWidth / 2;
+      x < extendedWidth / 2;
+      x += unitX
+    ) {
+      ctx.fillRect(x - 1, -extendedHeight / 2, 2, extendedHeight);
+    }
+    for (
+      let y =
+        ((extendedHeight / 2 - camera.y * unit) % unitY) -
+        unitY / 2 -
+        extendedHeight / 2;
+      y < extendedHeight / 2;
+      y += unitY
+    ) {
+      ctx.fillRect(-extendedWidth / 2, y - 1, extendedWidth, 2);
+    }
+
+    ctx.resetTransform();
+
     ctx.fillStyle = "white";
     ctx.translate(width / 2, height / 2);
     ctx.rotate(-camera.rz);
@@ -124,15 +193,11 @@ export class Game {
     ctx.resetTransform();
 
     updateDebug(`
-      square:
-      x: ${obj.x.toFixed(2)}, y: ${obj.y.toFixed(2)}
-      size: ${obj.sx.toFixed(2)}
-      angle: ${obj.rz.toFixed(2)}
-      
       camera:
       x: ${camera.x.toFixed(2)}, y: ${camera.y.toFixed(2)}
       scale: ${camera.sx.toFixed(2)}
       angle: ${camera.rz.toFixed(2)}
+      unit size: ${this.#unit.toFixed(2)}
     `);
   }
 
