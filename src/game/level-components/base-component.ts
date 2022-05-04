@@ -11,8 +11,6 @@ export abstract class LevelComponent<T = unknown> {
     this.root = document.createElement("level-component");
     this.root.setAttribute("type", this.definition.type);
 
-    this.root.innerText = JSON.stringify(this.definition);
-
     container.appendChild(this.root);
   }
 

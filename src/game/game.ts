@@ -1,10 +1,15 @@
+import { updateDebug } from "../debug";
 import { Immutable } from "../typings/immutable";
-import { ComponentData, LevelData } from "../typings/level";
+import { ComponentData, LevelData, Transform } from "../typings/level";
 import { LevelComponent } from "./level-components/base-component";
 import { SingleKey } from "./level-components/single-key";
 
+const BASE_GAME_WIDTH = 20;
+
 export class Game {
   #root: HTMLElement;
+  #background: HTMLCanvasElement;
+  #backgroundCtx: CanvasRenderingContext2D;
   #time = -1;
 
   #visibleStartIndex = 0;
@@ -14,8 +19,29 @@ export class Game {
   #sortedComponentDataStart: Immutable<ComponentData>[];
   #sortedComponentDataEnd: Immutable<ComponentData>[];
 
+  #cameraTransform: Transform;
+  #testTransform: Transform = {
+    x: 0,
+    y: 0,
+    rz: 0,
+    sx: 1,
+    sy: 1,
+  };
+
   constructor(public level: Immutable<LevelData>, container: HTMLElement) {
     this.#root = document.createElement("capslaw");
+    this.#background = document.createElement("canvas");
+    this.#background.classList.add("full-screen");
+    this.#backgroundCtx = this.#background.getContext("2d")!;
+    this.#root.appendChild(this.#background);
+
+    this.#cameraTransform = {
+      x: 0,
+      y: 0,
+      sx: 1,
+      sy: 1,
+      rz: 0,
+    };
 
     // Sorted component data used to make update calls way faster
     this.#sortedComponentDataStart = [...level.components].sort(
@@ -27,15 +53,87 @@ export class Game {
 
     this.#visibleEndIndex = this.#sortedComponentDataEnd.length;
 
-    // Invoke Setter
+    container.appendChild(this.#root);
+
+    this.#background.width = this.#background.clientWidth;
+    this.#background.height = this.#background.clientHeight;
+
     this.time = 0;
 
-    container.appendChild(this.#root);
+    window.addEventListener("resize", () => {
+      this.#background.width = this.#background.clientWidth;
+      this.#background.height = this.#background.clientHeight;
+      this.drawBackground();
+    });
+
+    window.addEventListener("mousedown", (ev) => {
+      const draw = () => this.drawBackground();
+
+      const xf = ev.button === 0 ? this.#cameraTransform : this.#testTransform;
+      const mode = ev.shiftKey ? "scale" : ev.altKey ? "rotate" : "move";
+
+      function update(ev: MouseEvent) {
+        if (mode === "move") {
+          xf.x += ev.movementX / 100;
+          xf.y += ev.movementY / 100;
+        } else if (mode === "scale") {
+          xf.sx += ev.movementX / 100;
+          xf.sy += ev.movementX / 100;
+        } else if (mode === "rotate") {
+          xf.rz += ev.movementX / 100;
+        }
+        draw();
+      }
+
+      function end(ev: MouseEvent) {
+        window.removeEventListener("mousemove", update);
+        window.removeEventListener("mouseup", end);
+      }
+
+      window.addEventListener("mousemove", update);
+      window.addEventListener("mouseup", end);
+    });
   }
 
   private createComponent(component: Immutable<ComponentData>) {
     const componentInstance = new SingleKey(component, this.#root);
     this.#visibleComponentInstances.push(componentInstance);
+  }
+
+  private drawBackground() {
+    const ctx = this.#backgroundCtx;
+    const { width, height } = this.#background;
+    const camera = this.#cameraTransform;
+    const unit = Math.max(width, height) / BASE_GAME_WIDTH;
+
+    const obj: Transform = this.#testTransform;
+
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillStyle = "white";
+    ctx.translate(width / 2, height / 2);
+    ctx.rotate(-camera.rz);
+    ctx.translate(-camera.x * unit, -camera.y * unit);
+    ctx.translate(obj.x * unit, obj.y * unit);
+    ctx.rotate(obj.rz);
+    ctx.fillRect(
+      -(unit * obj.sy) / 2 / camera.sx,
+      -(unit * obj.sy) / 2 / camera.sy,
+      (unit * obj.sx) / camera.sx,
+      (unit * obj.sy) / camera.sy
+    );
+    ctx.resetTransform();
+
+    updateDebug(`
+      square:
+      x: ${obj.x.toFixed(2)}, y: ${obj.y.toFixed(2)}
+      size: ${obj.sx.toFixed(2)}
+      angle: ${obj.rz.toFixed(2)}
+      
+      camera:
+      x: ${camera.x.toFixed(2)}, y: ${camera.y.toFixed(2)}
+      scale: ${camera.sx.toFixed(2)}
+      angle: ${camera.rz.toFixed(2)}
+    `);
   }
 
   get time() {
@@ -137,5 +235,7 @@ export class Game {
     }
 
     this.#time = time;
+
+    this.drawBackground();
   }
 }

@@ -7,8 +7,8 @@ const levelData: LevelData = {
     {
       type: "single-key",
       transform: {
-        tx: 0,
-        ty: 0,
+        x: 0,
+        y: 0,
         rz: 0,
         sx: 1,
         sy: 1,
@@ -22,8 +22,8 @@ const levelData: LevelData = {
     {
       type: "single-key",
       transform: {
-        tx: 0,
-        ty: 0,
+        x: 0,
+        y: 0,
         rz: 0,
         sx: 1,
         sy: 1,
