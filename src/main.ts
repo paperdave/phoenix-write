@@ -1,5 +1,7 @@
+import { getAnimationValue } from "./game/animation";
 import { CapslawGame } from "./game/CapslawGame";
 import "./style.css";
+import { KeyedAnimation } from "./typings/animation";
 import { LevelData } from "./typings/level";
 
 const levelData: LevelData = {
@@ -35,11 +37,15 @@ const levelData: LevelData = {
       },
     },
   ],
+  camera: {
+    x: 0,
+    y: 0,
+    rz: 0,
+    sx: 1,
+    sy: 1,
+  },
 };
 
-async function main() {
-  const game = new CapslawGame(levelData, document.body);
-  globalThis.game = game;
-}
+async function main() {}
 
 main();
