@@ -1,7 +1,7 @@
 import { updateDebug } from "../debug";
-import { Transform } from "../typings/basic";
-import { Immutable } from "../typings/immutable";
-import { LevelData } from "../typings/level";
+import { Transform } from "../types/basic";
+import { Immutable } from "../types/immutable";
+import { LevelData } from "../types/level";
 import { OnScreenComponentManager } from "./OnScreenComponentManager";
 
 const BASE_GAME_WIDTH = 20;

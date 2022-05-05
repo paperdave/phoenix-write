@@ -1,7 +1,7 @@
-import { Immutable } from "../typings/immutable";
-import { ComponentData } from "../typings/level";
-import { LevelComponent } from "./level-components/base-component";
-import { SingleKey } from "./level-components/single-key";
+import { Immutable } from "../types/immutable";
+import { ComponentData } from "../types/level";
+import { ComponentDisplay } from "./ComponentDisplay";
+import { SingleKeyDisplay } from "./level-components/single-key/SingleKeyDisplay";
 
 export class OnScreenComponentManager {
   #disposed = false;
@@ -13,7 +13,7 @@ export class OnScreenComponentManager {
   #startPointer = 0;
   #endPointer = 0;
 
-  #activeInstances: LevelComponent[] = [];
+  #activeInstances: ComponentDisplay[] = [];
 
   // Sorted component data used to make update calls way faster
   #sortedStart: Immutable<ComponentData>[] = [];
@@ -26,7 +26,7 @@ export class OnScreenComponentManager {
   }
 
   private createComponent(component: Immutable<ComponentData>) {
-    const componentInstance = new SingleKey(component, this.#root);
+    const componentInstance = new SingleKeyDisplay(component, this.#root);
     this.#activeInstances.push(componentInstance);
   }
 
@@ -44,9 +44,7 @@ export class OnScreenComponentManager {
 
     this.#activeInstances = [];
 
-    this.#sortedStart = [...components].sort(
-      (a, b) => a.time.start - b.time.start
-    );
+    this.#sortedStart = [...components].sort((a, b) => a.time.start - b.time.start);
     this.#sortedEnd = [...components].sort((a, b) => a.time.end - b.time.end);
 
     this.#endPointer = this.#sortedEnd.length;

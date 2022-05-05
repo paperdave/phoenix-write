@@ -1,4 +1,4 @@
-import { KeyedAnimation } from "../typings/animation";
+import { KeyedAnimation } from "../types/animation";
 
 function interpolateNumber(a: number, b: number, t: number): number {
   return a + (b - a) * t;

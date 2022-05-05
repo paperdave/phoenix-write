@@ -1,8 +1,9 @@
-import { getAnimationValue } from "./game/animation";
 import { CapslawGame } from "./game/CapslawGame";
+import { levelComponentRegistry } from "./game/level-components";
 import "./style.css";
-import { KeyedAnimation } from "./typings/animation";
-import { LevelData } from "./typings/level";
+import { LevelData } from "./types/level";
+
+console.log(levelComponentRegistry);
 
 const levelData: LevelData = {
   components: [
@@ -46,6 +47,9 @@ const levelData: LevelData = {
   },
 };
 
-async function main() {}
+async function main() {
+  const game = new CapslawGame(levelData, document.body);
+  (globalThis as any).game = game;
+}
 
 main();
