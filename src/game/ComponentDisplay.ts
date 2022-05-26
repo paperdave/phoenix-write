@@ -1,6 +1,6 @@
-import { Immutable } from "../types/immutable";
-import { ComponentData } from "../types/level";
-import { ComponentLogic } from "./ComponentLogic";
+import { Immutable } from '@davecode/types';
+import { ComponentLogic } from './ComponentLogic';
+import { ComponentData } from '../types/level';
 
 type ExtractLogicData<T> = T extends ComponentLogic<infer U> ? U : never;
 
@@ -12,8 +12,8 @@ export abstract class ComponentDisplay<
   logic!: Logic;
 
   constructor(readonly definition: Immutable<ComponentData>, container: HTMLElement) {
-    this.root = document.createElement("level-component");
-    this.root.setAttribute("type", this.definition.type);
+    this.root = document.createElement('level-component');
+    this.root.setAttribute('type', this.definition.type);
 
     container.appendChild(this.root);
   }

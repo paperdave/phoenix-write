@@ -1,7 +1,7 @@
-import { Immutable } from "../types/immutable";
-import { ComponentData } from "../types/level";
-import { ComponentDisplay } from "./ComponentDisplay";
-import { SingleKeyDisplay } from "./level-components/single-key/SingleKeyDisplay";
+import { Immutable } from '@davecode/types';
+import { ComponentDisplay } from './ComponentDisplay';
+import { SingleKeyDisplay } from './level-components/single-key/SingleKeyDisplay';
+import { ComponentData } from '../types/level';
 
 export class OnScreenComponentManager {
   #disposed = false;
@@ -20,7 +20,7 @@ export class OnScreenComponentManager {
   #sortedEnd: Immutable<ComponentData>[] = [];
 
   constructor(components: Immutable<ComponentData[]>, container: HTMLElement) {
-    this.#root = document.createElement("component-manager");
+    this.#root = document.createElement('component-manager');
     container.appendChild(this.#root);
     this.components = components;
   }

@@ -1,8 +1,8 @@
-import { updateDebug } from "../debug";
-import { Transform } from "../types/basic";
-import { Immutable } from "../types/immutable";
-import { LevelData } from "../types/level";
-import { OnScreenComponentManager } from "./OnScreenComponentManager";
+import { Immutable } from '@davecode/types';
+import { OnScreenComponentManager } from './OnScreenComponentManager';
+import { updateDebug } from '../debug';
+import { Transform } from '../types/basic';
+import { LevelData } from '../types/level';
 
 const BASE_GAME_WIDTH = 20;
 
@@ -20,13 +20,13 @@ export class CapslawGame {
   #unit = 100;
 
   constructor(readonly level: Immutable<LevelData>, container: HTMLElement) {
-    this.#root = document.createElement("capslaw");
+    this.#root = document.createElement('capslaw');
 
     this.#onscreenComponents = new OnScreenComponentManager(level.components, this.#root);
 
-    this.#background = document.createElement("canvas");
-    this.#background.classList.add("full-screen");
-    this.#backgroundCtx = this.#background.getContext("2d")!;
+    this.#background = document.createElement('canvas');
+    this.#background.classList.add('full-screen');
+    this.#backgroundCtx = this.#background.getContext('2d')!;
     this.#root.appendChild(this.#background);
 
     this.#cameraTransform = {
@@ -46,7 +46,7 @@ export class CapslawGame {
 
     this.time = 0;
 
-    window.addEventListener("resize", () => {
+    window.addEventListener('resize', () => {
       this.#background.width = this.#background.clientWidth;
       this.#background.height = this.#background.clientHeight;
       this.updateUnitSize();
@@ -72,7 +72,7 @@ export class CapslawGame {
     const unitY = unit / camera.sy;
 
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#555";
+    ctx.fillStyle = '#555';
 
     ctx.translate(width / 2, height / 2);
     ctx.rotate(-camera.rz);

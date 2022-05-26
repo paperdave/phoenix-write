@@ -1,7 +1,7 @@
-import { SingleKeyData } from ".";
-import { Immutable } from "../../../types/immutable";
-import { ComponentDisplay } from "../../ComponentDisplay";
-import { ComponentLogic } from "../../ComponentLogic";
+import { Immutable } from '@davecode/types';
+import { SingleKeyData } from '.';
+import { ComponentDisplay } from '../../ComponentDisplay';
+import { ComponentLogic } from '../../ComponentLogic';
 
 export class SingleKeyDisplay extends ComponentDisplay<ComponentLogic> {
   init(data: Immutable<SingleKeyData>) {}

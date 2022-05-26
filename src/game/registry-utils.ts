@@ -1,6 +1,6 @@
-import { Class } from "../types/util";
-import { ComponentDisplay } from "./ComponentDisplay";
-import { ComponentLogic } from "./ComponentLogic";
+import { Class } from '@davecode/types';
+import { ComponentDisplay } from './ComponentDisplay';
+import { ComponentLogic } from './ComponentLogic';
 
 export interface ComponentDefinition<Data = unknown> {
   type: string;
@@ -8,6 +8,6 @@ export interface ComponentDefinition<Data = unknown> {
   logic: Class<ComponentLogic<Data>>;
 }
 
-export function ComponentDefinition<Data>(componentType: ComponentDefinition<Data>) {
+export function componentDefinition<Data>(componentType: ComponentDefinition<Data>) {
   return componentType;
 }

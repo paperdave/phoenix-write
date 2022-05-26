@@ -1,12 +1,11 @@
-import { CapslawGame } from "./game/CapslawGame";
-import { levelComponentRegistry } from "./game/level-components";
-import "./style.css";
-import { LevelData } from "./types/level";
+import './style.css';
+import { CapslawGame } from './game/CapslawGame_NoGUI';
+import { LevelData } from './types/level';
 
 const levelData: LevelData = {
   components: [
     {
-      type: "single-key",
+      type: 'single-key',
       transform: {
         x: 0,
         y: 0,
@@ -16,12 +15,12 @@ const levelData: LevelData = {
       },
       time: { start: 0, end: 4 },
       data: {
-        key: "A",
+        key: 'A',
         times: [1],
       },
     },
     {
-      type: "single-key",
+      type: 'single-key',
       transform: {
         x: 0,
         y: 2,
@@ -31,7 +30,7 @@ const levelData: LevelData = {
       },
       time: { start: 0, end: 4 },
       data: {
-        key: "B",
+        key: 'B',
         times: [1.2],
       },
     },
